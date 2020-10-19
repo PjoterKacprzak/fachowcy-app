@@ -133,8 +133,9 @@ Future<User> createUser (String name,String lastName,String telephone,
     headers:{'Content-Type': 'application/json'},
     body: str
   );
-  print(response.body);
-  if (response.statusCode == 201) {
+  print(response.statusCode);
+  // CHECK THE REPOSONE NUMBERS
+  if ((response.statusCode >= 200)||(response.statusCode <=299)) {
     return User.fromJson(jsonDecode(response.body));
   } else {
     throw Exception('Failed to create album.');
