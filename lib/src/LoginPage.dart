@@ -36,76 +36,146 @@ class _LoginPageState extends State<LoginPage> {
     print(futureUser.toString());
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       appBar: AppBar(
-        // Here we take the value from the LoginPage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        //TODO: Wywalić go
+        title: Text("Fachowcy"),
+        backgroundColor: Colors.blue,
+        brightness: Brightness.dark,
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
           children: <Widget>[
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'E-mail',
+            Expanded(
+              flex: 1, // 20%
+              child: Container(),
+            ),
+            Expanded(
+              flex: 8, // 60%
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget> [
+                  SizedBox(height: 50), //TODO: coś z tym zrobić
+                  Text(
+                    'Fachowcy',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 50, color: Colors.white)
+                  ),
+                  SizedBox(height: 80), //TODO: coś z tym zrobić
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                      ),
+                      labelText: 'E-mail',
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 3.0,
+                          //TODO: ewentualnie to OutlineInputBorder
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20), //TODO: coś z tym zrobić
+                  TextFormField(
+                    obscureText: true,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.vpn_key,
+                        color: Colors.white,
+                      ),
+                      labelText: 'Hasło',
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 3.0,
+                          //TODO: ewentualnie to OutlineInputBorder
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20), //TODO: coś z tym zrobić
+                  FlatButton(
+                    color: Colors.green,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(16.0),
+                    splashColor: Colors.greenAccent,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    onPressed: () {
+                      /*...*/
+                    },
+                    child: Text(
+                      "Zaloguj się",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+                  SizedBox(height: 20), //TODO: coś z tym zrobić
+                  Text(
+                    "Nie masz konta?",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  SizedBox(height: 10),
+                  FlatButton(
+                    color: Colors.green,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(16.0),
+                    splashColor: Colors.greenAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()));
+                    },
+                    child: Text(
+                      "Zarejestruj się",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
+              ],
               ),
             ),
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-            ),
-            FlatButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
-              onPressed: () {
-                /*...*/
-              },
-              child: Text(
-                "Login",
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-
-            Text("Dont have account?"),
-
-            FlatButton(
-              color: Colors.blue,
-              textColor: Colors.white,
-              disabledColor: Colors.grey,
-              disabledTextColor: Colors.black,
-              padding: EdgeInsets.all(8.0),
-              splashColor: Colors.blueAccent,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterPage()));
-              },
-              child: Text(
-                "Register",
-                style: TextStyle(fontSize: 20.0),
-              ),
-            ),
-
+            Expanded(
+              flex: 1, // 20%
+              child: Container(),
+            )
           ],
         ),
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
