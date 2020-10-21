@@ -308,7 +308,7 @@ Future<User> createUser (String name,String email,String lastName,String telepho
   print(str);
 
   final http.Response response = await http.post(
-    'http://10.0.2.2:8080/api/users/addUser',
+    'http://fachowcy-server.herokuapp.com/api/users/addUser',
     headers:{'Content-Type': 'application/json'},
     body: str
   );
@@ -317,7 +317,7 @@ Future<User> createUser (String name,String email,String lastName,String telepho
   if ((response.statusCode >= 200)||(response.statusCode <=299)) {
     return User.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to create album.');
+    throw Exception('Failed to create User.');
   }
 }
 

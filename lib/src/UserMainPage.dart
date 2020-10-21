@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fachowcy_app/Data/ServiceCard.dart';
 import 'package:fachowcy_app/Data/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,33 +29,41 @@ class UserMainPage extends StatefulWidget {
 class _UserMainPageState extends State<UserMainPage> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  Future<List<ServiceCard>> serviceCard;
+
   @override
   void initState() {
+    serviceCard=getAllCards();
+    print(serviceCard);
     super.initState();
 
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blue,
-      appBar: AppBar(
-        //TODO: Wywalić go
-        title: Text("Fachowcy"),
-        backgroundColor: Colors.blue,
-        brightness: Brightness.dark,
-      ),
-      body: Center(
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1, // 20%
-              child: Container(),
-            ),
 
-            Expanded(
-              flex: 1, // 20%
-              child: Container(),
+
+
+
+
+    return MaterialApp(
+
+      home: Scaffold(
+        appBar: AppBar(
+        ),
+        body:  CustomScrollView(
+          slivers: <Widget>[
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                  return Container(
+                    height: 50,
+                    alignment: Alignment.center,
+                    child: Text("test "),
+                  );
+                },
+                childCount: 50,
+              ),
             )
           ],
         ),
@@ -64,16 +73,22 @@ class _UserMainPageState extends State<UserMainPage> {
 
 
 
-  Future getAllCards ()async {
+  Future<List<ServiceCard>> getAllCards ()async {
+
+    ServiceCard serviceCard = new ServiceCard();
 
     final http.Response response = await http.get(
-        'http://10.0.2.2:8080/api/cards/getAll',
+       //'http://10.0.2.2:8080/api/service-card/all',
+       'https://fachowcy-server.herokuapp.com/api/service-card/all',
         headers:{'Content-Type': 'application/json'},
     );
-    print(response.statusCode);
+
     // CHECK THE REPOSONE NUMBERS
-    if ((response.statusCode >= 200)||(response.statusCode <=299)) {
-      return User.fromJson(jsonDecode(response.body));
+
+    //print(serviceCard.parseServiceCard(response.body));
+    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+         print(serviceCard.parseServiceCard(response.body));
+      return serviceCard.parseServiceCard(response.body);ServiceCard.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to find Card.');
     }

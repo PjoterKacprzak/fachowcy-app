@@ -193,13 +193,14 @@ class _LoginPageState extends State<LoginPage> {
     print(str);
 
     final http.Response response = await http.post(
-        'http://10.0.2.2:8080/api/users/login',
+       // 'http://10.0.2.2:8080/api/users/login',
+         'http://fachowcy-server.herokuapp.com/api/users/login',
         headers:{'Content-Type': 'application/json'},
         body: str
     );
     print(response.statusCode);
     // CHECK THE REPOSONE NUMBERS
-    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+    if ((response.statusCode >= 200)||(response.statusCode <=299)) {
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => UserMainPage()));
