@@ -53,6 +53,30 @@ class _UserMainPageState extends State<UserMainPage> {
         ),
         body:  CustomScrollView(
           slivers: <Widget>[
+            SliverAppBar(
+              title: Text('Fachowcy'),
+              backgroundColor: Colors.blue,
+              floating: true,
+              pinned: false,
+              snap: false,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.notifications,
+                    color: Colors.white,),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.message,
+                    color: Colors.white,),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.white,),
+                )
+              ],
+            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -65,6 +89,25 @@ class _UserMainPageState extends State<UserMainPage> {
                 childCount: 50,
               ),
             )
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'home',
+                backgroundColor: Colors.black
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'search',
+                backgroundColor: Colors.black
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.add_circle_outline),
+                label: 'add',
+                backgroundColor: Colors.black
+            ),
           ],
         ),
       ),
