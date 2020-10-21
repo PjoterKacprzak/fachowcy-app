@@ -10,8 +10,9 @@ class User{
   final String userPassword;
   final String userTelephone;
   final String userAdresse;
+  final String userEmail;
 
-  User({this.userId, this.userName, this.userLastName, this.userPassword,
+  User({this.userId,this.userEmail, this.userName, this.userLastName, this.userPassword,
       this.userTelephone, this.userAdresse});
 
   factory User.fromJson(Map<String,dynamic>json){
@@ -21,7 +22,8 @@ class User{
         userLastName:json['lastName'],
         userPassword:json['password'],
         userTelephone:json['telephone'],
-        userAdresse:json['adresse']);
+        userAdresse:json['adresse'],
+        userEmail:json['email']);
 
 
   }

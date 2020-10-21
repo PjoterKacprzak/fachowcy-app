@@ -269,7 +269,7 @@ class RegisterPage extends StatelessWidget {
                       print(lastNameController.text);
                       print(telephoneController.text);
                       print(adresseController.text);
-                      createUser(nameController.text, lastNameController.text,
+                      createUser(nameController.text,emailController.text,lastNameController.text,
                           telephoneController.text, adresseController.text, passwordController.text);
 
                       Navigator.pop(
@@ -294,7 +294,7 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-Future<User> createUser (String name,String lastName,String telephone,
+Future<User> createUser (String name,String email,String lastName,String telephone,
     String adresse,String password)async {
   var UserXML = {};
  // UserXML["id"] = 4444;
@@ -303,6 +303,7 @@ Future<User> createUser (String name,String lastName,String telephone,
   UserXML["password"] = password;
   UserXML["telephone"] = telephone;
   UserXML["adresse"] = adresse;
+  UserXML["email"] = email;
   String str = json.encode(UserXML);
   print(str);
 

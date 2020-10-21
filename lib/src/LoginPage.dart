@@ -4,8 +4,10 @@ import 'package:fachowcy_app/Data/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 
 import 'RegisterPage.dart';
+import 'UserMainPage.dart';
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
 
@@ -25,15 +27,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-  Future<User> futureUser;
-  int _counter = 0;
-
+  TextEditingController emailController = new TextEditingController();
+  TextEditingController passwordController = new TextEditingController();
   @override
   void initState() {
     super.initState();
-    futureUser = fetchAlbum();
-    print(futureUser.toString());
+
   }
 
   @override
@@ -66,6 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 80), //TODO: coś z tym zrobić
                   TextFormField(
+                    controller: emailController,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -96,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 20), //TODO: coś z tym zrobić
                   TextFormField(
+                    controller: passwordController,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -135,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(15.0),
                     ),
                     onPressed: () {
-                      /*...*/
+                      login(emailController.text,passwordController.text);
                     },
                     child: Text(
                       "Zaloguj się",
@@ -179,18 +180,36 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<User> fetchAlbum() async {
-    final response = await http.get('http://10.0.2.2:8080/api/users/getTest');
+  Future<int> login(String email,String password)async {
+    var UserXML = {};
+    // UserXML["id"] = 4444;
+    UserXML["name"] = '';
+    UserXML["lastName"] = '';
+    UserXML["password"] = password;
+    UserXML["telephone"] = '';
+    UserXML["adresse"] = '';
+    UserXML["email"] = email;
+    String str = json.encode(UserXML);
+    print(str);
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-
-      return User.fromJson(jsonDecode(response.body));
+    final http.Response response = await http.post(
+        'http://10.0.2.2:8080/api/users/login',
+        headers:{'Content-Type': 'application/json'},
+        body: str
+    );
+    print(response.statusCode);
+    // CHECK THE REPOSONE NUMBERS
+    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserMainPage()));
+      // return User.fromJson(jsonDecode(response.body));
+      return 1;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
+
+      return 0;
+
     }
   }
+
 }
