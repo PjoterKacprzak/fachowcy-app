@@ -199,8 +199,9 @@ class _LoginPageState extends State<LoginPage> {
         body: str
     );
     print(response.statusCode);
+    print(response.body);
     // CHECK THE REPOSONE NUMBERS
-    if ((response.statusCode >= 200)||(response.statusCode <=299)) {
+    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => UserMainPage()));

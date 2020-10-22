@@ -308,7 +308,8 @@ Future<User> createUser (String name,String email,String lastName,String telepho
   print(str);
 
   final http.Response response = await http.post(
-    'http://fachowcy-server.herokuapp.com/api/users/addUser',
+  'http://fachowcy-server.herokuapp.com/api/users/addUser',
+    //  'http://10.0.2.2:8080/api/users/addUser',
     headers:{'Content-Type': 'application/json'},
     body: str
   );

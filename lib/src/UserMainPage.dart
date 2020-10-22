@@ -79,7 +79,8 @@ class _UserMainPageState extends State<UserMainPage> {
 
     final http.Response response = await http.get(
        //'http://10.0.2.2:8080/api/service-card/all',
-       'https://fachowcy-server.herokuapp.com/api/service-card/all',
+      // 'https://fachowcy-server.herokuapp.com/api/service-card/all'
+      'http://fachowcy-server.herokuapp.com/api/service-card/all',
         headers:{'Content-Type': 'application/json'},
     );
 
