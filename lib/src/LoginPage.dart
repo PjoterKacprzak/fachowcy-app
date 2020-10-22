@@ -39,12 +39,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
-      appBar: AppBar(
-        //TODO: Wywalić go
-        title: Text("Fachowcy"),
-        backgroundColor: Colors.blue,
-        brightness: Brightness.dark,
-      ),
       body: Center(
         child: Row(
           children: <Widget>[
