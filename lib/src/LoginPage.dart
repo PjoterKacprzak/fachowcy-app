@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
-                  SizedBox(height: 50), //TODO: coś z tym zrobić
+                  SizedBox(height: 80), //TODO: coś z tym zrobić
                   Text(
                     'Fachowcy',
                     textAlign: TextAlign.center,
