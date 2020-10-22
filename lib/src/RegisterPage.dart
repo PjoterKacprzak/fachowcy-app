@@ -313,7 +313,6 @@ Future<User> createUser (String name,String email,String lastName,String telepho
     headers:{'Content-Type': 'application/json'},
     body: str
   );
-  print("test")
   print(response.statusCode);
   // CHECK THE REPOSONE NUMBERS
   if ((response.statusCode >= 200)||(response.statusCode <=299)) {
