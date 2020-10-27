@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:fachowcy_app/Data/ServiceCard.dart';
 import 'package:fachowcy_app/Data/User.dart';
+import 'package:fachowcy_app/src/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
 import 'RegisterPage.dart';
+import 'UserProfile.dart';
 class UserMainPage extends StatefulWidget {
   UserMainPage({Key key, this.title}) : super(key: key);
 
@@ -74,6 +76,11 @@ class _UserMainPageState extends State<UserMainPage> {
                   icon: Icon(
                     Icons.person,
                     color: Colors.white,),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UserProfile()));
+                    },
                 )
               ],
             ),
