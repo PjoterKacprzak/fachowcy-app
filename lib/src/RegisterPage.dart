@@ -19,12 +19,6 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
-      appBar: AppBar(
-        //TODO: Wywalić go
-        title: Text("Fachowcy"),
-        backgroundColor: Colors.blue,
-        brightness: Brightness.dark,
-      ),
       body: Center(
         child: Row(
           children: <Widget>[
@@ -37,6 +31,8 @@ class RegisterPage extends StatelessWidget {
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
+                  SizedBox(height: 30),
+                  MyStatefulWidget(),
                   TextFormField(
                     controller: nameController,
                     style: TextStyle(
@@ -142,37 +138,6 @@ class RegisterPage extends StatelessWidget {
                         color: Colors.white,
                       ),
                       labelText: 'Telefon',
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                          width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10), //TODO: coś z tym zrobić
-                  TextFormField(
-                    controller: adresseController,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25,
-                    ),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.home,
-                        color: Colors.white,
-                      ),
-                      labelText: 'Adres',
                       labelStyle: TextStyle(
                         color: Colors.white,
                       ),
@@ -322,4 +287,80 @@ Future<User> createUser (String name,String email,String lastName,String telepho
   }
 }
 
+}
+
+enum WhoUsing { user, specialist }
+
+class MyStatefulWidget extends StatefulWidget {
+  MyStatefulWidget({Key key}) : super(key: key);
+
+  @override
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+}
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  //TODO: możecie przekazywać to character i na tego podstawie stwierdzać czy to użytkownik czy fachowiec
+  WhoUsing _character = WhoUsing.user;
+
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Theme(
+              data: ThemeData(unselectedWidgetColor: Colors.white),
+              child: Radio(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: Colors.white,
+                value: WhoUsing.user,
+                groupValue: _character,
+                onChanged: (WhoUsing value) {
+                  setState(() {
+                    _character = value;
+                    print(value);
+                  });
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: const Text(
+                'Użytkownik',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20, color: Colors.white)
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Theme(
+              data: ThemeData(unselectedWidgetColor: Colors.white),
+              child: Radio(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor: Colors.white,
+                value: WhoUsing.specialist,
+                groupValue: _character,
+                onChanged: (WhoUsing value) {
+                  setState(() {
+                    _character = value;
+                    print(value);
+                  });
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: const Text(
+                'Fachowiec',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20, color: Colors.white)
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //TODO: ewentualnie ListTile
 }
