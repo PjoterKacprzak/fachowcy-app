@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
-      body: Center(
+      body: SingleChildScrollView(
         child: Row(
           children: <Widget>[
             Expanded(

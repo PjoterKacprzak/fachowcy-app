@@ -19,7 +19,8 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue,
-      body: Center(
+      //resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
         child: Row(
           children: <Widget>[
             Expanded(
@@ -29,7 +30,7 @@ class RegisterPage extends StatelessWidget {
             Expanded(
               flex: 8, // 60%
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget> [
                   SizedBox(height: 30),
                   MyStatefulWidget(),
