@@ -43,7 +43,7 @@ class UserProfile extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                         CustomLabels("Imię i nazwisko", "Loremiak Ipsumiak"),
-                        CustomLabels("E-mail", "lorem.ipsum@gmail.com"),
+                        CustomLabels("E-mail", "loremiak.ipsumiak@gmail.com"),
                         CustomLabels("Hasło", "***********"),
                         CustomLabels("Twoje ogłoszenia", ""),
                         Wrap(
@@ -95,11 +95,15 @@ class CustomLabels extends StatelessWidget {
                 Text(
                   name,
                   style: const TextStyle(color: Colors.white, fontSize: 18),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 4),
                 Text(
                   dataString,
                   style: const TextStyle(color: Colors.white, fontSize: 26),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
