@@ -15,8 +15,6 @@ class UserProfile extends StatelessWidget {
     return MaterialApp(
 
       home: Scaffold(
-        appBar: AppBar(
-        ),
         body:  CustomScrollView(
           slivers: <Widget>[
             CustomAppBar(),
