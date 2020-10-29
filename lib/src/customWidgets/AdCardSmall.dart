@@ -6,15 +6,17 @@ class AdCardSmall extends StatelessWidget {
 
   String title;
   String text;
+  bool isUserProfile;
 
 //  AdCardSmall() {
 //    this.title = "title";
 //    this.text = "text";
 //  }
 
-  AdCardSmall(String title, String text) {
+  AdCardSmall(bool isUserProfile, String title, String text) {
     this.title = title;
     this.text = text;
+    this.isUserProfile = isUserProfile;
   }
 
   @override
@@ -61,7 +63,12 @@ class AdCardSmall extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10),
-                     Row(
+                    Visibility(
+//                       maintainSize: true,
+//                       maintainAnimation: true,
+//                       maintainState: true,
+                       visible: isUserProfile,
+                      child: Row(
                         children: <Widget>[
                           Expanded(
                             flex: 2,
@@ -93,6 +100,7 @@ class AdCardSmall extends StatelessWidget {
 
                         ],
                       ),
+                    ),
                   ],
                 ),
               ),
