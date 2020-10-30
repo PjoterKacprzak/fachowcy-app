@@ -51,13 +51,13 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
-                  SizedBox(height: 80), //TODO: coś z tym zrobić
+                  SizedBox(height: 80),
                   Text(
                     'Fachowcy',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 50, color: Colors.white)
                   ),
-                  SizedBox(height: 80), //TODO: coś z tym zrobić
+                  SizedBox(height: 80),
                   TextFormField(
                     controller: emailController,
                     style: TextStyle(
@@ -83,12 +83,11 @@ class _LoginPageState extends State<LoginPage> {
                         borderSide: BorderSide(
                           color: Colors.white,
                           width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), //TODO: coś z tym zrobić
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: passwordController,
                     obscureText: true,
@@ -115,12 +114,11 @@ class _LoginPageState extends State<LoginPage> {
                         borderSide: BorderSide(
                           color: Colors.white,
                           width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), //TODO: coś z tym zrobić
+                  SizedBox(height: 20),
                   FlatButton(
                     color: Colors.green,
                     textColor: Colors.white,
@@ -137,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),
-                  SizedBox(height: 20), //TODO: coś z tym zrobić
+                  SizedBox(height: 20),
                   Text(
                     "Nie masz konta?",
                     style: TextStyle(color: Colors.white),
@@ -187,8 +185,8 @@ class _LoginPageState extends State<LoginPage> {
     print(str);
 
     final http.Response response = await http.post(
-       // 'http://10.0.2.2:8080/api/users/login',
-         'http://fachowcy-server.herokuapp.com/api/users/login',
+        'http://10.0.2.2:8080/api/users/login',
+        // 'http://fachowcy-server.herokuapp.com/api/users/login',
         headers:{'Content-Type': 'application/json'},
         body: str
     );

@@ -1,10 +1,18 @@
 import 'dart:convert';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:fachowcy_app/Data/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'LoginPage.dart';
+
+
+//TODO: -Krystian musiałem dać to jako globalną bo stworzyłeś nową klasę dla Widgetu górnego, ta nowa klasa jest potrzebna? nie moze być jako zwykly Widget? bo uzywanie globalnej to sredni pomysl
+enum WhoUsing { user, specialist }
+WhoUsing _character = WhoUsing.user;
 
 class RegisterPage extends StatelessWidget {
   TextEditingController nameController = new TextEditingController();
@@ -15,13 +23,23 @@ class RegisterPage extends StatelessWidget {
   TextEditingController telephoneController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
 
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
+  String _email,_password,_name,_lastName,_telephone,_confirmPassword= "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.blue,
       //resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+
         child: Row(
+
           children: <Widget>[
             Expanded(
               flex: 1, // 20%
@@ -31,12 +49,28 @@ class RegisterPage extends StatelessWidget {
               flex: 8, // 60%
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+
+                //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
                   SizedBox(height: 30),
                   MyStatefulWidget(),
                   TextFormField(
-                    controller: nameController,
+                    inputFormatters: [new WhitelistingTextInputFormatter(RegExp("[a-zA-Z ']")),],
+                    validator: (String name) {
+                      {
+                        Pattern pattern = r'[A-Za-z]+';
+                        RegExp regex = new RegExp(pattern);
+                        if (!regex.hasMatch(name) || name.length > 40)
+                          return 'Błedny format';
+                        else
+                          return null;
+                      }
+
+                    },
+                    onSaved: (name)=> _name = name,
+                    //: nameController,
                     style: TextStyle(
+
                       color: Colors.white,
                       fontSize: 25,
                     ),
@@ -59,14 +93,26 @@ class RegisterPage extends StatelessWidget {
                         borderSide: BorderSide(
                           color: Colors.white,
                           width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10), //TODO: coś z tym zrobić
+                  SizedBox(height: 10),
                   TextFormField(
-                    controller: lastNameController,
+                    inputFormatters: [new WhitelistingTextInputFormatter(RegExp("[a-zA-Z ']")),],
+                    validator: (lastName){
+                      {
+                        Pattern pattern = r'[A-Za-z]+';
+                        RegExp regex = new RegExp(pattern);
+                        if (!regex.hasMatch(lastName) || lastName.length > 40)
+                          return 'Błedny format';
+                        else
+                          return null;
+                      }
+                    },
+                    onSaved: (lastName)=> _lastName = lastName,
+
+                   // controller: lastNameController,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -90,14 +136,15 @@ class RegisterPage extends StatelessWidget {
                         borderSide: BorderSide(
                           color: Colors.white,
                           width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10), //TODO: coś z tym zrobić
+                  SizedBox(height: 10),
                   TextFormField(
-                    controller:emailController,
+                    //controller:emailController,
+                    validator: (email)=>EmailValidator.validate(email)? null:"Invalid email address",
+                    onSaved: (email)=> _email = email,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -121,14 +168,23 @@ class RegisterPage extends StatelessWidget {
                         borderSide: BorderSide(
                           color: Colors.white,
                           width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10), //TODO: coś z tym zrobić
+                  SizedBox(height: 10),
                   TextFormField(
-                    controller: telephoneController,
+                    validator: (telephone){
+                      Pattern pattern =
+                          r'(^(?:[+0]9)?[0-9]{9,12}$)';
+                      RegExp regex = new RegExp(pattern);
+                      if (!regex.hasMatch(telephone))
+                        return 'Błedny format';
+                      else
+                        return null;
+                    },
+                    onSaved: (telephone)=> _telephone = telephone,
+                    //controller: telephoneController,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -152,14 +208,23 @@ class RegisterPage extends StatelessWidget {
                         borderSide: BorderSide(
                           color: Colors.white,
                           width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10), //TODO: coś z tym zrobić
+                  SizedBox(height: 10),
                   TextFormField(
                     controller: passwordController,
+                    validator: (password){
+                      Pattern pattern =
+                          r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
+                      RegExp regex = new RegExp(pattern);
+                      if (!regex.hasMatch(password))
+                        return 'Błedny format';
+                      else
+                        return null;
+                    },
+                    onSaved: (password)=> _password = password,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -184,14 +249,23 @@ class RegisterPage extends StatelessWidget {
                         borderSide: BorderSide(
                           color: Colors.white,
                           width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10), //TODO: coś z tym zrobić
+                  SizedBox(height: 10),
                   TextFormField(
                     controller: confirmPassowrdController,
+                    validator: (confirmPassword){
+                      Pattern pattern =
+                          r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
+                      RegExp regex = new RegExp(pattern);
+                      if (!regex.hasMatch(confirmPassword))
+                        return 'Błedny format';
+                      else
+                        return null;
+                    },
+                    onSaved: (confirmPassword)=> _confirmPassword = confirmPassword,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -216,12 +290,11 @@ class RegisterPage extends StatelessWidget {
                         borderSide: BorderSide(
                           color: Colors.white,
                           width: 3.0,
-                          //TODO: ewentualnie to OutlineInputBorder
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20), //TODO: coś z tym zrobić
+                  SizedBox(height: 20),
                   FlatButton(
                     color: Colors.green,
                     textColor: Colors.white,
@@ -231,17 +304,33 @@ class RegisterPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     onPressed: () {
-                      print(nameController.text);
-                      print(lastNameController.text);
-                      print(telephoneController.text);
-                      print(adresseController.text);
-                      createUser(nameController.text,emailController.text,lastNameController.text,
-                          telephoneController.text, adresseController.text, passwordController.text);
 
-                      Navigator.pop(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
-                    },
+                      if(_formKey.currentState.validate()){
+                        {
+                          if (passwordController.text !=
+                              confirmPassowrdController.text) {
+                            print(passwordController);
+                            print(confirmPassowrdController);
+                            //TODO: Trzeba gdzieś wyświetlić informację, że hasła są różne oraz wyswietlic gdziez ze email został uzyty
+                              print("Hasła są różne");
+                          }
+                          else {
+                            _formKey.currentState.save();
+
+                            createUser(_name,
+                               _email, _lastName,
+                                _telephone,
+                                adresseController.text,
+                                _password,_character);
+
+                            Navigator.pop(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          }
+                        }
+                        }},
+
                     child: Text(
                       "Zarejestruj się",
                       style: TextStyle(fontSize: 20.0),
@@ -257,25 +346,42 @@ class RegisterPage extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
 Future<User> createUser (String name,String email,String lastName,String telephone,
-    String adresse,String password)async {
-  var UserXML = {};
- // UserXML["id"] = 4444;
+    String adresse,String password, WhoUsing role)async {
+
+    var actualDate = new DateTime.now();
+    print(actualDate);
+    var dateFormatter = new DateFormat.yMd().add_jm();
+    String formattedDate = dateFormatter.format(actualDate);
+    String whoIs;
+    if(role==WhoUsing.user)
+      {
+         whoIs = "user";
+      }
+    else
+      {
+        whoIs = "specialist";
+      }
+
+
+    var UserXML = {};
   UserXML["name"] = name;
   UserXML["lastName"] = lastName;
   UserXML["password"] = password;
-  UserXML["telephone"] = telephone;
+  UserXML["phoneNumber"] = telephone;
   UserXML["adresse"] = adresse;
   UserXML["email"] = email;
+  UserXML["createdAt"]= formattedDate;
+  UserXML["role"]= whoIs;
   String str = json.encode(UserXML);
   print(str);
 
   final http.Response response = await http.post(
-  'http://fachowcy-server.herokuapp.com/api/users/addUser',
-    //  'http://10.0.2.2:8080/api/users/addUser',
+  // 'http://fachowcy-server.herokuapp.com/api/users/addUser',
+  'http://10.0.2.2:8080/api/users/addUser',
     headers:{'Content-Type': 'application/json'},
     body: str
   );
@@ -290,7 +396,6 @@ Future<User> createUser (String name,String email,String lastName,String telepho
 
 }
 
-enum WhoUsing { user, specialist }
 
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
@@ -299,8 +404,6 @@ class MyStatefulWidget extends StatefulWidget {
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  //TODO: możecie przekazywać to character i na tego podstawie stwierdzać czy to użytkownik czy fachowiec
-  WhoUsing _character = WhoUsing.user;
 
   Widget build(BuildContext context) {
     return Container(
@@ -363,5 +466,4 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 
-  //TODO: ewentualnie ListTile
 }

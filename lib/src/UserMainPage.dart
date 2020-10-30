@@ -53,8 +53,6 @@ class _UserMainPageState extends State<UserMainPage> {
     return MaterialApp(
 
       home: Scaffold(
-        appBar: AppBar(
-        ),
         body:  CustomScrollView(
           slivers: <Widget>[
             CustomAppBar(),
