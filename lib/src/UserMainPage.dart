@@ -2,12 +2,16 @@ import 'dart:convert';
 
 import 'package:fachowcy_app/Data/ServiceCard.dart';
 import 'package:fachowcy_app/Data/User.dart';
+import 'package:fachowcy_app/src/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
+import 'customWidgets/CustomAppBar.dart';
+import 'customWidgets/CustomBottomNavigation.dart';
 import 'RegisterPage.dart';
+import 'UserProfile.dart';
 class UserMainPage extends StatefulWidget {
   UserMainPage({Key key, this.title}) : super(key: key);
 
@@ -53,30 +57,7 @@ class _UserMainPageState extends State<UserMainPage> {
         ),
         body:  CustomScrollView(
           slivers: <Widget>[
-            SliverAppBar(
-              title: Text('Fachowcy'),
-              backgroundColor: Colors.blue,
-              floating: true,
-              pinned: false,
-              snap: false,
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.notifications,
-                    color: Colors.white,),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.message,
-                    color: Colors.white,),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.white,),
-                )
-              ],
-            ),
+            CustomAppBar(),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -91,25 +72,7 @@ class _UserMainPageState extends State<UserMainPage> {
             )
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'home',
-                backgroundColor: Colors.black
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'search',
-                backgroundColor: Colors.black
-            ),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.add_circle_outline),
-                label: 'add',
-                backgroundColor: Colors.black
-            ),
-          ],
-        ),
+        bottomNavigationBar: CustomBottomNavigation(),
       ),
     );
   }
