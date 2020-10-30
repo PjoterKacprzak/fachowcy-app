@@ -1,5 +1,7 @@
+import 'package:fachowcy_app/src/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../UserProfile.dart';
 
@@ -31,8 +33,27 @@ class CustomAppBar extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => UserProfile()));
           },
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.logout,
+            color: Colors.white,),
+          onPressed: () {
+            logout();
+
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()));
+          },
         )
       ],
     );
   }
+
+  Future<Null> logout() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('email', null);
+    prefs.setString('password', null);
+  }
+
 }

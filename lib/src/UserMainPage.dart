@@ -31,8 +31,6 @@ class UserMainPage extends StatefulWidget {
 }
 
 class _UserMainPageState extends State<UserMainPage> {
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
   Future<List<ServiceCard>> serviceCard;
 
   @override
@@ -65,7 +63,7 @@ class _UserMainPageState extends State<UserMainPage> {
                     child: Text("test "),
                   );
                 },
-                childCount: 50,
+                childCount: 3,
               ),
             )
           ],

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'RegisterPage.dart';
 import 'UserMainPage.dart';
@@ -29,9 +30,13 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
+  bool isLoggedIn = false;
+  String emailShared = '';
+  String passwordShared = '';
   @override
   void initState() {
     super.initState();
+    autoLogIn();
 
   }
 
@@ -184,6 +189,11 @@ class _LoginPageState extends State<LoginPage> {
     String str = json.encode(UserXML);
     print(str);
 
+
+    emailController.clear();
+    passwordController.clear();
+
+
     final http.Response response = await http.post(
         'http://10.0.2.2:8080/api/users/login',
         // 'http://fachowcy-server.herokuapp.com/api/users/login',
@@ -194,6 +204,22 @@ class _LoginPageState extends State<LoginPage> {
     print(response.body);
     // CHECK THE REPOSONE NUMBERS
     if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      User temp = User.fromJson(jsonDecode(response.body));
+      prefs.setString('email', temp.userEmail);
+      prefs.setString('password', temp.userPassword);
+
+      print(prefs);
+
+      setState(() {
+        emailShared = emailController.text;
+        passwordShared = passwordController.text;
+        isLoggedIn = true;
+      });
+
+
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => UserMainPage()));
@@ -205,5 +231,25 @@ class _LoginPageState extends State<LoginPage> {
 
     }
   }
+
+
+  void autoLogIn() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String userEmail = prefs.getString('email');
+    final String userPassowrd = prefs.getString('passowrd');
+
+    if (userEmail != null) {
+      setState(() {
+        isLoggedIn = true;
+        emailShared = userEmail;
+        passwordShared = userPassowrd;
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => UserMainPage()));
+      });
+
+    }
+  }
+
 
 }
