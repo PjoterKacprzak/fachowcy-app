@@ -238,14 +238,26 @@ class _LoginPageState extends State<LoginPage> {
     final String userEmail = prefs.getString('email');
     final String userPassowrd = prefs.getString('passowrd');
 
+
+
     if (userEmail != null) {
       setState(() {
         isLoggedIn = true;
         emailShared = userEmail;
         passwordShared = userPassowrd;
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => UserMainPage()));
+        Future<int>temp=login(userEmail, passwordShared);
+        if(temp==1)
+          {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserMainPage()));
+          }
+        else
+          {
+            print("Something went wrong");
+          }
+
+
       });
 
     }
