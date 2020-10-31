@@ -14,6 +14,54 @@ import 'LoginPage.dart';
 enum WhoUsing { user, specialist }
 WhoUsing _character = WhoUsing.user;
 
+class NameValidator{
+  static String validate(String value){
+    Pattern pattern = r'[A-Za-z]\w{0,40}';
+    RegExp regex = new RegExp(pattern);
+    if(!regex.hasMatch(value) || value.length > 40)
+      return 'Błedny format';
+    else
+      return null;
+
+  }
+  }class LastNameValidator{
+  static String validate(String value){
+    {
+      Pattern pattern = r'[A-Za-z]+';
+      RegExp regex = new RegExp(pattern);
+      if (!regex.hasMatch(value) || value.length > 40)
+        return 'Błedny format';
+      else
+        return null;
+    }
+  }
+  }class TelephoneValidator{
+  static String validate(String value){
+    Pattern pattern =
+        r'(^(?:[+0]9)?[0-9]{9,12}$)';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Błedny format';
+    else
+      return null;
+  }
+  }class PasswordValidator{
+  static String validate(String value){
+    Pattern pattern =
+        r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Błedny format';
+    else
+      return null;
+  }
+  }
+
+
+
+
+
+
 class RegisterPage extends StatelessWidget {
   TextEditingController nameController = new TextEditingController();
   TextEditingController lastNameController = new TextEditingController();
@@ -56,17 +104,7 @@ class RegisterPage extends StatelessWidget {
                   MyStatefulWidget(),
                   TextFormField(
                     inputFormatters: [new WhitelistingTextInputFormatter(RegExp("[a-zA-Z ']")),],
-                    validator: (String name) {
-                      {
-                        Pattern pattern = r'[A-Za-z]+';
-                        RegExp regex = new RegExp(pattern);
-                        if (!regex.hasMatch(name) || name.length > 40)
-                          return 'Błedny format';
-                        else
-                          return null;
-                      }
-
-                    },
+                    validator: NameValidator.validate,
                     onSaved: (name)=> _name = name,
                     //: nameController,
                     style: TextStyle(
@@ -100,16 +138,7 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(height: 10),
                   TextFormField(
                     inputFormatters: [new WhitelistingTextInputFormatter(RegExp("[a-zA-Z ']")),],
-                    validator: (lastName){
-                      {
-                        Pattern pattern = r'[A-Za-z]+';
-                        RegExp regex = new RegExp(pattern);
-                        if (!regex.hasMatch(lastName) || lastName.length > 40)
-                          return 'Błedny format';
-                        else
-                          return null;
-                      }
-                    },
+                    validator: LastNameValidator.validate,
                     onSaved: (lastName)=> _lastName = lastName,
 
                    // controller: lastNameController,
@@ -174,15 +203,7 @@ class RegisterPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                    validator: (telephone){
-                      Pattern pattern =
-                          r'(^(?:[+0]9)?[0-9]{9,12}$)';
-                      RegExp regex = new RegExp(pattern);
-                      if (!regex.hasMatch(telephone))
-                        return 'Błedny format';
-                      else
-                        return null;
-                    },
+                    validator:TelephoneValidator.validate,
                     onSaved: (telephone)=> _telephone = telephone,
                     //controller: telephoneController,
                     style: TextStyle(
@@ -215,15 +236,7 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(height: 10),
                   TextFormField(
                     controller: passwordController,
-                    validator: (password){
-                      Pattern pattern =
-                          r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
-                      RegExp regex = new RegExp(pattern);
-                      if (!regex.hasMatch(password))
-                        return 'Błedny format';
-                      else
-                        return null;
-                    },
+                    validator:PasswordValidator.validate,
                     onSaved: (password)=> _password = password,
                     obscureText: true,
                     style: TextStyle(
