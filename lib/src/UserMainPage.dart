@@ -36,7 +36,7 @@ class _UserMainPageState extends State<UserMainPage> {
   @override
   void initState() {
     serviceCard=getAllCards();
-    print(serviceCard);
+   // print(serviceCard);
     super.initState();
 
   }
@@ -90,7 +90,7 @@ class _UserMainPageState extends State<UserMainPage> {
 
     //print(serviceCard.parseServiceCard(response.body));
     if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
-         print(serviceCard.parseServiceCard(response.body));
+        // print(serviceCard.parseServiceCard(response.body));
       return serviceCard.parseServiceCard(response.body);ServiceCard.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to find Card.');

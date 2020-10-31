@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<int> login(String email,String password)async {
+  Future<void>login(String email,String password)async {
     var UserXML = {};
     // UserXML["id"] = 4444;
     UserXML["name"] = '';
@@ -187,81 +187,111 @@ class _LoginPageState extends State<LoginPage> {
     UserXML["adresse"] = '';
     UserXML["email"] = email;
     String str = json.encode(UserXML);
-    print(str);
-
 
     emailController.clear();
     passwordController.clear();
 
-
     final http.Response response = await http.post(
-        'http://10.0.2.2:8080/api/users/login',
-        // 'http://fachowcy-server.herokuapp.com/api/users/login',
+       'http://10.0.2.2:8080/api/users/login',
+         //'http://fachowcy-server.herokuapp.com/api/users/login',
         headers:{'Content-Type': 'application/json'},
         body: str
     );
-    print(response.statusCode);
-    print(response.body);
+    print('Login resposne code ' + response.statusCode.toString());
+    print('Login resposne body ' + response.body.toString());
     // CHECK THE REPOSONE NUMBERS
     if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
 
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      User temp = User.fromJson(jsonDecode(response.body));
-      prefs.setString('email', temp.userEmail);
-      prefs.setString('password', temp.userPassword);
-
-      print(prefs);
-
+      prefs.setString('email', email);
+      prefs.setString('password', response.body);
       setState(() {
         emailShared = emailController.text;
         passwordShared = passwordController.text;
         isLoggedIn = true;
       });
 
-
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => UserMainPage()));
       // return User.fromJson(jsonDecode(response.body));
-      return 1;
-    } else {
-
-      return 0;
-
     }
   }
-
 
   void autoLogIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String userEmail = prefs.getString('email');
-    final String userPassowrd = prefs.getString('passowrd');
-
-
+    final String userPassword = prefs.getString('password');
 
     if (userEmail != null) {
       setState(() {
         isLoggedIn = true;
         emailShared = userEmail;
-        passwordShared = userPassowrd;
-        Future<int>temp=login(userEmail, passwordShared);
-        if(temp==1)
-          {
+        passwordShared = userPassword;
+      });
+        final temp=  await loginFromSharedData(userEmail, userPassword);
+
+        if(temp==1) {
             Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => UserMainPage()));
           }
-        else
-          {
-            print("Something went wrong");
+        else {
+            print('Failed to Auto login');
           }
-
-
-      });
+      };
 
     }
-  }
+
+
+
+  Future<int> loginFromSharedData(String email,String password)async {
+    var UserXML = {};
+    // UserXML["id"] = 4444;
+    UserXML["name"] = '';
+    UserXML["lastName"] = '';
+    UserXML["password"] = password;
+    UserXML["telephone"] = '';
+    UserXML["adresse"] = '';
+    UserXML["email"] = email;
+    String str = json.encode(UserXML);
+
+    emailController.clear();
+    passwordController.clear();
+
+
+    final http.Response response = await http.post(
+        'http://10.0.2.2:8080/api/users/loginHashed',
+       // 'http://fachowcy-server.herokuapp.com/api/users/loginHashed',
+        headers:{'Content-Type': 'application/json'},
+        body: str
+    );
+    print('Auto login response code '  + response.statusCode.toString());
+    print('Auto login response body '  + response.body.toString());
+    // CHECK THE REPOSONE NUMBERS
+    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+     // User temp = User.fromJson(jsonDecode(response.body));
+      prefs.setString('email', email);
+      prefs.setString('password', password);
+      setState(() {
+        emailShared = email;
+        passwordShared = password;
+        isLoggedIn = true;
+      });
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserMainPage()));
+      // return User.fromJson(jsonDecode(response.body));
+      return 1;
+    }
+    else
+      return 0;
+
+    }
 
 
 }
