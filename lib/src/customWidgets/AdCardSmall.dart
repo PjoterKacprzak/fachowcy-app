@@ -61,6 +61,8 @@ class AdCardSmall extends StatelessWidget {
                       text,
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                       textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.fade,
                     ),
                     SizedBox(height: 10),
                     Visibility(
