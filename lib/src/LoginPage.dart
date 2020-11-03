@@ -132,8 +132,14 @@ class _LoginPageState extends State<LoginPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
                     ),
-                    onPressed: () {
-                      login(emailController.text,passwordController.text);
+                    onPressed: ()async {
+                      var result = await login(emailController.text,passwordController.text);
+                      print(result);
+                      if(result==200)
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => UserMainPage()));
+
                     },
                     child: Text(
                       "Zaloguj się",
@@ -177,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void>login(String email,String password)async {
+  Future<int>login(String email,String password)async {
     var UserXML = {};
     // UserXML["id"] = 4444;
     UserXML["name"] = '';
@@ -192,8 +198,8 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.clear();
 
     final http.Response response = await http.post(
-       'http://10.0.2.2:8080/api/users/login',
-         //'http://fachowcy-server.herokuapp.com/api/users/login',
+       //'http://10.0.2.2:8080/api/users/login',
+         'http://fachowcy-server.herokuapp.com/api/users/login',
         headers:{'Content-Type': 'application/json'},
         body: str
     );
@@ -212,11 +218,10 @@ class _LoginPageState extends State<LoginPage> {
         isLoggedIn = true;
       });
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => UserMainPage()));
+        return response.statusCode;
       // return User.fromJson(jsonDecode(response.body));
     }
+    return response.statusCode;
   }
 
   void autoLogIn() async {
@@ -262,8 +267,8 @@ class _LoginPageState extends State<LoginPage> {
 
 
     final http.Response response = await http.post(
-        'http://10.0.2.2:8080/api/users/loginHashed',
-       // 'http://fachowcy-server.herokuapp.com/api/users/loginHashed',
+        //'http://10.0.2.2:8080/api/users/loginHashed',
+        'http://fachowcy-server.herokuapp.com/api/users/loginHashed',
         headers:{'Content-Type': 'application/json'},
         body: str
     );

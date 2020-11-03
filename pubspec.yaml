@@ -21,10 +21,11 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  intl: ^0.16.1
   http: ^0.12.2
   email_validator: ^1.0.0
   shared_preferences: ^0.5.1+2
-  intl: ^0.16.1
+
   flutter:
     sdk: flutter
 
