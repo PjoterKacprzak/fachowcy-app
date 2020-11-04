@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fachowcy_app/Data/UserProfileData.dart';
 import 'package:fachowcy_app/src/customWidgets/AdCardSmall.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,12 @@ import 'package:flutter/material.dart';
 import 'customWidgets/CustomAppBar.dart';
 import 'customWidgets/CustomBottomNavigation.dart';
 
+import 'package:http/http.dart' as http;
+
 
 class UserProfile extends StatelessWidget {
+
+  static var userData;
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +47,19 @@ class UserProfile extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
-                        CustomLabels("Imię i nazwisko", "Loremiak Ipsumiak"),
-                        CustomLabels("E-mail", "loremiak.ipsumiak@gmail.com"),
-                        CustomLabels("Hasło", "***********"),
+                        CustomLabels("Imię i nazwisko", userData.name + " " + userData.lastName),
+                        CustomLabels("E-mail", userData.email),
+                        CustomLabels("Data utworzenia", userData.createdAt),
+                        CustomLabels("Hasło", "***********"), //TODO: jakos to rozwiązać
                         CustomLabels("Twoje ogłoszenia", ""),
                         Wrap(
+                          alignment: WrapAlignment.center,
                           spacing: 24,
                           runSpacing: 24,
                           children: [
-                            AdCardSmall(true ,"Wiercenie", "Mogę zaproponować usługę wiercenia!"),
-                            AdCardSmall(true ,"Koszenie", "Kosze trawę raz dwa trzy i jestem do usług"),
-                            AdCardSmall(true ,"Spacer", "Jestem bogiem spacerów i chce cie wyprowadzić"),
-                            AdCardSmall(true ,"Pływanie", "Personalny trening pływania dla osób w każdym wieku - dorośli oraz dzieci"),
-                            AdCardSmall(true ,"Sprzątanie", "Sprzątam niczym Rozenek i możesz sprawdzić to robiąc test białej rekawiczki!!!"),
+                            AdCardSmall(true , userData.serviceCardLists[0].title, userData.serviceCardLists[0].description),
+                            AdCardSmall(true , userData.serviceCardLists[1].title, userData.serviceCardLists[1].description),
+                            AdCardSmall(true , userData.serviceCardLists[2].title, userData.serviceCardLists[2].description),
                           ],
                         ),
                       ],
@@ -71,7 +76,34 @@ class UserProfile extends StatelessWidget {
       ),
     );
   }
+
+  static Future<int> getDataFromJson() async {
+    var UserXML = {};
+    UserXML["email"] = "lorem@gmail.com";
+    String email = json.encode(UserXML);
+
+    final http.Response response = await http.post(
+      'http://10.0.2.2:8080/api/users/profile-info',
+      headers:{'Content-Type': 'application/json'},
+      body: email,
+    );
+
+    Map userProfileDataMap = jsonDecode(response.body);
+    var userProfileData = UserProfileData.fromJson(userProfileDataMap);
+
+    // CHECK THE REPOSONE NUMBERS
+
+    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+      userData = userProfileData;
+      print(userData.serviceCardLists[2].title);
+      print("User profile data received from server");
+      return response.statusCode;
+    } else {
+      throw new Exception('Failed to load profile data.');
+    }
+  }
 }
+
 
 class CustomLabels extends StatelessWidget {
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../UserProfile.dart';
+import '';
 
 class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -28,11 +29,19 @@ class CustomAppBar extends StatelessWidget {
           icon: Icon(
             Icons.person,
             color: Colors.white,),
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UserProfile()));
+          onPressed: ()async {
+            var result = await UserProfile.getDataFromJson();
+            if(result==200)
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UserProfile()));
+
           },
+//          onPressed: () {
+//            Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => UserProfile()));
+//          },
         ),
         IconButton(
           icon: Icon(
