@@ -15,6 +15,7 @@ class UserProfile extends StatelessWidget {
 
   static var userData;
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,16 +53,49 @@ class UserProfile extends StatelessWidget {
                         CustomLabels("Data utworzenia", userData.createdAt),
                         CustomLabels("Hasło", "***********"), //TODO: jakos to rozwiązać
                         CustomLabels("Twoje ogłoszenia", ""),
-                        Wrap(
-                          alignment: WrapAlignment.center,
-                          spacing: 24,
-                          runSpacing: 24,
-                          children: [
-                            AdCardSmall(true , userData.serviceCardLists[0].title, userData.serviceCardLists[0].description),
-                            AdCardSmall(true , userData.serviceCardLists[1].title, userData.serviceCardLists[1].description),
-                            AdCardSmall(true , userData.serviceCardLists[2].title, userData.serviceCardLists[2].description),
-                          ],
-                        ),
+
+                            FutureBuilder(
+                              future: getDataFromJson(),
+                              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                                int numberOfAds = 0;
+                                for(int i = 0; i < userData.serviceCardLists.length; i++) {
+                                  if(userData.serviceCardLists[i].active == true) {
+                                    numberOfAds++;
+                                  }
+                                }
+                                print(numberOfAds);
+                                if(snapshot.data == null) {
+                                  return Container(
+                                    child: Center(
+                                      child: Text(
+                                          "Loading..",
+                                        style: new TextStyle(fontSize: 50),
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return GridView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: numberOfAds,
+                                    gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 5,
+                                        mainAxisSpacing: 5,
+                                        childAspectRatio: 0.58, //TODO: zrobić to mądrzej
+                                    ),
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return AdCardSmall(true, userData.serviceCardLists[index].title, userData.serviceCardLists[index].description);
+                                    },
+                                  );
+                                }
+                              },
+                            ),
+//                            AdCardSmall(true , userData.serviceCardLists[0].title, userData.serviceCardLists[0].description),
+//                            AdCardSmall(true , userData.serviceCardLists[1].title, userData.serviceCardLists[1].description),
+//                            AdCardSmall(true , userData.serviceCardLists[2].title, userData.serviceCardLists[2].description),
+
+
                       ],
                     ),
                   ),
@@ -95,7 +129,7 @@ class UserProfile extends StatelessWidget {
 
     if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
       userData = userProfileData;
-      print(userData.serviceCardLists[2].title);
+
       print("User profile data received from server");
       return response.statusCode;
     } else {
