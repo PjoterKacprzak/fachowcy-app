@@ -7,11 +7,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-
+import 'HomePage.dart';
+import 'FilterPage.dart';
+import 'PostNewAd.dart';
 import 'customWidgets/CustomAppBar.dart';
 import 'customWidgets/CustomBottomNavigation.dart';
 import 'RegisterPage.dart';
 import 'UserProfile.dart';
+
 class UserMainPage extends StatefulWidget {
   UserMainPage({Key key, this.title}) : super(key: key);
 
@@ -31,6 +34,19 @@ class UserMainPage extends StatefulWidget {
 }
 
 class _UserMainPageState extends State<UserMainPage> {
+  int _selectedIndex = 0;
+  final List<Widget> _widgetOptions = <Widget>[
+    HomePage(),
+    FilterPage(),
+    PostNewAd(),
+    Text('Tu będą wiadomości', style: TextStyle(fontSize: 30)),
+    Text('Tu będą powiadomienia',style: TextStyle(fontSize: 30))
+  ];
+  void _onItemTapped(int index){
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
   Future<List<ServiceCard>> serviceCard;
 
   @override
@@ -44,31 +60,41 @@ class _UserMainPageState extends State<UserMainPage> {
   @override
   Widget build(BuildContext context) {
 
-
-
-
-
     return MaterialApp(
+        home :Scaffold(
+          body: Center(child: _widgetOptions.elementAt(_selectedIndex),),
+          bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Ogłoszenia',
+              backgroundColor: Colors.blue,
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Filtruj',
+              backgroundColor: Colors.blue,
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.add_circle_outline),
+                label: 'Dodaj',
+              backgroundColor: Colors.blue,
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.message),
+                label: 'Wiadomości',
+              backgroundColor: Colors.blue,
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'Powiadomienia',
+              backgroundColor: Colors.blue,
+            ),
 
-      home: Scaffold(
-        body:  CustomScrollView(
-          slivers: <Widget>[
-            CustomAppBar(),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                  return Container(
-                    height: 50,
-                    alignment: Alignment.center,
-                    child: Text("test "),
-                  );
-                },
-                childCount: 3,
-              ),
-            )
           ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
         ),
-        bottomNavigationBar: CustomBottomNavigation(),
       ),
     );
   }

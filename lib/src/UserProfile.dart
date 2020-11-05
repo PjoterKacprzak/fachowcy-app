@@ -110,7 +110,7 @@ class UserProfile extends StatelessWidget {
           ),
         ),
 
-        bottomNavigationBar: CustomBottomNavigation(),
+        // bottomNavigationBar: CustomBottomNavigation(),
       ),
     );
   }

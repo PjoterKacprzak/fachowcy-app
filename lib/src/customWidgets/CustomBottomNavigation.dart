@@ -3,7 +3,29 @@ import 'package:flutter/material.dart';
 
 import '../UserProfile.dart';
 
-class CustomBottomNavigation extends StatelessWidget {
+class CustomBottomNavigation extends StatefulWidget {
+  CustomBottomNavigation({Key key}) : super(key:key);
+  @override
+  CustomBottomNavigationState createState()=>CustomBottomNavigationState();
+}
+class CustomBottomNavigationState extends State<CustomBottomNavigation>{
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    Center( child: Text('Home', textAlign: TextAlign.center)
+    ),
+    Text(
+      'Filter'
+    ),
+    Text(
+      'Add'
+    ),
+  ];
+  void _onItemTapped(int index){
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: [
@@ -23,6 +45,8 @@ class CustomBottomNavigation extends StatelessWidget {
             backgroundColor: Colors.black
         ),
       ],
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
     );
   }
 }
