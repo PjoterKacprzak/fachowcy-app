@@ -4,6 +4,7 @@ import 'package:fachowcy_app/Data/UserProfileData.dart';
 import 'package:fachowcy_app/src/customWidgets/AdCardSmall.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'customWidgets/CustomAppBar.dart';
 import 'customWidgets/CustomBottomNavigation.dart';
@@ -63,7 +64,7 @@ class UserProfile extends StatelessWidget {
                                     numberOfAds++;
                                   }
                                 }
-                                print(numberOfAds);
+                                //print(numberOfAds);
                                 if(snapshot.data == null) {
                                   return Container(
                                     child: Center(
@@ -85,6 +86,9 @@ class UserProfile extends StatelessWidget {
                                         childAspectRatio: 0.58, //TODO: zrobić to mądrzej
                                     ),
                                     itemBuilder: (BuildContext context, int index) {
+                                      while(!userData.serviceCardLists[index].active) {
+                                        index++;
+                                      }
                                       return AdCardSmall(true, userData.serviceCardLists[index].title, userData.serviceCardLists[index].description);
                                     },
                                   );
@@ -113,7 +117,8 @@ class UserProfile extends StatelessWidget {
 
   static Future<int> getDataFromJson() async {
     var UserXML = {};
-    UserXML["email"] = "lorem@gmail.com";
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserXML["email"] = prefs.getString('email'); //TODO: Zmienić na inne maile
     String email = json.encode(UserXML);
 
     final http.Response response = await http.post(
@@ -125,10 +130,39 @@ class UserProfile extends StatelessWidget {
     Map userProfileDataMap = jsonDecode(response.body);
     var userProfileData = UserProfileData.fromJson(userProfileDataMap);
 
-    // CHECK THE REPOSONE NUMBERS
+    // TODO: CHECK THE REPOSONE NUMBERS
 
     if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
       userData = userProfileData;
+      //print(userData.serviceCardLists[2].serviceCardId);
+
+      print("User profile data received from server");
+      return response.statusCode;
+    } else {
+      throw new Exception('Failed to load profile data.');
+    }
+  }
+
+  static Future<int> deleteUserCard() async {
+    var UserXML = {};
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserXML["email"] = prefs.getString('email'); //TODO: Zmienić na inne maile
+    String email = json.encode(UserXML);
+
+    final http.Response response = await http.post(
+      'http://10.0.2.2:8080/api/users/profile-info',
+      headers:{'Content-Type': 'application/json'},
+      body: email,
+    );
+
+    Map userProfileDataMap = jsonDecode(response.body);
+    var userProfileData = UserProfileData.fromJson(userProfileDataMap);
+
+    // TODO: CHECK THE REPOSONE NUMBERS
+
+    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+      userData = userProfileData;
+      //print(userData.serviceCardLists[2].serviceCardId);
 
       print("User profile data received from server");
       return response.statusCode;
