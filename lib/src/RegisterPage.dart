@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:email_validator/email_validator.dart';
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -393,10 +394,9 @@ Future<User> createUser (String name,String email,String lastName,String telepho
   print(str);
 
   final http.Response response = await http.post(
-   //'http://fachowcy-server.herokuapp.com/api/users/addUser',
-  'http://10.0.2.2:8080/api/users/addUser',
-    headers:{'Content-Type': 'application/json'},
-    body: str
+      Config.serverHostString + '/api/users/addUser',
+      headers:{'Content-Type': 'application/json'},
+      body: str
   );
   print(response.statusCode);
   // CHECK THE REPOSONE NUMBERS

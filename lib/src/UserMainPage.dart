@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/ServiceCard.dart';
 import 'package:fachowcy_app/Data/User.dart';
 import 'package:fachowcy_app/src/LoginPage.dart';
@@ -106,9 +107,7 @@ class _UserMainPageState extends State<UserMainPage> {
     ServiceCard serviceCard = new ServiceCard();
 
     final http.Response response = await http.get(
-       //'http://10.0.2.2:8080/api/service-card/all',
-      // 'https://fachowcy-server.herokuapp.com/api/service-card/all'
-      'http://fachowcy-server.herokuapp.com/api/service-card/all',
+        Config.serverHostString + 'api/service-card/all',
         headers:{'Content-Type': 'application/json'},
     );
 

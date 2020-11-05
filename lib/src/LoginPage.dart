@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -267,8 +268,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
     final http.Response response = await http.post(
-        'http://10.0.2.2:8080/api/users/loginHashed',
-        //'http://fachowcy-server.herokuapp.com/api/users/loginHashed',
+        Config.serverHostString + 'api/users/loginHashed',
         headers:{'Content-Type': 'application/json'},
         body: str
     );

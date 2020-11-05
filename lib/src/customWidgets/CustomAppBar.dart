@@ -34,8 +34,8 @@ class CustomAppBar extends StatelessWidget {
             Icons.person,
             color: Colors.white,),
           onPressed: ()async {
-//            var result = await UserProfile.getDataFromJson();
-//            if(result==200) //TODO: zmienić żeby przechodziło bez http 200
+            var result = await UserProfile.getDataFromJson();
+            if(result==200) //TODO: zmienić żeby przechodziło bez http 200
               Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => UserProfile()));
@@ -47,26 +47,8 @@ class CustomAppBar extends StatelessWidget {
 //                MaterialPageRoute(builder: (context) => UserProfile()));
 //          },
         ),
-        IconButton(
-          icon: Icon(
-            Icons.logout,
-            color: Colors.white,),
-          onPressed: () {
-            logout();
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()));
-          },
-        )
       ],
     );
-  }
-
-  Future<Null> logout() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('email', null);
-    prefs.setString('password', null);
   }
 
 }

@@ -1,3 +1,4 @@
+import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,11 +8,13 @@ class AdCardSmall extends StatelessWidget {
   String title;
   String text;
   bool isUserProfile;
+  int userAdId;
 
-  AdCardSmall(bool isUserProfile, String title, String text) {
+  AdCardSmall(bool isUserProfile, String title, String text, int userAdId) {
     this.title = title;
     this.text = text;
     this.isUserProfile = isUserProfile;
+    this.userAdId = userAdId;
   }
 
   @override
@@ -26,6 +29,7 @@ class AdCardSmall extends StatelessWidget {
             child: GestureDetector(
               onTap:(){
                 print("Ad pressed");
+                print("Tapped ad ID: " + userAdId.toString());
               },
               child: Container(
                 decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 4.0)),
@@ -93,12 +97,14 @@ class AdCardSmall extends StatelessWidget {
                                 icon: new Icon(Icons.delete),
                                 color: Colors.white,
                                 onPressed: () {
-                                  print("Deleted!");
+                                  print("Deleted! -- AdCardSmall info");
+                                  UserProfile.deleteUserCard(userAdId);
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => UserProfile()));
                                 },
                               ),
                             ),
-
-
                           ],
                         ),
                       ),
