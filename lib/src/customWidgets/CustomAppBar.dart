@@ -34,8 +34,8 @@ class CustomAppBar extends StatelessWidget {
             Icons.person,
             color: Colors.white,),
           onPressed: ()async {
-            //var result = await UserProfile.getDataFromJson();
-            //if(result==200) //TODO: zmienić żeby przechodziło bez http 200
+//            var result = await UserProfile.getDataFromJson();
+//            if(result==200) //TODO: zmienić żeby przechodziło bez http 200
               Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => UserProfile()));
