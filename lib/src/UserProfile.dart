@@ -143,24 +143,31 @@ class UserProfile extends StatelessWidget {
     }
   }
 
-  static Future<int> deleteUserCard(int id) async {
+  static Future<int> deleteUserCard() async {
     var UserXML = {};
-    UserXML["serviceCardId"] = id; //TODO: tutaj serviceCardId czy service-card-id (JSON - BAZA)
-    String cardId = json.encode(UserXML);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    UserXML["email"] = prefs.getString('email'); //TODO: Zmienić na inne maile
+    String email = json.encode(UserXML);
 
     final http.Response response = await http.post(
-      'http://10.0.2.2:8080/api/service-card/deactivate',
+      'http://10.0.2.2:8080/api/users/profile-info',
       headers:{'Content-Type': 'application/json'},
-      body: cardId,
+      body: email,
     );
 
-    // TODO: CHECK THE REPOSONE NUMBERS
-    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+    Map userProfileDataMap = jsonDecode(response.body);
+    var userProfileData = UserProfileData.fromJson(userProfileDataMap);
 
-      print("User ad with ID: " + id.toString() + "deleted."); //TODO: user ad with id "xxx" and title "xxx" deleted
+    // TODO: CHECK THE REPOSONE NUMBERS
+
+    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
+      userData = userProfileData;
+      //print(userData.serviceCardLists[2].serviceCardId);
+
+      print("User profile data received from server");
       return response.statusCode;
     } else {
-      throw new Exception("Failed to delete user ad with ID: " + id.toString() + ".");
+      throw new Exception('Failed to load profile data.');
     }
   }
 }
