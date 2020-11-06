@@ -43,6 +43,8 @@ class UserProfile extends StatelessWidget {
                               width: 120, height: 120, fit: BoxFit.contain),
                         ),
                         SizedBox(height: 16),
+                        ProfileEdit(),
+                        SizedBox(height: 8),
                         Logout(),
                         SizedBox(height: 16),
                         CustomLabels("Imię i nazwisko", userData.name + " " + userData.lastName),
@@ -50,144 +52,10 @@ class UserProfile extends StatelessWidget {
                         CustomLabels("Data utworzenia", userData.createdAt),
                         CustomLabels("Hasło", "***********"), //TODO: jakos to rozwiązać
                         CustomLabels("Twoje ogłoszenia", ""),
-                        FutureBuilder(
-                          future: getDataFromJson(),
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            int numberOfAds = 0;
-                            int myIndex = 0;
-                            for(int i = 0; i < userData.serviceCardLists.length; i++) {
-                              if(userData.serviceCardLists[i].active == true) {
-                                numberOfAds++;
-                              }
-                            }
-
-                            if(numberOfAds == 0) {
-                              return Column(
-                                  children: <Widget>[
-                                    Text(
-                                      "Nie masz aktywynych ogłoszeń",
-                                      style: TextStyle(color: Colors.white, fontSize: 24),
-                                    ),
-                                    SizedBox(height: 40),
-                                  ],
-                              );
-                            }
-                            //print("Liczba aktywnych ogłoszeń: " + numberOfAds.toString());
-                            sleep(Duration.zero);
-                            if(snapshot.data == null) {
-                              return Container(
-                                child: Center(
-                                  child: Text(
-                                    "Loading..",
-                                    style: new TextStyle(fontSize: 50),
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return GridView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: numberOfAds,
-                                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 5,
-                                  mainAxisSpacing: 5,
-                                  childAspectRatio: 0.58, //TODO: zrobić to mądrzej
-                                ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  bool flag = true;
-                                  while(flag) {
-                                    if(userData.serviceCardLists[myIndex].active == false) {
-                                      //print("Ogłoszenie nieaktywne ID: " + userData.serviceCardLists[myIndex].serviceCardId.toString());
-                                      if(myIndex <= userData.serviceCardLists.length) {
-                                        myIndex++;
-                                      }
-                                    } else {
-                                      flag = false;
-                                    }
-                                  }
-
-//                                  print("\nIndex: " + index.toString());
-//                                  print("My index: " + myIndex.toString());
-//                                  print("Number of ads: " + numberOfAds.toString());
-//                                  print("AdCardSmall title: " + userData.serviceCardLists[myIndex].title);
-//                                  print("AdCardSmall desc: " + userData.serviceCardLists[myIndex].description);
-
-                                  if(myIndex <= userData.serviceCardLists.length) {
-                                    myIndex++;
-                                  }
-
-                                  return AdCardSmall(true, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
-                                  },
-                              );
-                            }
-                            },
-                        ),
+                        UserAdSection(userData),
                         SizedBox(height: 16),
                         CustomLabels("Historia ogłoszeń", ""),
-                        FutureBuilder(
-                          future: getDataFromJson(),
-                          builder: (BuildContext context, AsyncSnapshot snapshot) {
-                            int numberOfAds = 0;
-                            int myIndex = 0;
-                            for(int i = 0; i < userData.serviceCardLists.length; i++) {
-                              if(userData.serviceCardLists[i].active == false) {
-                                numberOfAds++;
-                              }
-                            }
-
-                            if(numberOfAds == 0) {
-                              return Column(
-                                children: <Widget>[
-                                  Text(
-                                    "Nie masz usuniętych ogłoszeń",
-                                    style: TextStyle(color: Colors.white, fontSize: 24),
-                                  ),
-                                  SizedBox(height: 40),
-                                ],
-                              );
-                            }
-                            sleep(Duration.zero);
-                            if(snapshot.data == null) {
-                              return Container(
-                                child: Center(
-                                  child: Text(
-                                    "Loading..",
-                                    style: new TextStyle(fontSize: 50),
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return GridView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: numberOfAds,
-                                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 5,
-                                  mainAxisSpacing: 5,
-                                  childAspectRatio: 0.65, //TODO: zrobić to mądrzej
-                                ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  bool flag = true;
-                                  while(flag) {
-                                    if(userData.serviceCardLists[myIndex].active == true) {
-                                      if(myIndex <= userData.serviceCardLists.length) {
-                                        myIndex++;
-                                      }
-                                    } else {
-                                      flag = false;
-                                    }
-                                  }
-                                  if(myIndex <= userData.serviceCardLists.length) {
-                                    myIndex++;
-                                  }
-                                  return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
-                                },
-                              );
-                            }
-                          },
-                        ),
+                        UserHistorySection(userData),
                       ],
                     ),
                   ),
@@ -252,6 +120,189 @@ class UserProfile extends StatelessWidget {
       throw new Exception("Failed to delete user ad with ID: " + id.toString()+ ".");
     }
   }
+}
+
+class ProfileEdit extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        print("Edited");
+      },
+      child: Text(
+        "Edytuj profil",
+        style: const TextStyle(color: Colors.green, fontSize: 24),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+
+}
+
+class UserAdSection extends StatelessWidget {
+
+  var userData;
+
+
+  UserAdSection(var userData) {
+    this.userData = userData;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: UserProfile.getDataFromJson(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        int numberOfAds = 0;
+        int myIndex = 0;
+        for(int i = 0; i < userData.serviceCardLists.length; i++) {
+          if(userData.serviceCardLists[i].active == true) {
+            numberOfAds++;
+          }
+        }
+
+        if(numberOfAds == 0) {
+          return Column(
+            children: <Widget>[
+              Text(
+                "Nie masz aktywynych ogłoszeń",
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              SizedBox(height: 40),
+            ],
+          );
+        }
+        //print("Liczba aktywnych ogłoszeń: " + numberOfAds.toString());
+        //sleep(const Duration(milliseconds: 100));
+        if(snapshot.data == null) {
+          return Container(
+            child: Center(
+              child: Text(
+                "Loading..",
+                style: new TextStyle(fontSize: 50),
+              ),
+            ),
+          );
+        } else {
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: numberOfAds,
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
+              childAspectRatio: 0.58, //TODO: zrobić to mądrzej
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              bool flag = true;
+              while(flag) {
+                if(userData.serviceCardLists[myIndex].active == false) {
+                  //print("Ogłoszenie nieaktywne ID: " + userData.serviceCardLists[myIndex].serviceCardId.toString());
+                  if(myIndex <= userData.serviceCardLists.length) {
+                    myIndex++;
+                  }
+                } else {
+                  flag = false;
+                }
+              }
+
+//                                  print("\nIndex: " + index.toString());
+//                                  print("My index: " + myIndex.toString());
+//                                  print("Number of ads: " + numberOfAds.toString());
+//                                  print("AdCardSmall title: " + userData.serviceCardLists[myIndex].title);
+//                                  print("AdCardSmall desc: " + userData.serviceCardLists[myIndex].description);
+
+              if(myIndex <= userData.serviceCardLists.length) {
+                myIndex++;
+              }
+
+              return AdCardSmall(true, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+            },
+          );
+        }
+      },
+    );
+  }
+
+}
+
+class UserHistorySection extends StatelessWidget {
+
+  var userData;
+
+  UserHistorySection(var userData) {
+    this.userData = userData;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: UserProfile.getDataFromJson(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        int numberOfAds = 0;
+        int myIndex = 0;
+        for(int i = 0; i < userData.serviceCardLists.length; i++) {
+          if(userData.serviceCardLists[i].active == false) {
+            numberOfAds++;
+          }
+        }
+
+        if(numberOfAds == 0) {
+          return Column(
+            children: <Widget>[
+              Text(
+                "Nie masz usuniętych ogłoszeń",
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              SizedBox(height: 40),
+            ],
+          );
+        }
+        //sleep(const Duration(milliseconds: 100));
+        if(snapshot.data == null) {
+          return Container(
+            child: Center(
+              child: Text(
+                "Loading..",
+                style: new TextStyle(fontSize: 50),
+              ),
+            ),
+          );
+        } else {
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: numberOfAds,
+            gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
+              childAspectRatio: 0.65, //TODO: zrobić to mądrzej
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              bool flag = true;
+              while(flag) {
+                if(userData.serviceCardLists[myIndex].active == true) {
+                  if(myIndex <= userData.serviceCardLists.length) {
+                    myIndex++;
+                  }
+                } else {
+                  flag = false;
+                }
+              }
+              if(myIndex <= userData.serviceCardLists.length) {
+                myIndex++;
+              }
+              return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+            },
+          );
+        }
+      },
+    );
+  }
+
 }
 
 class Logout extends StatelessWidget {

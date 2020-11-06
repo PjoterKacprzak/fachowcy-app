@@ -32,6 +32,7 @@ class ProfileFromAd extends StatelessWidget {
                         SizedBox(height: 16),
                         UserNameSection(),
                         RatingSection(),
+                        CommentSection(),
                         UserAd(),
 
                       ],
@@ -119,6 +120,27 @@ class RatingSection extends StatelessWidget {
         SizedBox(height: 8),
         Text(
           rating,
+          style: new TextStyle(color: Colors.white, fontSize: 24),
+        ),
+      ],
+    );
+  }
+
+}
+
+class CommentSection extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 16),
+        Text(
+          "Komentarze",
+          style: new TextStyle(color: Colors.white, fontSize: 16),
+        ),
+        SizedBox(height: 8),
+        Text(
+          "tutaj cos bedzie",
           style: new TextStyle(color: Colors.white, fontSize: 24),
         )
       ],

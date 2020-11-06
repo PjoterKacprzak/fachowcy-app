@@ -23,8 +23,8 @@ class AdCardSmall extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        SizedBox( //tymczasowe, na razie nie moge nic lepszego znaleść
-          width: 160,
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 2.3, //TODO: jakby coś się sypało na innych kształtach to tu
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: GestureDetector(
@@ -100,12 +100,14 @@ class AdCardSmall extends StatelessWidget {
                               child: IconButton(
                                 icon: new Icon(Icons.delete),
                                 color: Colors.white,
-                                onPressed: () {
-                                  print("Deleted! -- AdCardSmall info");
-                                  UserProfile.deleteUserCard(userAdId);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => UserProfile()));
+                                onPressed: ()async {
+                                  var result = await UserProfile.deleteUserCard(userAdId);
+                                  await UserProfile.getDataFromJson();
+                                  if(result==200) //TODO: zmienić żeby przechodziło bez http 200
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => UserProfile()));
+
                                 },
                               ),
                             ),
