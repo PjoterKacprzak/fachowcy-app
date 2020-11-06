@@ -1,4 +1,5 @@
 import 'package:fachowcy_app/src/UserProfile.dart';
+import 'package:fachowcy_app/src/customWidgets/AdCardLarge.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -30,7 +31,11 @@ class AdCardSmall extends StatelessWidget {
               onTap:(){
                 print("Ad pressed");
                 print("Tapped ad ID: " + userAdId.toString());
-              },
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdCardLarge()));
+                },
               child: Container(
                 decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 4.0)),
                 child: Center(

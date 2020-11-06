@@ -39,17 +39,8 @@ class UserProfile extends StatelessWidget {
                         SizedBox(height: 30),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            width: 120,
-                            height: 120,
-                            color: Colors.grey,
-                            child: Center(
-                              child: Text(
-                                "Foto",
-                                style: new TextStyle(fontSize: 30),
-                              ),
-                            ),
-                          ),
+                          child: Image.network("https://loremflickr.com/200/200",
+                              width: 120, height: 120, fit: BoxFit.contain),
                         ),
                         SizedBox(height: 16),
                         Logout(),
@@ -175,7 +166,7 @@ class UserProfile extends StatelessWidget {
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 5,
                                   mainAxisSpacing: 5,
-                                  childAspectRatio: 0.58, //TODO: zrobić to mądrzej
+                                  childAspectRatio: 0.65, //TODO: zrobić to mądrzej
                                 ),
                                 itemBuilder: (BuildContext context, int index) {
                                   bool flag = true;
@@ -191,7 +182,7 @@ class UserProfile extends StatelessWidget {
                                   if(myIndex <= userData.serviceCardLists.length) {
                                     myIndex++;
                                   }
-                                  return AdCardSmall(true, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+                                  return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
                                 },
                               );
                             }
