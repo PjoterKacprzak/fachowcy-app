@@ -31,7 +31,6 @@ class AdCardSmall extends StatelessWidget {
               onTap:(){
                 print("Ad pressed");
                 print("Tapped ad ID: " + userAdId.toString());
-
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AdCardLarge()));
