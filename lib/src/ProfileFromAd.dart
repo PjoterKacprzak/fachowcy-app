@@ -78,6 +78,16 @@ class UserNameSection extends StatelessWidget {
             print("Portfolio");
           },
           child: Text(
+            "Skomentuj użytkownika",
+            style: new TextStyle(color: Colors.green, fontSize: 20),
+          ),
+        ),
+        SizedBox(height: 8),
+        GestureDetector(
+          onTap: (){
+            print("Portfolio");
+          },
+          child: Text(
             "Zobacz portfolio",
             style: new TextStyle(color: Colors.green, fontSize: 20),
           ),
