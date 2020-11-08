@@ -1,14 +1,21 @@
+import 'package:fachowcy_app/Config/Config.dart';
+import 'package:fachowcy_app/Data/AdData.dart';
 import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import '../ProfileFromAd.dart';
 import 'AdCardSmall.dart';
 
 class AdCardLarge extends StatelessWidget {
 
+  static var adData;
+  static int index;
 
 
   @override
@@ -38,11 +45,11 @@ class AdCardLarge extends StatelessWidget {
                                 margin: const EdgeInsets.all(8),
                                 child: Column(
                                   children: <Widget>[
-                                    TextSection(),
+                                    TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
                                     SizedBox(height: 16),
-                                    UserProfileShort(),
+                                    UserProfileShort(adData.name , adData.lastName ,"https://loremflickr.com/80/80"),
                                     SizedBox(height: 16),
-                                    LocalizationSection(),
+                                    LocalizationSection(adData.serviceCardLists[index].location),
                                   ],
                                 ),
                               ),
@@ -69,6 +76,42 @@ class AdCardLarge extends StatelessWidget {
     );
   }
 
+
+  static Future<int> getAdDataByAdId(int id) async {
+    var UserXML = {};
+
+    UserXML["serviceCardId"] = id;
+    String serviceCardId = json.encode(UserXML);
+
+    final http.Response response = await http.post(
+      Config.serverHostString + '/api/service-card/findbyID',
+      headers: {'Content-Type': 'application/json'},
+      body: serviceCardId,
+    );
+
+    Map cardDataMap = jsonDecode(response.body);
+    var cardData = AdData.fromJson(cardDataMap);
+    int indexx;
+
+    for(int i = 0; i < cardData.serviceCardLists.length; i++) {
+      if(cardData.serviceCardLists[i].serviceCardId == id) {
+        indexx = i;
+        break;
+      }
+    }
+
+    // TODO: CHECK THE REPOSONE NUMBERS
+
+    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
+
+      adData = cardData;
+      index = indexx;
+      print("Ad data received from server");
+      return response.statusCode;
+    } else {
+      throw new Exception('Failed to load ad data.');
+    }
+  }
 }
 
 //TODO: rozszerzyć to do FutureBuildera
@@ -99,9 +142,15 @@ class SimilarAds extends StatelessWidget {
 
 class TextSection extends StatelessWidget {
 
-  String title = "Tytuł";
-  String estimatedTime = "2 dni";
-  String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur quis pellentesque ligula. Fusce egestas ligula ultrices, sagittis felis vitae, cursus dui. Mauris in lorem vel felis blandit facilisis. In sagittis urna vitae vulputate scelerisque. Pellentesque posuere odio sollicitudin lorem iaculis, vel egestas massa accumsan. Sed feugiat in sem id aliquet. Vestibulum varius vel augue vitae efficitur.";
+  String title;
+  String estimatedTime;
+  String text;
+
+  TextSection(String title, String estimatedTime, String text) {
+    this.title = title;
+    this.estimatedTime = estimatedTime;
+    this.text = text;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +160,7 @@ class TextSection extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(color: Colors.white, fontSize: 32),
-          maxLines: 1,
+          maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: 16),
@@ -141,7 +190,12 @@ class TextSection extends StatelessWidget {
 
 class LocalizationSection extends StatelessWidget {
 
-  String location = "Loremowo";
+  String location;
+
+
+  LocalizationSection(String location) {
+    this.location = location;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,9 +239,16 @@ class LocalizationSection extends StatelessWidget {
 
 class UserProfileShort extends StatelessWidget {
 
-  String name = "Loremiak";
-  String lastName = "Ipsumiak";
-  String photoLink = "https://loremflickr.com/80/80";
+  String name;
+  String lastName;
+  String photoLink;
+
+  UserProfileShort(String name, String lastName, String photoLink) {
+    this.name = name;
+    this.lastName = lastName;
+    this.photoLink = photoLink;
+  }
+
 
   @override
   Widget build(BuildContext context) {

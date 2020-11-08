@@ -28,9 +28,8 @@ class AdCardSmall extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: GestureDetector(
-              onTap:(){
-                print("Ad pressed");
-                print("Tapped ad ID: " + userAdId.toString());
+              onTap:() async{
+                await AdCardLarge.getAdDataByAdId(userAdId);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AdCardLarge()));

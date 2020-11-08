@@ -199,8 +199,7 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.clear();
 
     final http.Response response = await http.post(
-       //'http://10.0.2.2:8080/api/users/login',
-         'http://fachowcy-server.herokuapp.com/api/users/login',
+        Config.serverHostString + '/api/users/login',
         headers:{'Content-Type': 'application/json'},
         body: str
     );
@@ -208,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
     print('Login resposne body ' + response.body.toString());
     // CHECK THE REPOSONE NUMBERS
     if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
-
+      print(1231);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       prefs.setString('email', email);
