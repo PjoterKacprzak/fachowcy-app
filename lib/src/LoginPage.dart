@@ -118,26 +118,34 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(height: 20),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
-                padding: EdgeInsets.all(16.0),
-                splashColor: Colors.greenAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                onPressed: ()async {
-                  var result = await login(emailController.text,passwordController.text);
-                  print(result);
-                  if(result==200)
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserMainPage()));
+              Builder(
+                builder: (context) => Center(
+                  child: FlatButton(
+                    color: Colors.green,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(16.0),
+                    splashColor: Colors.greenAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    onPressed: ()async {
+                      var result = await login(emailController.text,passwordController.text);
+                      print(result);
+                      if(result==200) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => UserMainPage()));
+                      } else {
+                        _showToastWrong(context);
+                      }
 
-                },
-                child: Text(
-                  "Zaloguj się",
-                  style: TextStyle(fontSize: 20.0),
+
+                    },
+                    child: Text(
+                      "Zaloguj się",
+                      style: TextStyle(fontSize: 20.0),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 20),
@@ -169,6 +177,19 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _showToastWrong(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        content: const Text('Coś poszło nie tak!', style: const TextStyle(fontSize: 16)),
+        action: SnackBarAction(
+            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+      ),
+    );
+
   }
 
   Future<int>login(String email,String password)async {
