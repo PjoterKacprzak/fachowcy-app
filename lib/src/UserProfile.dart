@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/UserProfileData.dart';
+import 'package:fachowcy_app/src/ChangePasswordFromUserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/AdCardSmall.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,14 +44,13 @@ class UserProfile extends StatelessWidget {
                               width: 120, height: 120, fit: BoxFit.contain),
                         ),
                         SizedBox(height: 16),
-                        ProfileEdit(),
-                        SizedBox(height: 8),
                         Logout(),
                         SizedBox(height: 16),
                         CustomLabels("Imię i nazwisko", userData.name + " " + userData.lastName),
                         CustomLabels("E-mail", userData.email),
                         CustomLabels("Data utworzenia", userData.createdAt),
-                        CustomLabels("Hasło", "***********"), //TODO: jakos to rozwiązać
+                        PasswordEdit(userData.email),
+                        SizedBox(height: 16),
                         CustomLabels("Twoje ogłoszenia", ""),
                         UserAdSection(userData),
                         SizedBox(height: 16),
@@ -100,7 +100,7 @@ class UserProfile extends StatelessWidget {
 
   static Future<int> deleteUserCard(int id) async {
     var UserXML = {};
-    UserXML["serviceCardId"] = id; //TODO: Zmienić na inne maile
+    UserXML["serviceCardId"] = id;
     String cardId = json.encode(UserXML);
 
     final http.Response response = await http.post(
@@ -122,19 +122,48 @@ class UserProfile extends StatelessWidget {
   }
 }
 
-class ProfileEdit extends StatelessWidget {
+class PasswordEdit extends StatelessWidget {
+
+  String userEmail;
+
+  PasswordEdit(String userEmail) {
+    this.userEmail = userEmail;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        print("Edited");
-      },
-      child: Text(
-        "Edytuj profil",
-        style: const TextStyle(color: Colors.green, fontSize: 24),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 16),
+        Center(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "Hasło",
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 4),
+              GestureDetector(
+                onTap: (){
+                  print("Edited");
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChangePasswordFromUserProfile(userEmail)));
+                  },
+                child: Text(
+                  "Zmień hasło",
+                  style: const TextStyle(color: Colors.green, fontSize: 24),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
