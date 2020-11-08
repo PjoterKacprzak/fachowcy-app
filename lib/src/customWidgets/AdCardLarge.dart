@@ -33,16 +33,21 @@ class AdCardLarge extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 20),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
+                      Card(
+                        color: Colors.blueGrey,
+                        elevation: 4.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          side: BorderSide(width: 4, color: Colors.white),
+                        ),
                         child: Container(
-                          decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 4.0)),
+                          //decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 4.0)),
                           child: Column(
                             children: <Widget>[
                               SizedBox(height: 16),
                               HorizontalFotoSection(),
                               Container(
-                                margin: const EdgeInsets.all(8),
+                                margin: const EdgeInsets.all(12),
                                 child: Column(
                                   children: <Widget>[
                                     TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
