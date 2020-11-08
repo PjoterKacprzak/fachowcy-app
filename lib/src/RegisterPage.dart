@@ -25,7 +25,7 @@ class NameValidator{
       return null;
 
   }
-  }class LastNameValidator{
+}class LastNameValidator{
   static String validate(String value){
     {
       Pattern pattern = r'[A-Za-z]+';
@@ -36,7 +36,7 @@ class NameValidator{
         return null;
     }
   }
-  }class TelephoneValidator{
+}class TelephoneValidator{
   static String validate(String value){
     Pattern pattern =
         r'(^(?:[+0]9)?[0-9]{9,12}$)';
@@ -46,7 +46,7 @@ class NameValidator{
     else
       return null;
   }
-  }class PasswordValidator{
+}class PasswordValidator{
   static String validate(String value){
     Pattern pattern =
         r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
@@ -56,7 +56,7 @@ class NameValidator{
     else
       return null;
   }
-  }
+}
 
 
 
@@ -72,7 +72,6 @@ class RegisterPage extends StatelessWidget {
   TextEditingController telephoneController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
 
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   String _email,_password,_name,_lastName,_telephone,_confirmPassword= "";
@@ -80,26 +79,15 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Colors.blue,
-      //resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-
-        child: Row(
-
-          children: <Widget>[
-            Expanded(
-              flex: 1, // 20%
-              child: Container(),
-            ),
-            Expanded(
-              flex: 8, // 60%
+        key: scaffoldKey,
+        backgroundColor: Colors.blue,
+        body: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Container(
+              margin: const EdgeInsets.only(left: 40, right: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-
-                //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget> [
                   SizedBox(height: 30),
                   MyStatefulWidget(),
@@ -142,7 +130,7 @@ class RegisterPage extends StatelessWidget {
                     validator: LastNameValidator.validate,
                     onSaved: (lastName)=> _lastName = lastName,
 
-                   // controller: lastNameController,
+                    // controller: lastNameController,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -308,7 +296,57 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 8),
+                  Builder(
+                    builder: (context) => Center(
+                      child: FlatButton(
+                        color: Colors.green,
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(16.0),
+                        splashColor: Colors.greenAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        onPressed: () {
+
+                          if(_formKey.currentState.validate()){
+                            {
+                              if (passwordController.text !=
+                                  confirmPassowrdController.text) {
+                                print(passwordController);
+                                print(confirmPassowrdController);
+                                _showToastWrongPassword(context);
+                                print("Hasła są różne");
+                              }
+                              else {
+                                _formKey.currentState.save();
+
+                                if(createUser(_name,
+                                    _email, _lastName,
+                                    _telephone,
+                                    adresseController.text,
+                                    _password,_character) == 200) {
+                                  _showToastGood(context);
+                                } else {
+                                  _showToastWrongEmail(context);
+                                }
+
+//                            Navigator.pop(
+//                                context,
+//                                MaterialPageRoute(
+//                                    builder: (context) => LoginPage()));
+                              }
+                            }
+                          }},
+
+                        child: Text(
+                          "Zarejestruj się",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8),
                   FlatButton(
                     color: Colors.green,
                     textColor: Colors.white,
@@ -318,53 +356,64 @@ class RegisterPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     onPressed: () {
-
-                      if(_formKey.currentState.validate()){
-                        {
-                          if (passwordController.text !=
-                              confirmPassowrdController.text) {
-                            print(passwordController);
-                            print(confirmPassowrdController);
-                            //TODO: Trzeba gdzieś wyświetlić informację, że hasła są różne oraz wyswietlic gdziez ze email został uzyty
-                              print("Hasła są różne");
-                          }
-                          else {
-                            _formKey.currentState.save();
-
-                            createUser(_name,
-                               _email, _lastName,
-                                _telephone,
-                                adresseController.text,
-                                _password,_character);
-
-                            Navigator.pop(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
-                          }
-                        }
-                        }},
-
+                      Navigator.pop(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginPage()));
+                    },
                     child: Text(
-                      "Zarejestruj się",
+                      "Wróć",
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),
                 ],
               ),
             ),
-            Expanded(
-              flex: 1, // 20%
-              child: Container(),
-            )
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 
-Future<User> createUser (String name,String email,String lastName,String telephone,
-    String adresse,String password, WhoUsing role)async {
+  void _showToastGood(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.green,
+        content: const Text('Użytkownik zarejestrowany!', style: const TextStyle(fontSize: 20)),
+        action: SnackBarAction(
+            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+      ),
+    );
+
+  }
+
+  void _showToastWrongEmail(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        content: const Text('Podany email jest w użyciu!', style: const TextStyle(fontSize: 16)),
+        action: SnackBarAction(
+            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+      ),
+    );
+
+  }
+
+  void _showToastWrongPassword(BuildContext context) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        content: const Text('Hasła są różne!', style: const TextStyle(fontSize: 20)),
+        action: SnackBarAction(
+            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+      ),
+    );
+
+  }
+
+  Future<int> createUser (String name,String email,String lastName,String telephone,
+      String adresse,String password, WhoUsing role)async {
 
     var actualDate = new DateTime.now();
     print(actualDate);
@@ -372,40 +421,42 @@ Future<User> createUser (String name,String email,String lastName,String telepho
     String formattedDate = dateFormatter.format(actualDate);
     String whoIs;
     if(role==WhoUsing.user)
-      {
-         whoIs = "user";
-      }
+    {
+      whoIs = "user";
+    }
     else
-      {
-        whoIs = "specialist";
-      }
+    {
+      whoIs = "specialist";
+    }
 
 
     var UserXML = {};
-  UserXML["name"] = name;
-  UserXML["lastName"] = lastName;
-  UserXML["password"] = password;
-  UserXML["phoneNumber"] = telephone;
-  UserXML["adresse"] = adresse;
-  UserXML["email"] = email;
-  UserXML["createdAt"]= formattedDate;
-  UserXML["role"]= whoIs;
-  String str = json.encode(UserXML);
-  print(str);
+    UserXML["name"] = name;
+    UserXML["lastName"] = lastName;
+    UserXML["password"] = password;
+    UserXML["phoneNumber"] = telephone;
+    UserXML["adresse"] = adresse;
+    UserXML["email"] = email;
+    UserXML["createdAt"]= formattedDate;
+    UserXML["role"]= whoIs;
+    String str = json.encode(UserXML);
+    print(str);
 
-  final http.Response response = await http.post(
-      Config.serverHostString + '/api/users/addUser',
-      headers:{'Content-Type': 'application/json'},
-      body: str
-  );
-  print(response.statusCode);
-  // CHECK THE REPOSONE NUMBERS
-  if ((response.statusCode >= 200)||(response.statusCode <=299)) {
-    return User.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to create User.');
+    final http.Response response = await http.post(
+        Config.serverHostString + '/api/users/addUser',
+        headers:{'Content-Type': 'application/json'},
+        body: str
+    );
+    print(response.statusCode);
+    // CHECK THE REPOSONE NUMBERS
+    if ((response.statusCode >= 200)||(response.statusCode <=299)) {
+      return response.statusCode;
+    } else if ((response.statusCode >= 400)||(response.statusCode <=499)) {
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to create User.');
+    }
   }
-}
 
 }
 

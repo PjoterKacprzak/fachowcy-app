@@ -46,139 +46,126 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.blue,
       body: SingleChildScrollView(
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1, // 20%
-              child: Container(),
-            ),
-            Expanded(
-              flex: 8, // 60%
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget> [
-                  SizedBox(height: 80),
-                  Text(
-                    'Fachowcy',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 50, color: Colors.white)
+        child: Container(
+          margin: const EdgeInsets.only(left: 40, right: 40),
+          child: Column(
+            children: <Widget> [
+              SizedBox(height: 80),
+              Text(
+                  'Fachowcy',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 50, color: Colors.white)
+              ),
+              SizedBox(height: 80),
+              TextFormField(
+                controller: emailController,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.person,
+                    color: Colors.white,
                   ),
-                  SizedBox(height: 80),
-                  TextFormField(
-                    controller: emailController,
-                    style: TextStyle(
+                  labelText: 'E-mail',
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
                       color: Colors.white,
-                      fontSize: 25,
-                    ),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                      ),
-                      labelText: 'E-mail',
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                          width: 3.0,
-                        ),
-                      ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    controller: passwordController,
-                    obscureText: true,
-                    style: TextStyle(
+                  enabledBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
                       color: Colors.white,
-                      fontSize: 25,
-                    ),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.vpn_key,
-                        color: Colors.white,
-                      ),
-                      labelText: 'Hasło',
-                      labelStyle: TextStyle(
-                        color: Colors.white,
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                        ),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(
-                          color: Colors.white,
-                          width: 3.0,
-                        ),
-                      ),
+                      width: 3.0,
                     ),
                   ),
-                  SizedBox(height: 20),
-                  FlatButton(
-                    color: Colors.green,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(16.0),
-                    splashColor: Colors.greenAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: passwordController,
+                obscureText: true,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.vpn_key,
+                    color: Colors.white,
+                  ),
+                  labelText: 'Hasło',
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.white,
                     ),
-                    onPressed: ()async {
-                      var result = await login(emailController.text,passwordController.text);
-                      print(result);
-                      if(result==200)
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => UserMainPage()));
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                      width: 3.0,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                padding: EdgeInsets.all(16.0),
+                splashColor: Colors.greenAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                onPressed: ()async {
+                  var result = await login(emailController.text,passwordController.text);
+                  print(result);
+                  if(result==200)
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => UserMainPage()));
 
-                    },
-                    child: Text(
-                      "Zaloguj się",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Text(
-                    "Nie masz konta?",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  SizedBox(height: 10),
-                  FlatButton(
-                    color: Colors.green,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(16.0),
-                    splashColor: Colors.greenAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
+                },
+                child: Text(
+                  "Zaloguj się",
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                "Nie masz konta?",
+                style: TextStyle(color: Colors.white),
+              ),
+              SizedBox(height: 10),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                padding: EdgeInsets.all(16.0),
+                splashColor: Colors.greenAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                onPressed: () {
+                  Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => RegisterPage()));
-                    },
-                    child: Text(
-                      "Zarejestruj się",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-              ],
+                },
+                child: Text(
+                  "Zarejestruj się",
+                  style: TextStyle(fontSize: 20.0),
+                ),
               ),
-            ),
-            Expanded(
-              flex: 1, // 20%
-              child: Container(),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
