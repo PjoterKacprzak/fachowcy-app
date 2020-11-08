@@ -25,8 +25,13 @@ class AdCardSmall extends StatelessWidget {
       children: <Widget>[
         SizedBox(
           width: MediaQuery.of(context).size.width / 2.3, //TODO: jakby coś się sypało na innych kształtach to tu
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+          child: Card(
+            color: Colors.blueGrey,
+            elevation: 4.0,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(width: 2, color: Colors.white),
+            ),
             child: GestureDetector(
               onTap:() async{
                 await AdCardLarge.getAdDataByAdId(userAdId);
@@ -35,7 +40,7 @@ class AdCardSmall extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => AdCardLarge()));
                 },
               child: Container(
-                decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 4.0)),
+                //color: Colors.blueGrey,
                 child: Center(
                   child: Column(
                     children: <Widget>[
