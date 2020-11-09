@@ -26,7 +26,7 @@ class AdCardSmall extends StatelessWidget {
         SizedBox(
           width: MediaQuery.of(context).size.width / 2.3, //TODO: jakby coś się sypało na innych kształtach to tu
           child: Card(
-            color: Colors.blueGrey,
+            color: Colors.blueGrey, //TODO: Zmienić kolor i dopasować do tła reszty
             elevation: 4.0,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),

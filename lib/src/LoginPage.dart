@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                             context,
                             MaterialPageRoute(builder: (context) => UserMainPage()));
                       } else {
-                        _showToastWrong(context);
+                        _showToastWrong(context, 'Coś poszło nie tak!');
                       }
 
 
@@ -179,12 +179,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _showToastWrong(BuildContext context) {
+  void _showToastWrong(BuildContext context, String message) {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
         backgroundColor: Colors.red,
-        content: const Text('Coś poszło nie tak!', style: const TextStyle(fontSize: 16)),
+        content: new Text(message , style: const TextStyle(fontSize: 16)),
         action: SnackBarAction(
             label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
       ),
@@ -215,7 +215,7 @@ class _LoginPageState extends State<LoginPage> {
     print('Login resposne body ' + response.body.toString());
     // CHECK THE REPOSONE NUMBERS
     if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
-      print(1231);
+
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       prefs.setString('email', email);

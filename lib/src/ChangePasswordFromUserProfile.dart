@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'UserProfile.dart';
 
@@ -27,13 +28,15 @@ class PasswordValidator{
 
 class ChangePasswordFromUserProfile extends StatelessWidget {
 
-  String userEmail;
-  String userNewPassword;
+//  String userEmail;
+//  String userOldPassword;
 
-  ChangePasswordFromUserProfile(String userEmail) {
-    this.userEmail = userEmail;
-  }
+//  ChangePasswordFromUserProfile(String userEmail) {
+//    this.userEmail = userEmail;
+//    print(userEmail);
+//  }
 
+  TextEditingController oldPasswordController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   TextEditingController confirmPassowrdController = new TextEditingController();
 
@@ -58,6 +61,39 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                 children: <Widget> [
                   SizedBox(height: 30),
                   TextFormField(
+                    controller: oldPasswordController,
+                    validator:PasswordValidator.validate,
+                    onSaved: (password)=> _password = password,
+                    obscureText: true,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.vpn_key,
+                        color: Colors.white,
+                      ),
+                      labelText: 'Stare hasło',
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                        ),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 3.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextFormField(
                     controller: passwordController,
                     validator:PasswordValidator.validate,
                     onSaved: (password)=> _password = password,
@@ -71,7 +107,7 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                         Icons.vpn_key,
                         color: Colors.white,
                       ),
-                      labelText: 'Hasło',
+                      labelText: 'Nowe hasło',
                       labelStyle: TextStyle(
                         color: Colors.white,
                       ),
@@ -112,7 +148,7 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                         Icons.vpn_key,
                         color: Colors.white,
                       ),
-                      labelText: 'Powtórz hasło',
+                      labelText: 'Powtórz nowe hasło',
                       labelStyle: TextStyle(
                         color: Colors.white,
                       ),
@@ -141,20 +177,26 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        onPressed: () {
+                        onPressed: () async{
+
+                          final SharedPreferences prefs = await SharedPreferences.getInstance();
+                          final String userEmail = prefs.getString('email');
 
                           if(_formKey.currentState.validate()){
                             {
-                              if (passwordController.text !=
-                                  confirmPassowrdController.text) {
-                                _showToastWrong(context);
+                              if(await checkOldPassword(userEmail, oldPasswordController.text) == 1) {
+                                _showToastWrong(context, 'Stare hasło jest nieprawidłowe!');
+                                print("Old password is wrong");
+                              } else
+                                if (passwordController.text != confirmPassowrdController.text) {
+                                _showToastWrong(context, 'Hasła są różne!');
                                 print("Passwords are different");
                               }
                               else {
                                 _formKey.currentState.save();
 
-                                changePassword(userEmail, _password);
-                                _showToastGood(context);
+//                                changePassword(userEmail, _password);
+                                _showToastGood(context, 'Hasło zostało zmienione!');
 
 //                                Navigator.push(
 //                                    context,
@@ -199,12 +241,12 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
         ));
   }
 
-  void _showToastGood(BuildContext context) {
+  void _showToastGood(BuildContext context, String message) {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
         backgroundColor: Colors.green,
-        content: const Text('Hasło zostało zmienione!', style: const TextStyle(fontSize: 20)),
+        content: new Text(message, style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
             label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
       ),
@@ -212,17 +254,41 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
 
   }
 
-  void _showToastWrong(BuildContext context) {
+  void _showToastWrong(BuildContext context, String message) {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
         backgroundColor: Colors.red,
-        content: const Text('Hasła są różne!', style: const TextStyle(fontSize: 20)),
+        content: new Text(message, style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
             label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
       ),
     );
 
+  }
+
+  Future<int>checkOldPassword(String email,String password)async {
+    var UserXML = {};
+    UserXML["name"] = '';
+    UserXML["lastName"] = '';
+    UserXML["password"] = password;
+    UserXML["telephone"] = '';
+    UserXML["adresse"] = '';
+    UserXML["email"] = email;
+    String str = json.encode(UserXML);
+
+    final http.Response response = await http.post(
+        Config.serverHostString + '/api/users/login',
+        headers:{'Content-Type': 'application/json'},
+        body: str
+    );
+
+    // CHECK THE REPOSONE NUMBERS
+    if((response.statusCode >= 200)&&(response.statusCode <=299)) {
+      print(123);
+      print(response.statusCode);
+      return 0;
+    } else  return 1;
   }
 
   static Future<int> changePassword(String email, String newPassword) async {

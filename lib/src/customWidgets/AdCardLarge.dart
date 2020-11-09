@@ -34,7 +34,7 @@ class AdCardLarge extends StatelessWidget {
                     children: <Widget>[
                       SizedBox(height: 20),
                       Card(
-                        color: Colors.blueGrey,
+                        color: Colors.blueGrey, //TODO: Zmienić kolor i dopasować do tła reszty
                         elevation: 4.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),

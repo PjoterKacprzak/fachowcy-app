@@ -307,7 +307,7 @@ class RegisterPage extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        onPressed: () {
+                        onPressed: () async{
 
                           if(_formKey.currentState.validate()){
                             {
@@ -315,20 +315,20 @@ class RegisterPage extends StatelessWidget {
                                   confirmPassowrdController.text) {
                                 print(passwordController);
                                 print(confirmPassowrdController);
-                                _showToastWrongPassword(context);
+                                _showToastWrong(context, 'Hasła są różne!');
                                 print("Hasła są różne");
                               }
                               else {
                                 _formKey.currentState.save();
 
-                                if(createUser(_name,
+                                if(await createUser(_name,
                                     _email, _lastName,
                                     _telephone,
                                     adresseController.text,
                                     _password,_character) == 200) {
                                   _showToastGood(context);
                                 } else {
-                                  _showToastWrongEmail(context);
+                                  _showToastWrong(context, 'Podany email jest w użyciu!');
                                 }
 
 //                            Navigator.pop(
@@ -386,25 +386,12 @@ class RegisterPage extends StatelessWidget {
 
   }
 
-  void _showToastWrongEmail(BuildContext context) {
+  void _showToastWrong(BuildContext context, String message) {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
         backgroundColor: Colors.red,
-        content: const Text('Podany email jest w użyciu!', style: const TextStyle(fontSize: 16)),
-        action: SnackBarAction(
-            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
-      ),
-    );
-
-  }
-
-  void _showToastWrongPassword(BuildContext context) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.red,
-        content: const Text('Hasła są różne!', style: const TextStyle(fontSize: 20)),
+        content: new Text(message, style: const TextStyle(fontSize: 16)),
         action: SnackBarAction(
             label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
       ),

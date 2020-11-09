@@ -49,7 +49,7 @@ class UserProfile extends StatelessWidget {
                         CustomLabels("Imię i nazwisko", userData.name + " " + userData.lastName),
                         CustomLabels("E-mail", userData.email),
                         CustomLabels("Data utworzenia", userData.createdAt),
-                        PasswordEdit(userData.email),
+                        PasswordEdit(),
                         SizedBox(height: 16),
                         CustomLabels("Twoje ogłoszenia", ""),
                         UserAdSection(userData),
@@ -71,7 +71,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-  static Future<int> getDataFromJson() async {
+    static Future<int> getDataFromJson() async {
     var UserXML = {};
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     UserXML["email"] = prefs.getString('email'); //TODO: Zmienić na inne maile
@@ -124,12 +124,6 @@ class UserProfile extends StatelessWidget {
 
 class PasswordEdit extends StatelessWidget {
 
-  String userEmail;
-
-  PasswordEdit(String userEmail) {
-    this.userEmail = userEmail;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -151,7 +145,7 @@ class PasswordEdit extends StatelessWidget {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ChangePasswordFromUserProfile(userEmail)));
+                    MaterialPageRoute(builder: (context) => ChangePasswordFromUserProfile()));
                   },
                 child: Text(
                   "Zmień hasło",
