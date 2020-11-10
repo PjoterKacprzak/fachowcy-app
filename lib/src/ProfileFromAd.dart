@@ -31,9 +31,10 @@ class ProfileFromAd extends StatelessWidget {
                         ),
                         SizedBox(height: 16),
                         UserNameSection(),
+                        ContactSection(),
                         RatingSection(),
-                        CommentSection(),
                         UserAd(),
+                        CommentSection(),
 
                       ],
                     ),
@@ -65,16 +66,6 @@ class UserNameSection extends StatelessWidget {
         SizedBox(height: 8),
         GestureDetector(
           onTap: (){
-            print("Message");
-          },
-          child: Text(
-            "Napisz wiadomość",
-            style: new TextStyle(color: Colors.green, fontSize: 20),
-          ),
-        ),
-        SizedBox(height: 8),
-        GestureDetector(
-          onTap: (){
             print("Portfolio");
           },
           child: Text(
@@ -97,6 +88,39 @@ class UserNameSection extends StatelessWidget {
   }
 
 }
+
+class ContactSection extends StatelessWidget {
+
+  String rating = "5";
+  String telephone = "123123123";
+  String email = "loremiak@gmail.com";
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 16),
+        Text(
+          "Kontakt",
+          style: new TextStyle(color: Colors.white, fontSize: 16),
+        ),
+        SizedBox(height: 8),
+        Text(
+          telephone,
+          style: new TextStyle(color: Colors.white, fontSize: 24),
+        ),
+        SizedBox(height: 8),
+        Text(
+          email,
+          style: new TextStyle(color: Colors.white, fontSize: 24),
+        ),
+      ],
+    );
+  }
+
+}
+
+
 
 class RatingSection extends StatelessWidget {
 

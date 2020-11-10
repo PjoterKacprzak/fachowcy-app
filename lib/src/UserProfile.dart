@@ -44,6 +44,8 @@ class UserProfile extends StatelessWidget {
                               width: 120, height: 120, fit: BoxFit.contain),
                         ),
                         SizedBox(height: 16),
+                        Portfolio(),
+                        SizedBox(height: 8),
                         Logout(),
                         SizedBox(height: 16),
                         CustomLabels("Imię i nazwisko", userData.name + " " + userData.lastName),
@@ -328,6 +330,33 @@ class UserHistorySection extends StatelessWidget {
 
 }
 
+class Portfolio extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: GestureDetector(
+        onTap:(){
+          print("Portfolio");
+
+//          Navigator.push(
+//              context,
+//              MaterialPageRoute(builder: (context) => LoginPage()));
+        },
+        child: Text(
+          "Dodaj portfolio",
+          style: const TextStyle(color: Colors.green, fontSize: 24),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+    );
+  }
+
+}
+
+
+
 class Logout extends StatelessWidget {
 
   @override
@@ -336,6 +365,7 @@ class Logout extends StatelessWidget {
       child: GestureDetector(
         onTap:(){
           print("Logout");
+          logout();
           Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => LoginPage()));

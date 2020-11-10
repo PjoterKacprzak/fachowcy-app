@@ -195,7 +195,7 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                               else {
                                 _formKey.currentState.save();
 
-//                                changePassword(userEmail, _password);
+                                changePassword(userEmail, _password);
                                 _showToastGood(context, 'Hasło zostało zmienione!');
 
 //                                Navigator.push(

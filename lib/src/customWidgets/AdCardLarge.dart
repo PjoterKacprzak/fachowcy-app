@@ -54,7 +54,7 @@ class AdCardLarge extends StatelessWidget {
                                     SizedBox(height: 16),
                                     UserProfileShort(adData.name , adData.lastName ,"https://loremflickr.com/80/80"),
                                     SizedBox(height: 16),
-                                    LocalizationSection(adData.serviceCardLists[index].location),
+                                    LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
                                   ],
                                 ),
                               ),
@@ -196,10 +196,11 @@ class TextSection extends StatelessWidget {
 class LocalizationSection extends StatelessWidget {
 
   String location;
+  String phone;
 
-
-  LocalizationSection(String location) {
+  LocalizationSection(String location, String phone) {
     this.location = location;
+    this.phone = phone;
   }
 
   @override
@@ -217,24 +218,15 @@ class LocalizationSection extends StatelessWidget {
           ],
         ),
         SizedBox(height: 8),
-        GestureDetector(
-          onTap:(){
-            print("Message");
-
-//            Navigator.push(
-//                context,
-//                MaterialPageRoute(builder: (context) => AdCardLarge()));
-          },
-          child: Row(
-            children: <Widget>[
-              Icon(Icons.email, color: Colors.green),
-              SizedBox(width: 8),
-              Text(
-                "Napisz wiadomość",
-                style: new TextStyle(color: Colors.green, fontSize: 16),
-              ),
-            ],
-          ),
+        Row(
+          children: <Widget>[
+            Icon(Icons.phone, color: Colors.white),
+            SizedBox(width: 8),
+            Text(
+              phone,
+              style: new TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ],
         ),
       ],
     );
