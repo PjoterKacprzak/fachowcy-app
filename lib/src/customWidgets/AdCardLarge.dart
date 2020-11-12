@@ -14,6 +14,12 @@ import 'AdCardSmall.dart';
 
 class AdCardLarge extends StatelessWidget {
 
+  int id;
+
+  AdCardLarge(int id) {
+    this.id = id;
+  }
+
   static var adData;
   static int index;
 
@@ -52,7 +58,7 @@ class AdCardLarge extends StatelessWidget {
                                   children: <Widget>[
                                     TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
                                     SizedBox(height: 16),
-                                    UserProfileShort(adData.name , adData.lastName ,"https://loremflickr.com/80/80"),
+                                    UserProfileShort(adData.name , adData.lastName ,"https://loremflickr.com/80/80", id),
                                     SizedBox(height: 16),
                                     LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
                                   ],
@@ -239,23 +245,25 @@ class UserProfileShort extends StatelessWidget {
   String name;
   String lastName;
   String photoLink;
+  int id;
 
-  UserProfileShort(String name, String lastName, String photoLink) {
+  UserProfileShort(String name, String lastName, String photoLink, int id) {
     this.name = name;
     this.lastName = lastName;
     this.photoLink = photoLink;
+    this.id = id;
   }
 
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        print("Profile");
+      onTap: () async{
+        await ProfileFromAd.getProfileDataByAdId(id);
 
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ProfileFromAd()));
+            MaterialPageRoute(builder: (context) => ProfileFromAd(id)));
       },
       child: Row(
         children: <Widget>[

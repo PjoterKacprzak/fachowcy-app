@@ -37,7 +37,7 @@ class AdCardSmall extends StatelessWidget {
                 await AdCardLarge.getAdDataByAdId(userAdId);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AdCardLarge()));
+                  MaterialPageRoute(builder: (context) => AdCardLarge(userAdId)));
                 },
               child: Container(
                 //color: Colors.blueGrey,

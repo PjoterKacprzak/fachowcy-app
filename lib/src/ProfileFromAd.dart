@@ -1,12 +1,24 @@
+import 'package:fachowcy_app/Config/Config.dart';
+import 'package:fachowcy_app/Data/UserProfileFromAdData.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'customWidgets/AdCardSmall.dart';
 
 class ProfileFromAd extends StatelessWidget {
 
+  int adNumber;
+  static var profileData;
+  static int index;
 
+  ProfileFromAd(int id) {
+    this.adNumber = id;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +42,8 @@ class ProfileFromAd extends StatelessWidget {
                               width: 120, height: 120, fit: BoxFit.contain),
                         ),
                         SizedBox(height: 16),
-                        UserNameSection(),
-                        ContactSection(),
+                        UserNameSection(profileData.name, profileData.lastName),
+                        ContactSection(profileData.phoneNumber, profileData.email),
                         RatingSection(),
                         UserAd(),
                         CommentSection(),
@@ -47,13 +59,56 @@ class ProfileFromAd extends StatelessWidget {
       ),
     );
   }
+
+  //metoda fromJSON
+  static Future<int> getProfileDataByAdId(int id) async {
+    var UserXML = {};
+
+    UserXML["serviceCardId"] = id;
+    String serviceCardId = json.encode(UserXML);
+
+    final http.Response response = await http.post(
+      Config.serverHostString + '/api/service-card/findUserByServiceCardID',
+      headers: {'Content-Type': 'application/json'},
+      body: serviceCardId,
+    );
+
+    Map userProfileDataMap = jsonDecode(response.body);
+    var userProfileData = UserProfileFromAdData.fromJson(userProfileDataMap);
+    int indexx;
+
+    for(int i = 0; i < userProfileData.serviceCardLists.length; i++) {
+      if(userProfileData.serviceCardLists[i].serviceCardId == id) {
+        indexx = i;
+        break;
+      }
+    }
+
+    // TODO: CHECK THE REPOSONE NUMBERS
+
+    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
+
+      profileData = userProfileData;
+      index = indexx;
+      print("User profile data from ad received from server");
+      return response.statusCode;
+    } else {
+      throw new Exception('Failed to load profile data.');
+    }
+  }
   
 }
 
 class UserNameSection extends StatelessWidget {
 
-  String name = "Loremiak";
-  String lastName = "Ipsumiak";
+  String name;
+  String lastName;
+
+
+  UserNameSection(String name, String lastName) {
+    this.name = name;
+    this.lastName = lastName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +146,13 @@ class UserNameSection extends StatelessWidget {
 
 class ContactSection extends StatelessWidget {
 
-  String rating = "5";
-  String telephone = "123123123";
-  String email = "loremiak@gmail.com";
+  String telephone;
+  String email;
+
+  ContactSection(String telephone, String email) {
+    this.telephone = telephone;
+    this.email = email;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +183,7 @@ class ContactSection extends StatelessWidget {
 
 class RatingSection extends StatelessWidget {
 
-  String rating = "5";
+  String numberOfOrder = "5";
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +212,7 @@ class RatingSection extends StatelessWidget {
         ),
         SizedBox(height: 8),
         Text(
-          rating,
+          numberOfOrder,
           style: new TextStyle(color: Colors.white, fontSize: 24),
         ),
       ],
