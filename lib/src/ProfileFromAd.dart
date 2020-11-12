@@ -45,7 +45,7 @@ class ProfileFromAd extends StatelessWidget {
                         UserNameSection(profileData.name, profileData.lastName),
                         ContactSection(profileData.phoneNumber, profileData.email),
                         RatingSection(),
-                        UserAd(),
+                        UserAds(profileData, adNumber),
                         CommentSection(),
 
                       ],
@@ -221,6 +221,97 @@ class RatingSection extends StatelessWidget {
 
 }
 
+class UserAds extends StatelessWidget {
+
+  var userData;
+  int id;
+
+
+  UserAds(var userData, int id) {
+    this.userData = userData;
+    this.id = id;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 32),
+        Text(
+          "Ogłoszenia użytkownika",
+          style: new TextStyle(color: Colors.white, fontSize: 16),
+        ),
+        FutureBuilder(
+          future: ProfileFromAd.getProfileDataByAdId(id),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            int numberOfAds = 0;
+            int myIndex = 0;
+            for(int i = 0; i < userData.serviceCardLists.length; i++) {
+              if(userData.serviceCardLists[i].active == true) {
+                numberOfAds++;
+              }
+            }
+
+            if(numberOfAds == 0) {
+              return Column(
+                children: <Widget>[
+                  Text(
+                    "Nie masz aktywynych ogłoszeń",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                  SizedBox(height: 40),
+                ],
+              );
+            }
+            if(snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: Text(
+                    "Loading..",
+                    style: new TextStyle(fontSize: 50),
+                  ),
+                ),
+              );
+            } else {
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: numberOfAds,
+                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 0.65, //TODO: zrobić to mądrzej
+                ),
+                itemBuilder: (BuildContext context, int index) {
+
+                  bool flag = true;
+                  while(flag) {
+                    if(userData.serviceCardLists[myIndex].active == false) {
+
+                      if(myIndex <= userData.serviceCardLists.length) {
+                        myIndex++;
+                      }
+                    } else {
+                      flag = false;
+                    }
+                  }
+
+                  if(myIndex <= userData.serviceCardLists.length) {
+                    myIndex++;
+                  }
+
+                  return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+                },
+              );
+            }
+          },
+        ),
+      ],
+    );
+  }
+}
+
 class CommentSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -239,41 +330,5 @@ class CommentSection extends StatelessWidget {
       ],
     );
   }
-
-}
-
-//TODO: Feature builder i ładowanie z bazy
-class UserAd extends StatelessWidget {
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        SizedBox(height: 32),
-        Text(
-          "Ogłoszenia użytkownika",
-          style: new TextStyle(color: Colors.white, fontSize: 16),
-        ),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          itemCount: 5,
-          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-            childAspectRatio: 0.65, //TODO: zrobić to mądrzej
-          ),
-          itemBuilder: (BuildContext context, int index) {
-
-            return AdCardSmall(false, "Title", "Text text text Text text text Text text text Text text text Text text text ", 0);
-          },
-        ),
-      ],
-    );
-  }
-
 
 }
