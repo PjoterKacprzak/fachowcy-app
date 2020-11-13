@@ -46,7 +46,7 @@ class ProfileFromAd extends StatelessWidget {
                         ContactSection(profileData.phoneNumber, profileData.email),
                         RatingSection(),
                         UserAds(profileData, adNumber),
-                        CommentSection(),
+                        CommentSection(profileData, adNumber),
 
                       ],
                     ),
@@ -90,10 +90,12 @@ class ProfileFromAd extends StatelessWidget {
 
       profileData = userProfileData;
       index = indexx;
+      print("ID OGŁOSZENIA: " + id.toString());
+      print(userProfileData.userCommentList[0].rate);
       print("User profile data from ad received from server");
       return response.statusCode;
     } else {
-      throw new Exception('Failed to load profile data.');
+      throw new Exception('Failed to load profile data after ad.');
     }
   }
   
@@ -313,6 +315,16 @@ class UserAds extends StatelessWidget {
 }
 
 class CommentSection extends StatelessWidget {
+
+  var userData;
+  int id;
+
+
+  CommentSection(var userData, int id) {
+    this.userData = userData;
+    this.id = id;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -322,11 +334,58 @@ class CommentSection extends StatelessWidget {
           "Komentarze",
           style: new TextStyle(color: Colors.white, fontSize: 16),
         ),
-        SizedBox(height: 8),
-        Text(
-          "tutaj cos bedzie",
-          style: new TextStyle(color: Colors.white, fontSize: 24),
-        )
+        FutureBuilder(
+          future: ProfileFromAd.getProfileDataByAdId(id),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            int numberOfAds = userData.userCommentList.length;
+
+            if(numberOfAds == 0) {
+              return Column(
+                children: <Widget>[
+                  Text(
+                    "Nie ma jeszcze żadnych komentarzy!",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                  SizedBox(height: 40),
+                ],
+              );
+            }
+            if(snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: Text(
+                    "Loading..",
+                    style: new TextStyle(fontSize: 50),
+                  ),
+                ),
+              );
+            } else {
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: numberOfAds,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(
+                        "User, który to wstawia",
+                      style: new TextStyle(color: Colors.green, fontSize: 20),
+                    ),
+                    subtitle: Text(
+                        userData.userCommentList[index].rate.toString() + "\n" + userData.userCommentList[index].description,
+                      style: new TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    isThreeLine: true,
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network("https://www.fillmurray.com/60/60",
+                          width: 60, height: 60, fit: BoxFit.contain),
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        ),
       ],
     );
   }
