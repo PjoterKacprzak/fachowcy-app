@@ -38,7 +38,7 @@ class ProfileFromAd extends StatelessWidget {
                         SizedBox(height: 30),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.network("https://loremflickr.com/200/200",
+                          child: Image.network("https://www.fillmurray.com//200/200",
                               width: 120, height: 120, fit: BoxFit.contain),
                         ),
                         SizedBox(height: 16),
