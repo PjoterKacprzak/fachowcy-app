@@ -1,15 +1,22 @@
-import 'dart:convert';
 
-import 'package:fachowcy_app/Data/ServiceCard.dart';
-import 'package:fachowcy_app/Data/User.dart';
-import 'package:fachowcy_app/src/LoginPage.dart';
+import 'dart:io';
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:async/async.dart';
 
-class PostNewAd extends StatelessWidget {
+import 'dart:convert';
+class PostNewAd extends StatefulWidget {
+  @override
+  _PostNewAdState createState() => _PostNewAdState();
+}
+
+class _PostNewAdState extends State<PostNewAd> {
+  File _image;
+  File _image2;
 
   @override
   Widget build(BuildContext context) {
@@ -69,19 +76,53 @@ class PostNewAd extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 10),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(40.0),
-                                child: Container(
-                                  margin: const EdgeInsets.all(8),
-                                  height: 156,
-                                  width: 256,
-                                  color: Colors.grey,
-                                  child: Center(
-                                    child: Text(
-                                      "Foto+",
-                                      style: const TextStyle(color: Colors.white),
-                                    ),
+                              // ClipRRect(
+                              //   borderRadius: BorderRadius.circular(40.0),
+                              //   child: Container(
+                              //     margin: const EdgeInsets.all(8),
+                              //     height: 156,
+                              //     width: 256,
+                              //     color: Colors.grey,
+                              //     child: Center(
+                              //       child: Text(
+                              //         "Foto+",
+                              //         style: const TextStyle(color: Colors.white),
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              Center(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _showPicker(context);
+                                  },
+
+
+                                  child: CircleAvatar(
+                                radius: 55,
+                                backgroundColor: Color(0xffFDCF09),
+                                child: _image != null
+                                    ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.file(
+                                    _image,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.fitHeight,
                                   ),
+                                )
+                                    : Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey[200],
+                                      borderRadius: BorderRadius.circular(50)),
+                                  width: 100,
+                                  height: 100,
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.grey[800],
+                                  ),
+                                ),
+                              ),
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -201,6 +242,7 @@ class PostNewAd extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 onPressed: () {
+                                  createUrlFromPhoto(_image);
                                 },
 
                                 child: Text(
@@ -226,4 +268,79 @@ class PostNewAd extends StatelessWidget {
       ),
     );
   }
+
+  _imgFromCamera() async {
+    File image = await ImagePicker.pickImage(
+        source: ImageSource.camera, imageQuality: 50);
+
+
+    setState(() {
+      _image = image;
+    });
+  }
+
+  _imgFromGallery() async {
+    File image = await  ImagePicker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50);
+
+    setState(() {
+      _image = image;
+    });
+  }
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        _imgFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      _imgFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+    );
+  }
+
+
+  Future<String>createUrlFromPhoto(File file)async
+  {
+    // var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+    //
+    // var length = await file.length();
+    // var uri = Uri.parse( Config.serverHostString + '/api/service-card/addPhotoToCloudinary');
+    // var request = new http.MultipartRequest("POST", uri);
+    // var multipartFile = new http.MultipartFile('file', stream, length,
+    //     filename: basename(file.path));
+    //
+
+    List<int> imageBytes = file.readAsBytesSync();
+    String base64Image = base64.encode(imageBytes);
+
+
+    final http.Response response = await http.post(
+        Config.serverHostString + '/api/service-card/addPhotoToCloudinary',
+        body: base64Image
+    );
+      return response.body;
+  }
+
+
+
 }
