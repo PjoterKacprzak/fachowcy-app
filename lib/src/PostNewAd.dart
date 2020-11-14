@@ -17,6 +17,8 @@ class PostNewAd extends StatefulWidget {
 class _PostNewAdState extends State<PostNewAd> {
   File _image;
   File _image2;
+  File _image3;
+  File _image4;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +42,7 @@ class _PostNewAdState extends State<PostNewAd> {
                         Expanded(
                           flex: 8, // 60%
                           child: Column(
-
                             crossAxisAlignment: CrossAxisAlignment.center,
-
                             //mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget> [
                               Text(
@@ -96,33 +96,32 @@ class _PostNewAdState extends State<PostNewAd> {
                                   onTap: () {
                                     _showPicker(context);
                                   },
-
-
                                   child: CircleAvatar(
-                                radius: 55,
-                                backgroundColor: Color(0xffFDCF09),
-                                child: _image != null
-                                    ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.file(
-                                    _image,
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.fitHeight,
+                                    radius: 55,
+                                    backgroundColor: Color(0xffFDCF09),
+                                    child: _image != null
+                                        ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.file(
+                                        _image,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    )
+                                        : Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          borderRadius: BorderRadius.circular(50)),
+                                      width: 100,
+                                      height: 100,
+                                      child: Icon(
+                                        Icons.camera_alt,
+                                        color: Colors.grey[800],
+                                      ),
+                                    ),
                                   ),
-                                )
-                                    : Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.circular(50)),
-                                  width: 100,
-                                  height: 100,
-                                  child: Icon(
-                                    Icons.camera_alt,
-                                    color: Colors.grey[800],
-                                  ),
-                                ),
-                              ),
+
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -242,7 +241,7 @@ class _PostNewAdState extends State<PostNewAd> {
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
                                 onPressed: () {
-                                  createUrlFromPhoto(_image);
+                                  createUrlFromPhoto(_image,_image2,_image3,_image4);
                                 },
 
                                 child: Text(
@@ -271,20 +270,30 @@ class _PostNewAdState extends State<PostNewAd> {
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
+        source: ImageSource.camera);
 
 
     setState(() {
       _image = image;
+      _image2 = image;
+      _image3 = image;
+      _image4 = image;
+
     });
   }
 
   _imgFromGallery() async {
     File image = await  ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
+        source: ImageSource.gallery);
 
     setState(() {
+      //TODO:wykasować
+
       _image = image;
+      _image2 = image;
+      _image3 = image;
+      _image4 = image;
+
     });
   }
   void _showPicker(context) {
@@ -319,28 +328,64 @@ class _PostNewAdState extends State<PostNewAd> {
   }
 
 
-  Future<String>createUrlFromPhoto(File file)async
+  Future<String>createUrlFromPhoto(File file,File file2,File file3,File file4)async
   {
-    // var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
-    //
-    // var length = await file.length();
-    // var uri = Uri.parse( Config.serverHostString + '/api/service-card/addPhotoToCloudinary');
-    // var request = new http.MultipartRequest("POST", uri);
-    // var multipartFile = new http.MultipartFile('file', stream, length,
-    //     filename: basename(file.path));
-    //
 
-    List<int> imageBytes = file.readAsBytesSync();
-    String base64Image = base64.encode(imageBytes);
+    print(file2);
+
+
+    var UserXML = {};
+    UserXML["photo1"] = '';
+    UserXML["photo2"] = '';
+    UserXML["photo3"] = '';
+    UserXML["photo4"] = '';
+
+
+    String base64Image1,base64Image2,base64Image3,base64Image4;
+    if(file!=null)
+      {
+        List<int> imageBytes =  file.readAsBytesSync();
+        base64Image1 = base64.encode(imageBytes);
+        UserXML["photo1"] = base64Image1;
+        print("TEST1");
+
+
+       // encodedPhotos.add(base64Image1);
+      } if(file2!=null)
+        {
+          List<int> imageBytes2 =  file2.readAsBytesSync();
+         base64Image2 = base64.encode(imageBytes2);
+          UserXML["photo2"] = base64Image2;
+          print("TEST2");
+       //   encodedPhotos.add(base64Image2);
+        } if(file3!=null)
+        {
+          List<int> imageBytes3 =  file3.readAsBytesSync();
+          base64Image3 = base64.encode(imageBytes3);
+          UserXML["photo3"] = base64Image3;
+         // encodedPhotos.add(base64Image3);
+        } if(file4!=null)
+        {
+          List<int> imageBytes4 =  file4.readAsBytesSync();
+          base64Image4 = base64.encode(imageBytes4);
+          UserXML["photo4"] = base64Image4;
+          //encodedPhotos.add(base64Image4);
+        }
+
+    String str = json.encode(UserXML);
+    print(str);
+
 
 
     final http.Response response = await http.post(
         Config.serverHostString + '/api/service-card/addPhotoToCloudinary',
-        body: base64Image
+          headers:{'Content-Type': 'application/json'},
+          body: str
+
+
+       // body: encodedPhotos
     );
-      return response.body;
+        print(response.body);
+    return response.body;
   }
-
-
-
 }
