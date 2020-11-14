@@ -11,9 +11,9 @@ class UserProfileFromAdData {
   final String role;
   final String createdAt;
   final List<ServiceCardList> serviceCardLists;
-  //final List<UserCommentList> userCommentList;
+  final List<UserCommentList> userCommentList;
 
-  UserProfileFromAdData({this.userId, this.email, this.password, this.name, this.lastName, this.phoneNumber, this.profilePhoto, this.description, this.role, this.createdAt, this.serviceCardLists,});
+  UserProfileFromAdData({this.userId, this.email, this.password, this.name, this.lastName, this.phoneNumber, this.profilePhoto, this.description, this.role, this.createdAt, this.serviceCardLists, this.userCommentList,});
 
   factory UserProfileFromAdData.fromJson(Map<String, dynamic> json) => UserProfileFromAdData(
     userId: json['userId'] == null ? null : json['userId'],
@@ -27,6 +27,7 @@ class UserProfileFromAdData {
     role: json['role'] == null ? null : json['role'],
     createdAt: json['createdAt'] == null ? null : json['createdAt'],
     serviceCardLists: json['serviceCardList'] == null ? null : List<ServiceCardList>.from(json['serviceCardList'].map((x) => ServiceCardList.fromJson(x))),
+    userCommentList: json['userCommentList'] == null ? null : List<UserCommentList>.from(json['userCommentList'].map((x) => UserCommentList.fromJson(x))),
   );
 }
 
@@ -56,5 +57,22 @@ class ServiceCardList {
     estimatedTime: json['estimatedTime'] == null ? null : json['estimatedTime'],
     createdAt: json['createdAt'] == null ? null : json['createdAt'],
     active: json['active'] == null ? null : json['active'],
+  );
+}
+
+class UserCommentList {
+
+  final int userCommentId;
+  final int userCommentingId;
+  final double rate;
+  final String description;
+
+  UserCommentList({this.userCommentId, this.userCommentingId, this.rate, this.description,});
+
+  factory UserCommentList.fromJson(Map<String, dynamic> json) => UserCommentList(
+    userCommentId: json['user_comment_id'] == null ? null : json['user_comment_id'],
+    userCommentingId: json['userCommentingId'] == null ? null : json['userCommentingId'],
+    rate: json['rate'] == null ? null : json['rate'],
+    description: json['description'] == null ? null : json['description'],
   );
 }

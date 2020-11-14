@@ -58,7 +58,7 @@ class AdCardLarge extends StatelessWidget {
                                   children: <Widget>[
                                     TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
                                     SizedBox(height: 16),
-                                    UserProfileShort(adData.name , adData.lastName ,"https://loremflickr.com/80/80", id),
+                                    UserProfileShort(adData.name , adData.lastName ,"https://www.fillmurray.com/80/80", id),
                                     SizedBox(height: 16),
                                     LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
                                   ],
@@ -312,10 +312,10 @@ class HorizontalFotoSection extends StatelessWidget {
                 width: 200.0,
               ),
 
-              Image.network('https://loremflickr.com/300/200',
+              Image.network('https://www.fillmurray.com//300/200',
                   width: 300, height: 200, fit: BoxFit.contain),
 
-              Image.network('https://loremflickr.com/640/360',
+              Image.network('https://www.fillmurray.com//640/360',
                   width: 200, fit: BoxFit.contain),
 
               Container(
@@ -324,7 +324,7 @@ class HorizontalFotoSection extends StatelessWidget {
                 width: 200.0,
               ),
 
-              Image.network('https://loremflickr.com/300/200',
+              Image.network('https://www.fillmurray.com//300/200',
                   width: 300, height: 200, fit: BoxFit.contain),
 
               Container(
@@ -333,7 +333,7 @@ class HorizontalFotoSection extends StatelessWidget {
                 width: 200.0,
               ),
 
-              Image.network('https://loremflickr.com/500/200',
+              Image.network('https://www.fillmurray.com//500/200',
                   width: 300, height: 200, fit: BoxFit.contain),
             ],
           ),

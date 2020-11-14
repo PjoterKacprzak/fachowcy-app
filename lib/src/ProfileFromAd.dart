@@ -1,4 +1,5 @@
 import 'package:fachowcy_app/Config/Config.dart';
+import 'package:fachowcy_app/Data/UserCommentingData.dart';
 import 'package:fachowcy_app/Data/UserProfileFromAdData.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,7 +39,7 @@ class ProfileFromAd extends StatelessWidget {
                         SizedBox(height: 30),
                         ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.network("https://loremflickr.com/200/200",
+                          child: Image.network("https://www.fillmurray.com//200/200",
                               width: 120, height: 120, fit: BoxFit.contain),
                         ),
                         SizedBox(height: 16),
@@ -46,7 +47,7 @@ class ProfileFromAd extends StatelessWidget {
                         ContactSection(profileData.phoneNumber, profileData.email),
                         RatingSection(),
                         UserAds(profileData, adNumber),
-                        CommentSection(),
+                        CommentSection(profileData, adNumber),
 
                       ],
                     ),
@@ -60,7 +61,6 @@ class ProfileFromAd extends StatelessWidget {
     );
   }
 
-  //metoda fromJSON
   static Future<int> getProfileDataByAdId(int id) async {
     var UserXML = {};
 
@@ -93,7 +93,7 @@ class ProfileFromAd extends StatelessWidget {
       print("User profile data from ad received from server");
       return response.statusCode;
     } else {
-      throw new Exception('Failed to load profile data.');
+      throw new Exception('Failed to load profile data after ad.');
     }
   }
   
@@ -313,6 +313,18 @@ class UserAds extends StatelessWidget {
 }
 
 class CommentSection extends StatelessWidget {
+
+  var userData;
+  int id;
+  static var userCommentingData;
+
+  CommentSection(var userData, int id) {
+    this.userData = userData;
+    this.id = id;
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -322,13 +334,81 @@ class CommentSection extends StatelessWidget {
           "Komentarze",
           style: new TextStyle(color: Colors.white, fontSize: 16),
         ),
-        SizedBox(height: 8),
-        Text(
-          "tutaj cos bedzie",
-          style: new TextStyle(color: Colors.white, fontSize: 24),
-        )
+        FutureBuilder(
+          future: ProfileFromAd.getProfileDataByAdId(id),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            int numberOfAds = userData.userCommentList.length;
+
+            if(numberOfAds == 0) {
+              return Column(
+                children: <Widget>[
+                  Text(
+                    "Nie ma jeszcze żadnych komentarzy!",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                  SizedBox(height: 40),
+                ],
+              );
+            }
+            if(snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: Text(
+                    "Loading..",
+                    style: new TextStyle(fontSize: 50),
+                  ),
+                ),
+              );
+            } else {
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: numberOfAds,
+                itemBuilder: (BuildContext context, int index) {
+                  //getUserCommentingData(userData.userCommentList[index].userCommentingId);
+                  return ListTile(
+                    title: Text(
+                      "ID komentującego usera:" + userData.userCommentList[index].userCommentingId.toString(),
+                      style: new TextStyle(color: Colors.green, fontSize: 20),
+                    ),
+                    subtitle: Text(
+                      userData.userCommentList[index].rate.toString() + "\n" + userData.userCommentList[index].description,
+                      style: new TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                    isThreeLine: true,
+                    leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network("https://www.fillmurray.com/60/60",
+                          width: 60, height: 60, fit: BoxFit.contain),
+                    ),
+                  );
+                },
+              );
+            }
+          },
+        ),
       ],
     );
   }
+
+//  static Future<int> getUserCommentingData(int id) async {
+//
+//    final response = await http.get(Config.serverHostString + "/api/users/findbyID?id=" + id.toString());
+//
+//    Map userDataCommentMap = jsonDecode(response.body);
+//    var userDataComment = UserCommentingData.fromJson(userDataCommentMap);
+//
+//    // TODO: CHECK THE REPOSONE NUMBERS
+//
+//    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
+//
+//      userCommentingData = userDataComment;
+//      print("User commenting data received.");
+//      return response.statusCode;
+//    } else {
+//      print("coś nie pykło");
+//      throw new Exception('Failed to load user commenting data.');
+//    }
+//  }
 
 }
