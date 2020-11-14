@@ -1,4 +1,5 @@
 import 'package:fachowcy_app/Config/Config.dart';
+import 'package:fachowcy_app/Data/UserCommentingData.dart';
 import 'package:fachowcy_app/Data/UserProfileFromAdData.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +61,6 @@ class ProfileFromAd extends StatelessWidget {
     );
   }
 
-  //metoda fromJSON
   static Future<int> getProfileDataByAdId(int id) async {
     var UserXML = {};
 
@@ -90,8 +90,6 @@ class ProfileFromAd extends StatelessWidget {
 
       profileData = userProfileData;
       index = indexx;
-      print("ID OGŁOSZENIA: " + id.toString());
-      print(userProfileData.userCommentList[0].rate);
       print("User profile data from ad received from server");
       return response.statusCode;
     } else {
@@ -318,12 +316,14 @@ class CommentSection extends StatelessWidget {
 
   var userData;
   int id;
-
+  static var userCommentingData;
 
   CommentSection(var userData, int id) {
     this.userData = userData;
     this.id = id;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -365,13 +365,14 @@ class CommentSection extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 itemBuilder: (BuildContext context, int index) {
+                  //getUserCommentingData(userData.userCommentList[index].userCommentingId);
                   return ListTile(
                     title: Text(
-                        "User, który to wstawia",
+                      "ID komentującego usera:" + userData.userCommentList[index].userCommentingId.toString(),
                       style: new TextStyle(color: Colors.green, fontSize: 20),
                     ),
                     subtitle: Text(
-                        userData.userCommentList[index].rate.toString() + "\n" + userData.userCommentList[index].description,
+                      userData.userCommentList[index].rate.toString() + "\n" + userData.userCommentList[index].description,
                       style: new TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     isThreeLine: true,
@@ -389,5 +390,25 @@ class CommentSection extends StatelessWidget {
       ],
     );
   }
+
+//  static Future<int> getUserCommentingData(int id) async {
+//
+//    final response = await http.get(Config.serverHostString + "/api/users/findbyID?id=" + id.toString());
+//
+//    Map userDataCommentMap = jsonDecode(response.body);
+//    var userDataComment = UserCommentingData.fromJson(userDataCommentMap);
+//
+//    // TODO: CHECK THE REPOSONE NUMBERS
+//
+//    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
+//
+//      userCommentingData = userDataComment;
+//      print("User commenting data received.");
+//      return response.statusCode;
+//    } else {
+//      print("coś nie pykło");
+//      throw new Exception('Failed to load user commenting data.');
+//    }
+//  }
 
 }
