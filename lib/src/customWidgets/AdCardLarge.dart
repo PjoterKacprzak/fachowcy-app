@@ -144,7 +144,7 @@ class SimilarAds extends StatelessWidget {
       ),
       itemBuilder: (BuildContext context, int index) {
 
-        return AdCardSmall(false, "Title", "Text text text Text text text Text text text Text text text Text text text ", 0);
+        return AdCardSmall(false, "Title", "Text text text Text text text Text text text Text text text Text text text ", 0, "link_to_photo");
       },
     );
   }

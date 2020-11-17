@@ -220,7 +220,7 @@ class UserAdSection extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
-              childAspectRatio: 0.58, //TODO: zrobić to mądrzej
+              childAspectRatio: 0.52, //TODO: zrobić to mądrzej
             ),
             itemBuilder: (BuildContext context, int index) {
               bool flag = true;
@@ -245,7 +245,7 @@ class UserAdSection extends StatelessWidget {
                 myIndex++;
               }
 
-              return AdCardSmall(true, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+              return AdCardSmall(true, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId, userData.serviceCardLists[myIndex-1].photo);
             },
           );
         }
@@ -306,7 +306,7 @@ class UserHistorySection extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
-              childAspectRatio: 0.65, //TODO: zrobić to mądrzej
+              childAspectRatio: 0.58, //TODO: zrobić to mądrzej
             ),
             itemBuilder: (BuildContext context, int index) {
               bool flag = true;
@@ -322,7 +322,7 @@ class UserHistorySection extends StatelessWidget {
               if(myIndex <= userData.serviceCardLists.length) {
                 myIndex++;
               }
-              return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+              return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId, userData.serviceCardLists[myIndex-1].photo);
             },
           );
         }

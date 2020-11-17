@@ -283,7 +283,7 @@ class UserAds extends StatelessWidget {
                   crossAxisCount: 2,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: 0.65, //TODO: zrobić to mądrzej
+                  childAspectRatio: 0.58, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
 
@@ -303,7 +303,7 @@ class UserAds extends StatelessWidget {
                     myIndex++;
                   }
 
-                  return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+                  return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId, userData.serviceCardLists[myIndex-1].photo);
                 },
               );
             }

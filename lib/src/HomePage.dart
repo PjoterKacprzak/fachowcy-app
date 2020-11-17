@@ -143,7 +143,9 @@ class ServiceCardListPaid extends StatelessWidget {
                       false,
                       HomePage.cardInfoData[index].title,
                       HomePage.cardInfoData[index].description,
-                      HomePage.cardInfoData[index].serviceCardId);
+                      HomePage.cardInfoData[index].serviceCardId,
+                      HomePage.cardInfoData[index].photo,
+                  );
                 },
               );
             }
