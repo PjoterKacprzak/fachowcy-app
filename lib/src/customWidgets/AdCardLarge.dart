@@ -51,7 +51,7 @@ class AdCardLarge extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               SizedBox(height: 16),
-                              HorizontalFotoSection(),
+                              HorizontalFotoSection(adData.serviceCardLists[index].photo, adData.serviceCardLists[index].serviceCardPhoto_2, adData.serviceCardLists[index].serviceCardPhoto_3, adData.serviceCardLists[index].serviceCardPhoto_4),
                               Container(
                                 margin: const EdgeInsets.all(12),
                                 child: Column(
@@ -298,6 +298,19 @@ class UserProfileShort extends StatelessWidget {
 
 class HorizontalFotoSection extends StatelessWidget {
 
+  String photo_1;
+  String photo_2;
+  String photo_3;
+  String photo_4;
+
+
+  HorizontalFotoSection(String photo_1, String photo_2, String photo_3, String photo_4) {
+    this.photo_1 = photo_1;
+    this.photo_2 = photo_2;
+    this.photo_3 = photo_3;
+    this.photo_4 = photo_4;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -307,35 +320,25 @@ class HorizontalFotoSection extends StatelessWidget {
           Row(
             children: <Widget>[
 
-              Container(
-                color: Colors.red, // Yellow
-                height: 200.0,
-                width: 200.0,
-              ),
+              photo_1 == "link_to_photo" ?
+              Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              Image.network(photo_1, width: 320, height: 200, fit: BoxFit.contain),
 
-              Image.network('https://www.fillmurray.com//300/200',
-                  width: 300, height: 200, fit: BoxFit.contain),
+              photo_2 == null ?
+              SizedBox(width: 0.01,) :
+              // Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              Image.network(photo_2, width: 320, height: 200, fit: BoxFit.contain),
 
-              Image.network('https://www.fillmurray.com//640/360',
-                  width: 200, fit: BoxFit.contain),
+              photo_3 == null ?
+              SizedBox(width: 0.01,) :
+              //Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              Image.network(photo_3, width: 320, height: 200, fit: BoxFit.contain),
 
-              Container(
-                color: Colors.pink, // Yellow
-                height: 200.0,
-                width: 200.0,
-              ),
+              photo_4 == null ?
+              SizedBox(width: 0.01,) :
+              //Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              Image.network(photo_4, width: 320, height: 200, fit: BoxFit.contain),
 
-              Image.network('https://www.fillmurray.com//300/200',
-                  width: 300, height: 200, fit: BoxFit.contain),
-
-              Container(
-                color: Colors.green, // Yellow
-                height: 200.0,
-                width: 200.0,
-              ),
-
-              Image.network('https://www.fillmurray.com//500/200',
-                  width: 300, height: 200, fit: BoxFit.contain),
             ],
           ),
           SizedBox(height: 16),
