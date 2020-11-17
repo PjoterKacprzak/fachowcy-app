@@ -39,9 +39,11 @@ class UserProfile extends StatelessWidget {
                       children: <Widget>[
                         SizedBox(height: 30),
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network("https://www.fillmurray.com//200/200",
-                              width: 120, height: 120, fit: BoxFit.contain),
+                            borderRadius: BorderRadius.circular(20),
+                            child: userData.profilePhoto == null ?
+//                          Image.network("https://www.fillmurray.com//200/200", width: 120, height: 120, fit: BoxFit.contain) :
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            Image.network(userData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                         ),
                         SizedBox(height: 16),
                         Portfolio(),
@@ -73,7 +75,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-    static Future<int> getDataFromJson() async {
+  static Future<int> getDataFromJson() async {
     var UserXML = {};
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     UserXML["email"] = prefs.getString('email'); //TODO: Zmienić na inne maile
@@ -146,9 +148,9 @@ class PasswordEdit extends StatelessWidget {
                   print("Edited");
 
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChangePasswordFromUserProfile()));
-                  },
+                      context,
+                      MaterialPageRoute(builder: (context) => ChangePasswordFromUserProfile()));
+                },
                 child: Text(
                   "Zmień hasło",
                   style: const TextStyle(color: Colors.green, fontSize: 24),
@@ -448,4 +450,3 @@ class CustomLabels extends StatelessWidget {
   }
 
 }
-

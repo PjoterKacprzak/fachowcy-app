@@ -1,4 +1,5 @@
 import 'package:fachowcy_app/Config/Config.dart';
+import 'package:fachowcy_app/Data/UserCommentingData.dart';
 import 'package:fachowcy_app/Data/UserProfileFromAdData.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,9 +38,11 @@ class ProfileFromAd extends StatelessWidget {
                       children: <Widget>[
                         SizedBox(height: 30),
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network("https://www.fillmurray.com//200/200",
-                              width: 120, height: 120, fit: BoxFit.contain),
+                            borderRadius: BorderRadius.circular(20),
+                            child: profileData.profilePhoto == null ?
+//                          Image.network("https://www.fillmurray.com//200/200", width: 120, height: 120, fit: BoxFit.contain) :
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                         ),
                         SizedBox(height: 16),
                         UserNameSection(profileData.name, profileData.lastName),
@@ -95,7 +98,7 @@ class ProfileFromAd extends StatelessWidget {
       throw new Exception('Failed to load profile data after ad.');
     }
   }
-  
+
 }
 
 class UserNameSection extends StatelessWidget {
