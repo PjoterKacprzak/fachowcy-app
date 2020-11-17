@@ -58,7 +58,7 @@ class AdCardLarge extends StatelessWidget {
                                   children: <Widget>[
                                     TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
                                     SizedBox(height: 16),
-                                    UserProfileShort(adData.name , adData.lastName ,"https://www.fillmurray.com/80/80", id),
+                                    UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
                                     SizedBox(height: 16),
                                     LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
                                   ],
@@ -284,8 +284,9 @@ class UserProfileShort extends StatelessWidget {
           SizedBox(width: 8),
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.network(photoLink,
-                width: 60, height: 60, fit: BoxFit.contain),
+            child: photoLink == null ?
+            Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+            Image.network(photoLink, width: 60, height: 60, fit: BoxFit.contain)
           ),
 
         ],
