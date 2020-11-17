@@ -10,10 +10,11 @@ class UserProfileFromAdData {
   final String description;
   final String role;
   final String createdAt;
+  final double rate;
   final List<ServiceCardList> serviceCardLists;
   final List<UserCommentList> userCommentList;
 
-  UserProfileFromAdData({this.userId, this.email, this.password, this.name, this.lastName, this.phoneNumber, this.profilePhoto, this.description, this.role, this.createdAt, this.serviceCardLists, this.userCommentList,});
+  UserProfileFromAdData({this.userId, this.email, this.password, this.name, this.lastName, this.phoneNumber, this.profilePhoto, this.description, this.role, this.createdAt, this.rate, this.serviceCardLists, this.userCommentList,});
 
   factory UserProfileFromAdData.fromJson(Map<String, dynamic> json) => UserProfileFromAdData(
     userId: json['userId'] == null ? null : json['userId'],
@@ -25,6 +26,7 @@ class UserProfileFromAdData {
     profilePhoto: json['profilePhoto'] == null ? null : json['profilePhoto'],
     description: json['description'] == null ? null : json['description'],
     role: json['role'] == null ? null : json['role'],
+    rate: json['rate'] == null ? null : json['rate'],
     createdAt: json['createdAt'] == null ? null : json['createdAt'],
     serviceCardLists: json['serviceCardList'] == null ? null : List<ServiceCardList>.from(json['serviceCardList'].map((x) => ServiceCardList.fromJson(x))),
     userCommentList: json['userCommentList'] == null ? null : List<UserCommentList>.from(json['userCommentList'].map((x) => UserCommentList.fromJson(x))),

@@ -49,7 +49,7 @@ class ProfileFromAd extends StatelessWidget {
                         SizedBox(height: 16),
                         UserNameSection(profileData.name, profileData.lastName),
                         ContactSection(profileData.phoneNumber, profileData.email),
-                        RatingSection(),
+                        RatingSection(profileData.rate),
                         UserAds(profileData, adNumber),
                         CommentSection(profileData, adNumber),
 
@@ -187,9 +187,11 @@ class ContactSection extends StatelessWidget {
 
 class RatingSection extends StatelessWidget {
 
-  double avgRate = 5.0;
-  double overallRating;
-  int numberOfRatings;
+ double rate;
+
+ RatingSection(double rate) {
+   this.rate = rate;
+ }
 
 
   @override
@@ -202,8 +204,12 @@ class RatingSection extends StatelessWidget {
           style: new TextStyle(color: Colors.white, fontSize: 16),
         ),
         SizedBox(height: 8),
+        rate == null ?
         Text(
-          avgRate.toString(),
+          "Nie ma jeszcze żadnej oceny",
+          style: new TextStyle(color: Colors.white, fontSize: 24),) :
+        Text(
+          rate.toString(),
           style: new TextStyle(color: Colors.white, fontSize: 24),
         ),
 //        Row( //TODO: wczytywać gwiazdki za pomocą oceny użytkownika
