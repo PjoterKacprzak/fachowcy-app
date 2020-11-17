@@ -1,5 +1,6 @@
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/AdData.dart';
+import 'package:fachowcy_app/Data/SimilarAdsData.dart';
 import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -73,7 +74,7 @@ class AdCardLarge extends StatelessWidget {
                         children: <Widget>[
                           SizedBox(height: 16),
                           Text("Podobne ogłoszenia", style: new TextStyle(color: Colors.white, fontSize: 24)),
-                          SimilarAds(),
+                          SimilarAds(adData.serviceCardLists[index].category, adData.serviceCardLists[index].location),
                         ],
                       ),
                     ],
@@ -128,27 +129,85 @@ class AdCardLarge extends StatelessWidget {
 //TODO: rozszerzyć to do FutureBuildera
 class SimilarAds extends StatelessWidget {
 
+  static var similarAdsData;
+  String category;
+  String location;
 
+  SimilarAds(String category, String location) {
+    this.category = category;
+    this.location = location;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: 5,
-      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 5,
-        childAspectRatio: 0.65, //TODO: zrobić to mądrzej
-      ),
-      itemBuilder: (BuildContext context, int index) {
-
-        return AdCardSmall(false, "Title", "Text text text Text text text Text text text Text text text Text text text ", 0, "link_to_photo");
-      },
-    );
+    return Container(
+        child: FutureBuilder(
+          future: getSimilarAds(category, location),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            int numberOfAds = similarAdsData.length;
+            if (numberOfAds == 0) {
+              return Column(
+                children: <Widget>[
+                  Text(
+                    "Nie ma podobnych ogłoszeń",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                  SizedBox(height: 40),
+                ],
+              );
+            }
+            if (snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: Text(
+                    "Loading..",
+                    style: new TextStyle(fontSize: 50),
+                  ),
+                ),
+              );
+            } else {
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: numberOfAds,
+                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 0.56, //TODO: zrobić to mądrzej
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return AdCardSmall(
+                    false,
+                    similarAdsData[index].title,
+                    similarAdsData[index].description,
+                    similarAdsData[index].serviceCardId,
+                    similarAdsData[index].photo,
+                  );
+                },
+              );
+            }
+          },
+        ));
   }
 
+
+  static Future<int> getSimilarAds(String category, String location) async {
+    SimilarAdsData similarAdsDataFuture = new SimilarAdsData();
+
+    final response = await http.get(
+        Config.serverHostString + "/api/service-card/similarCard?category="
+            + category + "&location=" + location
+    );
+
+    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
+      similarAdsData = similarAdsDataFuture.parseServiceCard(response.body);
+      print("Similar ads data received");
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to load similar ads.');
+    }
+  }
 }
 
 class TextSection extends StatelessWidget {
