@@ -17,7 +17,6 @@ class AdCardSmall extends StatelessWidget {
     this.isUserProfile = isUserProfile;
     this.userAdId = userAdId;
   }
-
   @override
   Widget build(BuildContext context) {
     return Row(

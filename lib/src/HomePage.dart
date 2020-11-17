@@ -1,96 +1,153 @@
 import 'dart:convert';
-
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/ServiceCard.dart';
-import 'package:fachowcy_app/Data/User.dart';
-import 'package:fachowcy_app/src/LoginPage.dart';
-import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-
+import 'UserMainPage.dart';
+import 'UserProfile.dart';
 import 'customWidgets/AdCardSmall.dart';
 
-
 class HomePage extends StatelessWidget {
+  static var cardInfoData;
+
+  static Future<int> getAllCards() async {
+    ServiceCard serviceCard = new ServiceCard();
+
+    final http.Response response = await http.get(
+      Config.serverHostString + 'api/service-card/all',
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
+      cardInfoData = serviceCard.parseServiceCard(response.body);
+      print("CardData received");
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to find Card.');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueAccent,
-      body: CustomScrollView(
-        slivers: <Widget>[
-          CustomAppBar(),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.5,
-                              child: FlatButton(
-                                shape: RoundedRectangleBorder(),
-                                padding: EdgeInsets.all(16.0),
-                                color: Colors.lightBlue,
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                onPressed: (){},
-                                child: Text('PŁATNE', style: TextStyle(fontSize: 20)),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width*0.5,
-                              child: FlatButton(
-                                shape: RoundedRectangleBorder(),
-                                padding: EdgeInsets.all(16.0),
-                                color: Colors.lightBlue,
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                onPressed: (){},
-                                child: Text('WYMIANA', style: TextStyle(fontSize: 20)),
-                              ),
-                            )
-                          ],
-                        )
-                      ],
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          backgroundColor: Colors.blueAccent,
+          body: NestedScrollView(
+            headerSliverBuilder:
+                (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  backgroundColor: Colors.blue,
+                  floating: true,
+                  pinned: false,
+                  snap: false,
+                  centerTitle: true,
+                  title: TextButton(
+                    child: Text('Fachowcy',
+                        style: TextStyle(color: Colors.white, fontSize: 23)),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserMainPage()));
+                    },
+                  ),
+                  actions: <Widget>[
+                    IconButton(
+                      icon: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                      ),
+                      onPressed: () async {
+                        var result = await UserProfile.getDataFromJson();
+                        if (result ==
+                            200) //TODO: zmienić żeby przechodziło bez http 200
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UserProfile()));
+                      },
                     ),
                   ],
-                ),
-                SizedBox(height: 10),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 24,
-                  runSpacing: 24,
-                  children: [
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
-                    AdCardSmall(false, "Title", "xxx", 0),
+                  bottom: TabBar(
+                    tabs: <Widget>[
+                      Tab(
+                        text: "PŁATNE",
+                      ),
+                      Tab(
+                        text: "WYMIANA",
+                      )
+                    ],
+                  ),
+                )
+              ];
+            },
+            body: TabBarView(
+              children: [
+                //platne
+                ServiceCardListPaid(),
+                //wymiana
+                ServiceCardListPaid(),
+              ],
+            ),
+          ),
+        ));
+  }
+}
 
-                  ],
+class ServiceCardListPaid extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(left: 20, right: 20),
+        child: FutureBuilder(
+          future: HomePage.getAllCards(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            int numberOfAds = HomePage.cardInfoData.length;
+            if (numberOfAds == 0) {
+              return Column(
+                children: <Widget>[
+                  Text(
+                    "Brak ogłoszeń",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                  SizedBox(height: 40),
+                ],
+              );
+            }
+            //sleep(const Duration(milliseconds: 100));
+            if (snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: Text(
+                    "Loading..",
+                    style: new TextStyle(fontSize: 50),
+                  ),
                 ),
-                SizedBox(height: 10)
-              ]
-            )
-          )
-        ],
-      ),
-    );
+              );
+            } else {
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: numberOfAds,
+                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 0.65, //TODO: zrobić to mądrzej
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return AdCardSmall(
+                      false,
+                      HomePage.cardInfoData[index].title,
+                      HomePage.cardInfoData[index].description,
+                      HomePage.cardInfoData[index].serviceCardId);
+                },
+              );
+            }
+          },
+        ));
   }
 }

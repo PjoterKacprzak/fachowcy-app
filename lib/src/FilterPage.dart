@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
+
 class FilterPage extends StatefulWidget {
   FilterPage({Key key}) : super(key: key);
 
@@ -19,6 +21,7 @@ class FilterPage extends StatefulWidget {
 class _FilterPageState extends State<FilterPage> {
 var _category = ['Wykończenia', 'AGD', 'Stolarka', 'Elektryka','Malowanie'];
 var _currentSelectedCategory = 'Wykończenia';
+var rating = 3.0;
 void _onDropItemSelected(String newSelectedCategory){
   setState(() {
     this._currentSelectedCategory = newSelectedCategory;
@@ -169,30 +172,23 @@ void _onDropItemSelected(String newSelectedCategory){
                             ]
                             ),
                             SizedBox(height: 10),
-                            TextFormField( //TODO: Ocena jako gwiazdki, tak jak na mockup'ach, można użyć smooth_star_rating
-                              //controller: telephoneController,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 25,
-                              ),
-                              decoration: InputDecoration(
-                                labelText: 'Ocena min',
-                                labelStyle: TextStyle(
-                                  color: Colors.white,
-                                ),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                    width: 3.0,
-                                  ),
-                                ),
-                              ),
+                            SmoothStarRating(
+                              rating: rating,
+                              isReadOnly: false,
+                              size: 50,
+                              allowHalfRating: true,
+                              color: Colors.white,
+                              borderColor: Colors.white,
+                              filledIconData: Icons.star,
+                              halfFilledIconData: Icons.star_half,
+                              defaultIconData: Icons.star_border,
+
+                              starCount: 5,
+                              spacing: 2.0,
+                              onRated: (value) {
+                                print("rating value -> $value");
+                              },
+
                             ),
                             SizedBox(height: 40),
                             FlatButton(

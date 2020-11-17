@@ -13,9 +13,6 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       backgroundColor: Colors.blue,
-      leading: IconButton(
-        icon: Icon(Icons.chevron_left), onPressed: () {  },
-      ),
       floating: true,
       pinned: false,
       snap: false,
@@ -41,11 +38,6 @@ class CustomAppBar extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => UserProfile()));
 
           },
-//          onPressed: () {
-//            Navigator.push(
-//                context,
-//                MaterialPageRoute(builder: (context) => UserProfile()));
-//          },
         ),
       ],
     );

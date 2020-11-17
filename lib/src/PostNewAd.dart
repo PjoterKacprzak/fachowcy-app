@@ -376,7 +376,6 @@ class _PostNewAdState extends State<PostNewAd> {
     print(str);
 
 
-
     final http.Response response = await http.post(
         Config.serverHostString + '/api/service-card/addPhotoToCloudinary',
           headers:{'Content-Type': 'application/json'},
