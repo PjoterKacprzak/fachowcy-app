@@ -37,6 +37,9 @@ class ServiceCardList {
   final String title;
   final String category;
   final String photo;
+  final String serviceCardPhoto_2;
+  final String serviceCardPhoto_3;
+  final String serviceCardPhoto_4;
   final String serviceType;
   final String description;
   final String location;
@@ -44,13 +47,16 @@ class ServiceCardList {
   final String createdAt;
   final bool active;
 
-  ServiceCardList({this.serviceCardId, this.title, this.category, this.photo, this.serviceType, this.description, this.location, this.estimatedTime, this.createdAt, this.active, });
+  ServiceCardList({this.serviceCardId, this.title, this.category, this.photo, this.serviceType, this.description, this.location, this.estimatedTime, this.createdAt, this.active, this.serviceCardPhoto_2, this.serviceCardPhoto_3, this.serviceCardPhoto_4,});
 
   factory ServiceCardList.fromJson(Map<String, dynamic> json) => ServiceCardList(
     serviceCardId: json['serviceCardId'] == null ? null : json['serviceCardId'],
     title: json['title'] == null ? null : json['title'],
     category: json['category'] == null ? null : json['category'],
     photo: json['photo'] == null ? null : json['photo'],
+    serviceCardPhoto_2: json['serviceCardPhoto_2'] == null ? null : json['serviceCardPhoto_2'],
+    serviceCardPhoto_3: json['serviceCardPhoto_3'] == null ? null : json['serviceCardPhoto_3'],
+    serviceCardPhoto_4: json['serviceCardPhoto_4'] == null ? null : json['serviceCardPhoto_4'],
     serviceType: json['serviceType'] == null ? null : json['serviceType'],
     description: json['description'] == null ? null : json['description'],
     location: json['location'] == null ? null : json['location'],
