@@ -16,6 +16,8 @@ class ProfileFromAd extends StatelessWidget {
   int adNumber;
   static var profileData;
   static int index;
+  static double overallRating = 0;
+  static int numberOfRatings = 0;
 
   ProfileFromAd(int id) {
     this.adNumber = id;
@@ -185,7 +187,10 @@ class ContactSection extends StatelessWidget {
 
 class RatingSection extends StatelessWidget {
 
-  String numberOfOrder = "5";
+  double avgRate = 5.0;
+  double overallRating;
+  int numberOfRatings;
+
 
   @override
   Widget build(BuildContext context) {
@@ -197,26 +202,20 @@ class RatingSection extends StatelessWidget {
           style: new TextStyle(color: Colors.white, fontSize: 16),
         ),
         SizedBox(height: 8),
-        Row( //TODO: wczytywać gwiazdki za pomocą oceny użytkownika
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.star_rate, color: Colors.white),
-            Icon(Icons.star_rate, color: Colors.white),
-            Icon(Icons.star_rate, color: Colors.white),
-            Icon(Icons.star_rate, color: Colors.white),
-            Icon(Icons.star_rate, color: Colors.white),
-          ],
-        ),
-        SizedBox(height: 16),
         Text(
-          "Ilość zrealizowanych zleceń",
-          style: new TextStyle(color: Colors.white, fontSize: 16),
-        ),
-        SizedBox(height: 8),
-        Text(
-          numberOfOrder,
+          avgRate.toString(),
           style: new TextStyle(color: Colors.white, fontSize: 24),
         ),
+//        Row( //TODO: wczytywać gwiazdki za pomocą oceny użytkownika
+//          mainAxisAlignment: MainAxisAlignment.center,
+//          children: <Widget>[
+//            Icon(Icons.star_rate, color: Colors.white),
+//            Icon(Icons.star_rate, color: Colors.white),
+//            Icon(Icons.star_rate, color: Colors.white),
+//            Icon(Icons.star_rate, color: Colors.white),
+//            Icon(Icons.star_rate, color: Colors.white),
+//          ],
+//        ),
       ],
     );
   }
@@ -325,8 +324,6 @@ class CommentSection extends StatelessWidget {
     this.id = id;
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -367,6 +364,7 @@ class CommentSection extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 itemBuilder: (BuildContext context, int index) {
+
                   //getUserCommentingData(userData.userCommentList[index].userCommentingId);
                   return ListTile(
                     title: Text(
@@ -380,8 +378,9 @@ class CommentSection extends StatelessWidget {
                     isThreeLine: true,
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.network("https://www.fillmurray.com/60/60",
-                          width: 60, height: 60, fit: BoxFit.contain),
+                      child: null == null ? //TODO: do zrobienia jak zrobię user ID
+                      Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                      Image.network("wstawić link jak ogarne id usera wstawiajacego", width: 60, height: 60, fit: BoxFit.contain)
                     ),
                   );
                 },

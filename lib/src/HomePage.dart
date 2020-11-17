@@ -136,7 +136,7 @@ class ServiceCardListPaid extends StatelessWidget {
                   crossAxisCount: 2,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: 0.65, //TODO: zrobić to mądrzej
+                  childAspectRatio: 0.56, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return AdCardSmall(
