@@ -105,7 +105,13 @@ class ServiceCardListPaid extends StatelessWidget {
         child: FutureBuilder(
           future: HomePage.getAllCards(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            int numberOfAds = HomePage.cardInfoData.length;
+            int numberOfAds = 0;
+            try{
+              numberOfAds = HomePage.cardInfoData.length;
+            }
+            catch(Exception){
+              print("Couldn't receive data");
+            }
             if (numberOfAds == 0) {
               return Column(
                 children: <Widget>[
@@ -151,3 +157,4 @@ class ServiceCardListPaid extends StatelessWidget {
         ));
   }
 }
+
