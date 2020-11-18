@@ -68,13 +68,19 @@ class UserCommentList {
   final int userCommentingId;
   final double rate;
   final String description;
+  final String name;
+  final String lastName;
+  final String profilePhoto;
 
-  UserCommentList({this.userCommentId, this.userCommentingId, this.rate, this.description,});
+  UserCommentList({this.userCommentId, this.userCommentingId, this.rate, this.description, this.name, this.lastName, this.profilePhoto, });
 
   factory UserCommentList.fromJson(Map<String, dynamic> json) => UserCommentList(
     userCommentId: json['user_comment_id'] == null ? null : json['user_comment_id'],
     userCommentingId: json['userCommentingId'] == null ? null : json['userCommentingId'],
     rate: json['rate'] == null ? null : json['rate'],
+    name: json['name'] == null ? null : json['name'],
+    lastName: json['lastName'] == null ? null : json['lastName'],
+    profilePhoto: json['profilePhoto'] == null ? null : json['profilePhoto'],
     description: json['description'] == null ? null : json['description'],
   );
 }

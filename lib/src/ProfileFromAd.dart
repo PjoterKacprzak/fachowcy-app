@@ -373,10 +373,13 @@ class CommentSection extends StatelessWidget {
 
                   //getUserCommentingData(userData.userCommentList[index].userCommentingId);
                   return ListTile(
-                    title: Text(
+                    title: userData.userCommentList[index].name == null ?
+                    Text(
                       "ID komentującego usera:" + userData.userCommentList[index].userCommentingId.toString(),
-                      style: new TextStyle(color: Colors.green, fontSize: 20),
-                    ),
+                      style: new TextStyle(color: Colors.green, fontSize: 20),) :
+                    Text(
+                      userData.userCommentList[index].name + " " + userData.userCommentList[index].lastName,
+                      style: new TextStyle(color: Colors.green, fontSize: 20),),
                     subtitle: Text(
                       userData.userCommentList[index].rate.toString() + "\n" + userData.userCommentList[index].description,
                       style: new TextStyle(color: Colors.white, fontSize: 16),
@@ -384,9 +387,11 @@ class CommentSection extends StatelessWidget {
                     isThreeLine: true,
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: null == null ? //TODO: do zrobienia jak zrobię user ID
+                      child:  userData.userCommentList[index].profilePhoto == null ?
                       Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                      Image.network("wstawić link jak ogarne id usera wstawiajacego", width: 60, height: 60, fit: BoxFit.contain)
+                      userData.userCommentList[index].profilePhoto == "profile_photo" ?
+                      Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                      Image.network(userData.userCommentList[index].profilePhoto, width: 60, height: 60, fit: BoxFit.contain)
                     ),
                   );
                 },
