@@ -1,4 +1,5 @@
 import 'package:fachowcy_app/Config/Config.dart';
+import 'package:fachowcy_app/Data/UserCommentingData.dart';
 import 'package:fachowcy_app/Data/UserProfileFromAdData.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +16,8 @@ class ProfileFromAd extends StatelessWidget {
   int adNumber;
   static var profileData;
   static int index;
+  static double overallRating = 0;
+  static int numberOfRatings = 0;
 
   ProfileFromAd(int id) {
     this.adNumber = id;
@@ -37,14 +40,17 @@ class ProfileFromAd extends StatelessWidget {
                       children: <Widget>[
                         SizedBox(height: 30),
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network("https://www.fillmurray.com//200/200",
-                              width: 120, height: 120, fit: BoxFit.contain),
+                            borderRadius: BorderRadius.circular(20),
+                            child: profileData.profilePhoto == null ?
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            profileData.profilePhoto == "profile_photo" ?
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                         ),
                         SizedBox(height: 16),
                         UserNameSection(profileData.name, profileData.lastName),
                         ContactSection(profileData.phoneNumber, profileData.email),
-                        RatingSection(),
+                        RatingSection(profileData.rate),
                         UserAds(profileData, adNumber),
                         CommentSection(profileData, adNumber),
 
@@ -95,7 +101,7 @@ class ProfileFromAd extends StatelessWidget {
       throw new Exception('Failed to load profile data after ad.');
     }
   }
-  
+
 }
 
 class UserNameSection extends StatelessWidget {
@@ -182,7 +188,12 @@ class ContactSection extends StatelessWidget {
 
 class RatingSection extends StatelessWidget {
 
-  String numberOfOrder = "5";
+ double rate;
+
+ RatingSection(double rate) {
+   this.rate = rate;
+ }
+
 
   @override
   Widget build(BuildContext context) {
@@ -194,26 +205,24 @@ class RatingSection extends StatelessWidget {
           style: new TextStyle(color: Colors.white, fontSize: 16),
         ),
         SizedBox(height: 8),
-        Row( //TODO: wczytywać gwiazdki za pomocą oceny użytkownika
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.star_rate, color: Colors.white),
-            Icon(Icons.star_rate, color: Colors.white),
-            Icon(Icons.star_rate, color: Colors.white),
-            Icon(Icons.star_rate, color: Colors.white),
-            Icon(Icons.star_rate, color: Colors.white),
-          ],
-        ),
-        SizedBox(height: 16),
+        rate == null ?
         Text(
-          "Ilość zrealizowanych zleceń",
-          style: new TextStyle(color: Colors.white, fontSize: 16),
-        ),
-        SizedBox(height: 8),
+          "Nie ma jeszcze żadnej oceny",
+          style: new TextStyle(color: Colors.white, fontSize: 24),) :
         Text(
-          numberOfOrder,
+          rate.toString(),
           style: new TextStyle(color: Colors.white, fontSize: 24),
         ),
+//        Row( //TODO: wczytywać gwiazdki za pomocą oceny użytkownika
+//          mainAxisAlignment: MainAxisAlignment.center,
+//          children: <Widget>[
+//            Icon(Icons.star_rate, color: Colors.white),
+//            Icon(Icons.star_rate, color: Colors.white),
+//            Icon(Icons.star_rate, color: Colors.white),
+//            Icon(Icons.star_rate, color: Colors.white),
+//            Icon(Icons.star_rate, color: Colors.white),
+//          ],
+//        ),
       ],
     );
   }
@@ -280,7 +289,7 @@ class UserAds extends StatelessWidget {
                   crossAxisCount: 2,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: 0.65, //TODO: zrobić to mądrzej
+                  childAspectRatio: 0.58, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
 
@@ -300,7 +309,7 @@ class UserAds extends StatelessWidget {
                     myIndex++;
                   }
 
-                  return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+                  return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId, userData.serviceCardLists[myIndex-1].photo);
                 },
               );
             }
@@ -321,8 +330,6 @@ class CommentSection extends StatelessWidget {
     this.userData = userData;
     this.id = id;
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -364,12 +371,16 @@ class CommentSection extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 itemBuilder: (BuildContext context, int index) {
+
                   //getUserCommentingData(userData.userCommentList[index].userCommentingId);
                   return ListTile(
-                    title: Text(
+                    title: userData.userCommentList[index].name == null ?
+                    Text(
                       "ID komentującego usera:" + userData.userCommentList[index].userCommentingId.toString(),
-                      style: new TextStyle(color: Colors.green, fontSize: 20),
-                    ),
+                      style: new TextStyle(color: Colors.green, fontSize: 20),) :
+                    Text(
+                      userData.userCommentList[index].name + " " + userData.userCommentList[index].lastName,
+                      style: new TextStyle(color: Colors.green, fontSize: 20),),
                     subtitle: Text(
                       userData.userCommentList[index].rate.toString() + "\n" + userData.userCommentList[index].description,
                       style: new TextStyle(color: Colors.white, fontSize: 16),
@@ -377,8 +388,11 @@ class CommentSection extends StatelessWidget {
                     isThreeLine: true,
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.network("https://www.fillmurray.com/60/60",
-                          width: 60, height: 60, fit: BoxFit.contain),
+                      child:  userData.userCommentList[index].profilePhoto == null ?
+                      Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                      userData.userCommentList[index].profilePhoto == "profile_photo" ?
+                      Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                      Image.network(userData.userCommentList[index].profilePhoto, width: 60, height: 60, fit: BoxFit.contain)
                     ),
                   );
                 },

@@ -39,9 +39,12 @@ class UserProfile extends StatelessWidget {
                       children: <Widget>[
                         SizedBox(height: 30),
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network("https://www.fillmurray.com//200/200",
-                              width: 120, height: 120, fit: BoxFit.contain),
+                            borderRadius: BorderRadius.circular(20),
+                            child: userData.profilePhoto == null ?
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            userData.profilePhoto == "profile_photo" ?
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            Image.network(userData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                         ),
                         SizedBox(height: 16),
                         Portfolio(),
@@ -73,7 +76,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-    static Future<int> getDataFromJson() async {
+  static Future<int> getDataFromJson() async {
     var UserXML = {};
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     UserXML["email"] = prefs.getString('email'); //TODO: Zmienić na inne maile
@@ -146,9 +149,9 @@ class PasswordEdit extends StatelessWidget {
                   print("Edited");
 
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChangePasswordFromUserProfile()));
-                  },
+                      context,
+                      MaterialPageRoute(builder: (context) => ChangePasswordFromUserProfile()));
+                },
                 child: Text(
                   "Zmień hasło",
                   style: const TextStyle(color: Colors.green, fontSize: 24),
@@ -218,7 +221,7 @@ class UserAdSection extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
-              childAspectRatio: 0.58, //TODO: zrobić to mądrzej
+              childAspectRatio: 0.52, //TODO: zrobić to mądrzej
             ),
             itemBuilder: (BuildContext context, int index) {
               bool flag = true;
@@ -243,7 +246,7 @@ class UserAdSection extends StatelessWidget {
                 myIndex++;
               }
 
-              return AdCardSmall(true, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+              return AdCardSmall(true, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId, userData.serviceCardLists[myIndex-1].photo);
             },
           );
         }
@@ -304,7 +307,7 @@ class UserHistorySection extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
-              childAspectRatio: 0.65, //TODO: zrobić to mądrzej
+              childAspectRatio: 0.58, //TODO: zrobić to mądrzej
             ),
             itemBuilder: (BuildContext context, int index) {
               bool flag = true;
@@ -320,7 +323,7 @@ class UserHistorySection extends StatelessWidget {
               if(myIndex <= userData.serviceCardLists.length) {
                 myIndex++;
               }
-              return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId);
+              return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId, userData.serviceCardLists[myIndex-1].photo);
             },
           );
         }
@@ -448,4 +451,3 @@ class CustomLabels extends StatelessWidget {
   }
 
 }
-

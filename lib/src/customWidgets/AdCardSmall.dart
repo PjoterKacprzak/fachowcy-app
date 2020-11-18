@@ -8,15 +8,18 @@ class AdCardSmall extends StatelessWidget {
 
   String title;
   String text;
+  String photo;
   bool isUserProfile;
   int userAdId;
 
-  AdCardSmall(bool isUserProfile, String title, String text, int userAdId) {
+  AdCardSmall(bool isUserProfile, String title, String text, int userAdId, String photo) {
     this.title = title;
     this.text = text;
     this.isUserProfile = isUserProfile;
     this.userAdId = userAdId;
+    this.photo = photo;
   }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -28,39 +31,32 @@ class AdCardSmall extends StatelessWidget {
             color: Colors.blueGrey, //TODO: Zmienić kolor i dopasować do tła reszty
             elevation: 4.0,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-                side: BorderSide(width: 2, color: Colors.white),
+              borderRadius: BorderRadius.circular(20),
+              side: BorderSide(width: 2, color: Colors.white),
             ),
             child: GestureDetector(
               onTap:() async{
                 await AdCardLarge.getAdDataByAdId(userAdId);
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AdCardLarge(userAdId)));
-                },
+                    context,
+                    MaterialPageRoute(builder: (context) => AdCardLarge(userAdId)));
+              },
               child: Container(
                 //color: Colors.blueGrey,
                 child: Center(
                   child: Column(
                     children: <Widget>[
                       Center(),
+                      SizedBox(height: 10,),
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          height: 60,
-                          width: 120,
-                          color: Colors.black,
-                          child: Center(
-                            child: Text(
-                              "Foto",
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
+                          borderRadius: BorderRadius.circular(20),
+                          child: photo == "link_to_photo" ?
+                          Container(color: Colors.grey, width: 120, height: 90, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                          Image.network(photo, width: 120, height: 90, fit: BoxFit.contain)
                       ),
+                      SizedBox(height: 10,),
                       Text(
-                        title + "\n\n",
+                        title + "\n",
                         style: const TextStyle(color: Colors.white, fontSize: 24),
                         textAlign: TextAlign.center,
                         maxLines: 3,

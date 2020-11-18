@@ -1,5 +1,6 @@
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/AdData.dart';
+import 'package:fachowcy_app/Data/SimilarAdsData.dart';
 import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,14 +52,14 @@ class AdCardLarge extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               SizedBox(height: 16),
-                              HorizontalFotoSection(),
+                              HorizontalFotoSection(adData.serviceCardLists[index].photo, adData.serviceCardLists[index].serviceCardPhoto_2, adData.serviceCardLists[index].serviceCardPhoto_3, adData.serviceCardLists[index].serviceCardPhoto_4),
                               Container(
                                 margin: const EdgeInsets.all(12),
                                 child: Column(
                                   children: <Widget>[
                                     TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
                                     SizedBox(height: 16),
-                                    UserProfileShort(adData.name , adData.lastName ,"https://www.fillmurray.com/80/80", id),
+                                    UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
                                     SizedBox(height: 16),
                                     LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
                                   ],
@@ -73,7 +74,7 @@ class AdCardLarge extends StatelessWidget {
                         children: <Widget>[
                           SizedBox(height: 16),
                           Text("Podobne ogłoszenia", style: new TextStyle(color: Colors.white, fontSize: 24)),
-                          SimilarAds(),
+                          SimilarAds(adData.serviceCardLists[index].category, adData.serviceCardLists[index].location),
                         ],
                       ),
                     ],
@@ -128,27 +129,85 @@ class AdCardLarge extends StatelessWidget {
 //TODO: rozszerzyć to do FutureBuildera
 class SimilarAds extends StatelessWidget {
 
+  static var similarAdsData;
+  String category;
+  String location;
 
+  SimilarAds(String category, String location) {
+    this.category = category;
+    this.location = location;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: 5,
-      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 5,
-        childAspectRatio: 0.65, //TODO: zrobić to mądrzej
-      ),
-      itemBuilder: (BuildContext context, int index) {
-
-        return AdCardSmall(false, "Title", "Text text text Text text text Text text text Text text text Text text text ", 0);
-      },
-    );
+    return Container(
+        child: FutureBuilder(
+          future: getSimilarAds(category, location),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            int numberOfAds = similarAdsData.length;
+            if (numberOfAds == 0) {
+              return Column(
+                children: <Widget>[
+                  Text(
+                    "Nie ma podobnych ogłoszeń",
+                    style: TextStyle(color: Colors.white, fontSize: 24),
+                  ),
+                  SizedBox(height: 40),
+                ],
+              );
+            }
+            if (snapshot.data == null) {
+              return Container(
+                child: Center(
+                  child: Text(
+                    "Loading..",
+                    style: new TextStyle(fontSize: 50),
+                  ),
+                ),
+              );
+            } else {
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: numberOfAds,
+                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
+                  childAspectRatio: 0.56, //TODO: zrobić to mądrzej
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return AdCardSmall(
+                    false,
+                    similarAdsData[index].title,
+                    similarAdsData[index].description,
+                    similarAdsData[index].serviceCardId,
+                    similarAdsData[index].photo,
+                  );
+                },
+              );
+            }
+          },
+        ));
   }
 
+
+  static Future<int> getSimilarAds(String category, String location) async {
+    SimilarAdsData similarAdsDataFuture = new SimilarAdsData();
+
+    final response = await http.get(
+        Config.serverHostString + "/api/service-card/similarCard?category="
+            + category + "&location=" + location
+    );
+
+    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
+      similarAdsData = similarAdsDataFuture.parseServiceCard(response.body);
+      print("Similar ads data received");
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to load similar ads.');
+    }
+  }
 }
 
 class TextSection extends StatelessWidget {
@@ -284,8 +343,9 @@ class UserProfileShort extends StatelessWidget {
           SizedBox(width: 8),
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: Image.network(photoLink,
-                width: 60, height: 60, fit: BoxFit.contain),
+            child: photoLink == null ?
+            Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+            Image.network(photoLink, width: 60, height: 60, fit: BoxFit.contain)
           ),
 
         ],
@@ -297,6 +357,19 @@ class UserProfileShort extends StatelessWidget {
 
 class HorizontalFotoSection extends StatelessWidget {
 
+  String photo_1;
+  String photo_2;
+  String photo_3;
+  String photo_4;
+
+
+  HorizontalFotoSection(String photo_1, String photo_2, String photo_3, String photo_4) {
+    this.photo_1 = photo_1;
+    this.photo_2 = photo_2;
+    this.photo_3 = photo_3;
+    this.photo_4 = photo_4;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -306,35 +379,25 @@ class HorizontalFotoSection extends StatelessWidget {
           Row(
             children: <Widget>[
 
-              Container(
-                color: Colors.red, // Yellow
-                height: 200.0,
-                width: 200.0,
-              ),
+              photo_1 == "link_to_photo" ?
+              Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              Image.network(photo_1, width: 320, height: 200, fit: BoxFit.contain),
 
-              Image.network('https://www.fillmurray.com//300/200',
-                  width: 300, height: 200, fit: BoxFit.contain),
+              photo_2 == null ?
+              SizedBox(width: 0.01,) :
+              // Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              Image.network(photo_2, width: 320, height: 200, fit: BoxFit.contain),
 
-              Image.network('https://www.fillmurray.com//640/360',
-                  width: 200, fit: BoxFit.contain),
+              photo_3 == null ?
+              SizedBox(width: 0.01,) :
+              //Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              Image.network(photo_3, width: 320, height: 200, fit: BoxFit.contain),
 
-              Container(
-                color: Colors.pink, // Yellow
-                height: 200.0,
-                width: 200.0,
-              ),
+              photo_4 == null ?
+              SizedBox(width: 0.01,) :
+              //Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              Image.network(photo_4, width: 320, height: 200, fit: BoxFit.contain),
 
-              Image.network('https://www.fillmurray.com//300/200',
-                  width: 300, height: 200, fit: BoxFit.contain),
-
-              Container(
-                color: Colors.green, // Yellow
-                height: 200.0,
-                width: 200.0,
-              ),
-
-              Image.network('https://www.fillmurray.com//500/200',
-                  width: 300, height: 200, fit: BoxFit.contain),
             ],
           ),
           SizedBox(height: 16),
