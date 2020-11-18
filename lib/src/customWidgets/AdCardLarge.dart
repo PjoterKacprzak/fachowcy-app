@@ -345,6 +345,8 @@ class UserProfileShort extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: photoLink == null ?
             Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+            photoLink == "profile_photo" ?
+            Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
             Image.network(photoLink, width: 60, height: 60, fit: BoxFit.contain)
           ),
 
@@ -385,15 +387,21 @@ class HorizontalFotoSection extends StatelessWidget {
 
               photo_2 == null ?
               SizedBox(width: 0.01,) :
+              photo_2 == "" ?
+              SizedBox(width: 0.01,) :
               // Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               Image.network(photo_2, width: 320, height: 200, fit: BoxFit.contain),
 
               photo_3 == null ?
               SizedBox(width: 0.01,) :
+              photo_3 == "" ?
+              SizedBox(width: 0.01,) :
               //Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               Image.network(photo_3, width: 320, height: 200, fit: BoxFit.contain),
 
               photo_4 == null ?
+              SizedBox(width: 0.01,) :
+              photo_4 == "" ?
               SizedBox(width: 0.01,) :
               //Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               Image.network(photo_4, width: 320, height: 200, fit: BoxFit.contain),
