@@ -20,12 +20,12 @@ class FilterPage extends StatefulWidget {
 }
 
 class _FilterPageState extends State<FilterPage> {
-  String _priceMin = 'xd';
+  String _priceMin = '0';
   String _priceMax;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> _category = [
-    'Wykończenia',
+    'Wykonczenia',
     'AGD',
     'Stolarka',
     'Elektryka',
@@ -39,7 +39,7 @@ class _FilterPageState extends State<FilterPage> {
     'Zgierz'
   ];
   String _currentLocalization = "Lodz";
-  String _currentCategory = 'Wykończenia';
+  String _currentCategory = 'Wykonczenia';
   double _rating = 3.0;
   int _type = 1;
 

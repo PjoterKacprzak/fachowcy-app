@@ -8,8 +8,8 @@ class Photos {
 
   factory Photos.fromJson(Map<String, dynamic>json) => Photos(
     photo1: json['photo1'] == null ? null : json['photo1'],
-    photo2: json['photo1'] == null ? null : json['photo1'],
-    photo3: json['photo1'] == null ? null : json['photo1'],
-    photo4: json['photo1'] == null ? null : json['photo1'],
+    photo2: json['photo2'] == null ? null : json['photo2'],
+    photo3: json['photo3'] == null ? null : json['photo3'],
+    photo4: json['photo4'] == null ? null : json['photo4'],
   );
 }
