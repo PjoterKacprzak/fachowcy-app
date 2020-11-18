@@ -41,7 +41,8 @@ class UserProfile extends StatelessWidget {
                         ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: userData.profilePhoto == null ?
-//                          Image.network("https://www.fillmurray.com//200/200", width: 120, height: 120, fit: BoxFit.contain) :
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            userData.profilePhoto == "profile_photo" ?
                             Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
                             Image.network(userData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                         ),
