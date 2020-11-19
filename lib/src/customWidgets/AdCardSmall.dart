@@ -26,7 +26,7 @@ class AdCardSmall extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         SizedBox(
-          width: MediaQuery.of(context).size.width / 2.3, //TODO: jakby coś się sypało na innych kształtach to tu
+          width:  MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2.3 : MediaQuery.of(context).size.width / 3.3, //TODO: jakby coś się sypało na innych kształtach to tu
           child: Card(
             color: Colors.blueGrey, //TODO: Zmienić kolor i dopasować do tła reszty
             elevation: 4.0,
@@ -56,7 +56,7 @@ class AdCardSmall extends StatelessWidget {
                       ),
                       SizedBox(height: 10,),
                       Text(
-                        title + "\n",
+                        title + "\n\n",
                         style: const TextStyle(color: Colors.white, fontSize: 24),
                         textAlign: TextAlign.center,
                         maxLines: 3,

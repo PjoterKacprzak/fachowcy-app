@@ -225,10 +225,10 @@ class UserAdSection extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             itemCount: numberOfAds,
             gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
-              childAspectRatio: 0.52, //TODO: zrobić to mądrzej
+              childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.52 : 0.7, //TODO: zrobić to mądrzej
             ),
             itemBuilder: (BuildContext context, int index) {
               bool flag = true;
@@ -318,10 +318,10 @@ class UserHistorySection extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             itemCount: numberOfAds,
             gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
+              crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
-              childAspectRatio: 0.58, //TODO: zrobić to mądrzej
+              childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
             ),
             itemBuilder: (BuildContext context, int index) {
               bool flag = true;
