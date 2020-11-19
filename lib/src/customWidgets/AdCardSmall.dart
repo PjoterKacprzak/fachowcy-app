@@ -79,9 +79,23 @@ class AdCardSmall extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              flex: 3,
+                              flex: 2,
                               child: Container(
 
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                icon: new Icon(Icons.edit),
+                                color: Colors.white,
+                                onPressed: () {
+
+//                                    Navigator.push(
+//                                        context,
+//                                        MaterialPageRoute(builder: (context) => UserProfile()));
+
+                                },
                               ),
                             ),
                             Expanded(
