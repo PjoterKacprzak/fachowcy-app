@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/AdData.dart';
 import 'package:fachowcy_app/Data/SimilarAdsData.dart';
@@ -51,20 +53,60 @@ class AdCardLarge extends StatelessWidget {
                           //decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 4.0)),
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: 16),
-                              HorizontalFotoSection(adData.serviceCardLists[index].photo, adData.serviceCardLists[index].serviceCardPhoto_2, adData.serviceCardLists[index].serviceCardPhoto_3, adData.serviceCardLists[index].serviceCardPhoto_4),
-                              Container(
-                                margin: const EdgeInsets.all(12),
-                                child: Column(
-                                  children: <Widget>[
-                                    TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
-                                    SizedBox(height: 16),
-                                    UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
-                                    SizedBox(height: 16),
-                                    LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
-                                  ],
-                                ),
+                              MediaQuery.of(context).orientation == Orientation.portrait ?
+                                  Column(
+                                    children: <Widget>[
+                                      SizedBox(height: 16),
+                                      HorizontalFotoSection(adData.serviceCardLists[index].photo, adData.serviceCardLists[index].serviceCardPhoto_2, adData.serviceCardLists[index].serviceCardPhoto_3, adData.serviceCardLists[index].serviceCardPhoto_4),
+                                      Container(
+                                        margin: const EdgeInsets.all(12),
+                                        child: Column(
+                                          children: <Widget>[
+                                            TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
+                                            SizedBox(height: 16),
+                                            UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
+                                            SizedBox(height: 16),
+                                            LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                ): Column(
+                                children: <Widget>[
+                                  SizedBox(height: 16),
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 1,
+                                        child: HorizontalFotoSection(adData.serviceCardLists[index].photo, adData.serviceCardLists[index].serviceCardPhoto_2, adData.serviceCardLists[index].serviceCardPhoto_3, adData.serviceCardLists[index].serviceCardPhoto_4),
+                                      ),
+                                      SizedBox(width: 16),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(
+                                          children: <Widget>[
+                                            UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
+                                            SizedBox(height: 16),
+                                            LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: new EdgeInsets.only(left: 20, right: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(height: 16),
+                                        TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
+                                        SizedBox(height: 16),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+
                               ),
+
                             ],
                           ),
                         ),

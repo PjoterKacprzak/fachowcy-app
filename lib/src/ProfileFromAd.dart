@@ -227,7 +227,6 @@ class StarDisplay extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
-        print(index);
         return Icon(
           index < value - 0.75 ? Icons.star :
           0.75 > value - index && value - index > 0.25 ? Icons.star_half :
