@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/Photos.dart';
+import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,34 +51,117 @@ class _ChangeUserProfilePhotoState extends State<ChangeUserProfilePhoto> {
                   ),
               ),
               SizedBox(height: 8),
-              Builder(
-                builder: (context) => Center(
-                  child: FlatButton(
-                    color: Colors.green,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(16.0),
-                    splashColor: Colors.greenAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    onPressed: () async {
+              MediaQuery.of(context).orientation == Orientation.portrait ?
+                  Column(
+                    children: <Widget> [
+                      Builder(
+                        builder: (context) => Center(
+                          child: FlatButton(
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(16.0),
+                            splashColor: Colors.greenAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            onPressed: () async {
 
 //                      await(createUrlFromPhoto(
 //                          _image, _image2, _image3, _image4));
 
-                      if ( _image != null) {
-                        _showToastGood(context, "Udało się zmienić zdjęcie profilowe");
-                      } else {
-                        _showToastWrong(context, "Upss.. coś poszło nie tak!");
-                      }
-                    },
-                    child: Text(
-                      "Zmień zdjęcie profilowe",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
+                              if ( _image != null) {
+                                _showToastGood(context, "Udało się zmienić zdjęcie profilowe");
+                              } else {
+                                _showToastWrong(context, "Upss.. coś poszło nie tak!");
+                              }
+                            },
+                            child: Text(
+                              "Zmień zdjęcie profilowe",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Builder(
+                        builder: (context) => Center(
+                          child: FlatButton(
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(16.0),
+                            splashColor: Colors.greenAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context, MaterialPageRoute(builder: (context) => UserProfile()));
+                            },
+                            child: Text(
+                              "Wróć",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ):
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Builder(
+                        builder: (context) => Center(
+                          child: FlatButton(
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(16.0),
+                            splashColor: Colors.greenAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            onPressed: () async {
+
+//                      await(createUrlFromPhoto(
+//                          _image, _image2, _image3, _image4));
+
+                              if ( _image != null) {
+                                _showToastGood(context, "Udało się zmienić zdjęcie profilowe");
+                              } else {
+                                _showToastWrong(context, "Upss.. coś poszło nie tak!");
+                              }
+                            },
+                            child: Text(
+                              "Zmień zdjęcie profilowe",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 16),
+                      Builder(
+                        builder: (context) => Center(
+                          child: FlatButton(
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(16.0),
+                            splashColor: Colors.greenAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context, MaterialPageRoute(builder: (context) => UserProfile()));
+                            },
+                            child: Text(
+                              "Wróć",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ),
+
             ],
           ),
         ),
