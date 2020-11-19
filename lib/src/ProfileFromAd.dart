@@ -283,9 +283,16 @@ class UserAds extends StatelessWidget {
             if(snapshot.data == null) {
               return Container(
                 child: Center(
-                  child: Text(
-                    "Loading..",
-                    style: new TextStyle(fontSize: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                      SizedBox(height: 8),
+                      Text(
+                        "Loading, please wait..",
+                        style: new TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -370,9 +377,16 @@ class CommentSection extends StatelessWidget {
             if(snapshot.data == null) {
               return Container(
                 child: Center(
-                  child: Text(
-                    "Loading..",
-                    style: new TextStyle(fontSize: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                      SizedBox(height: 8),
+                      Text(
+                        "Loading, please wait..",
+                        style: new TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
                   ),
                 ),
               );
