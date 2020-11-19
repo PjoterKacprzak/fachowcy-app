@@ -114,7 +114,6 @@ class AdCardLarge extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(height: 16),
-                          Text("Podobne ogłoszenia", style: new TextStyle(color: Colors.white, fontSize: 24)),
                           SimilarAds(adData.serviceCardLists[index].category, adData.serviceCardLists[index].location),
                         ],
                       ),
@@ -181,62 +180,71 @@ class SimilarAds extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: FutureBuilder(
-          future: getSimilarAds(category, location),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            int numberOfAds = similarAdsData.length;
-            if (numberOfAds == 0) {
-              return Column(
-                children: <Widget>[
-                  Text(
-                    "Nie ma podobnych ogłoszeń",
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+    return Column(
+        children: <Widget>[
+          SizedBox(height: 16),
+          Text(
+              "Podobne ogłoszenia",
+              style: new TextStyle(color: Colors.white, fontSize: 16)
+          ),
+          FutureBuilder(
+            future: getSimilarAds(category, location),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              int numberOfAds = similarAdsData.length;
+              if (numberOfAds == 0) {
+                return Column(
+                  children: <Widget>[
+                    Text(
+                      "Nie ma podobnych ogłoszeń",
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    SizedBox(height: 40),
+                  ],
+                );
+              }
+              if (snapshot.data == null) {
+                return Container(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                        SizedBox(height: 8),
+                        Text(
+                          "Loading, please wait..",
+                          style: new TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 40),
-                ],
-              );
-            }
-            if (snapshot.data == null) {
-              return Container(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
-                      SizedBox(height: 8),
-                      Text(
-                        "Loading, please wait..",
-                        style: new TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ],
+                );
+              } else {
+                return GridView.builder(
+                  padding: new EdgeInsets.only(top: 16),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: numberOfAds,
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                    childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
                   ),
-                ),
-              );
-            } else {
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: numberOfAds,
-                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                  childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return AdCardSmall(
-                    false,
-                    similarAdsData[index].title,
-                    similarAdsData[index].description,
-                    similarAdsData[index].serviceCardId,
-                    similarAdsData[index].photo,
-                  );
-                },
-              );
-            }
-          },
-        ));
+                  itemBuilder: (BuildContext context, int index) {
+                    return AdCardSmall(
+                      false,
+                      similarAdsData[index].title,
+                      similarAdsData[index].description,
+                      similarAdsData[index].serviceCardId,
+                      similarAdsData[index].photo,
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ],
+    );
   }
 
 

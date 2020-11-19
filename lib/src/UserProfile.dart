@@ -258,6 +258,7 @@ class UserAdSection extends StatelessWidget {
               );
             } else {
               return GridView.builder(
+                padding: new EdgeInsets.only(top: 16),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
@@ -364,6 +365,7 @@ class UserHistorySection extends StatelessWidget {
               );
             } else {
               return GridView.builder(
+                padding: new EdgeInsets.only(top: 16),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,

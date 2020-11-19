@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 
 import 'customWidgets/AdCardSmall.dart';
@@ -339,6 +340,7 @@ class UserAds extends StatelessWidget {
               );
             } else {
               return GridView.builder(
+                padding: new EdgeInsets.only(top: 16),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
@@ -392,7 +394,7 @@ class CommentSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(height: 16),
+        SizedBox(height: 40),
         Text(
           "Komentarze",
           style: new TextStyle(color: Colors.white, fontSize: 16),
@@ -433,6 +435,7 @@ class CommentSection extends StatelessWidget {
               );
             } else {
               return ListView.builder(
+                padding: new EdgeInsets.all(0),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
