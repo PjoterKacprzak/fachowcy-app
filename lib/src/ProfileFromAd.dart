@@ -209,24 +209,33 @@ class RatingSection extends StatelessWidget {
         Text(
           "Nie ma jeszcze żadnej oceny",
           style: new TextStyle(color: Colors.white, fontSize: 24),) :
-        Text(
-          rate.toString(),
-          style: new TextStyle(color: Colors.white, fontSize: 24),
-        ),
-//        Row( //TODO: wczytywać gwiazdki za pomocą oceny użytkownika
-//          mainAxisAlignment: MainAxisAlignment.center,
-//          children: <Widget>[
-//            Icon(Icons.star_rate, color: Colors.white),
-//            Icon(Icons.star_rate, color: Colors.white),
-//            Icon(Icons.star_rate, color: Colors.white),
-//            Icon(Icons.star_rate, color: Colors.white),
-//            Icon(Icons.star_rate, color: Colors.white),
-//          ],
-//        ),
+        StarDisplay(value: rate),
       ],
     );
   }
 
+}
+
+class StarDisplay extends StatelessWidget {
+  final double value;
+  const StarDisplay({Key key, this.value = 0})
+      : assert(value != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (index) {
+        print(index);
+        return Icon(
+          index < value - 0.75 ? Icons.star :
+          0.75 > value - index && value - index > 0.25 ? Icons.star_half :
+          Icons.star_border,
+          color: Colors.white, size: 40,);
+      }),
+    );
+  }
 }
 
 class UserAds extends StatelessWidget {
@@ -348,9 +357,11 @@ class CommentSection extends StatelessWidget {
             if(numberOfAds == 0) {
               return Column(
                 children: <Widget>[
+                  SizedBox(height: 8,),
                   Text(
                     "Nie ma jeszcze żadnych komentarzy!",
                     style: TextStyle(color: Colors.white, fontSize: 24),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 40),
                 ],
