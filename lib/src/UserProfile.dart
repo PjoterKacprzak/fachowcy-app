@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/UserProfileData.dart';
 import 'package:fachowcy_app/src/ChangePasswordFromUserProfile.dart';
+import 'package:fachowcy_app/src/ChangeUserProfilePhoto.dart';
 import 'package:fachowcy_app/src/customWidgets/AdCardSmall.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,15 +37,33 @@ class UserProfile extends StatelessWidget {
                         children: <Widget>[
                           MediaQuery.of(context).orientation == Orientation.portrait ?
                               Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  SizedBox(height: 30),
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: userData.profilePhoto == null ?
-                                      Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                                          : userData.profilePhoto == "profile_photo" ?
-                                      Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                                          : Image.network(userData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)),
+                                  SizedBox(height: 20),
+                                  GestureDetector(
+                                    onTap:() {
+                                      Navigator.push(
+                                          context, MaterialPageRoute(builder: (context) => ChangeUserProfilePhoto()));
+                                    },
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(height: 25, width: 160,
+                                          child: Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: Icon(Icons.add_a_photo),
+                                          ),
+                                        ),
+                                        ClipRRect(
+                                            borderRadius: BorderRadius.circular(20),
+                                            child: userData.profilePhoto == null ?
+                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
+                                                : userData.profilePhoto == "profile_photo" ?
+                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
+                                                : Image.network(userData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   SizedBox(height: 16),
                                   Portfolio(),
                                   SizedBox(height: 8),
@@ -63,13 +82,30 @@ class UserProfile extends StatelessWidget {
                               Column(
                                 children: <Widget>[
                                   SizedBox(height: 10),
-                                  ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: userData.profilePhoto == null ?
-                                      Container(color: Colors.grey, width: 100, height: 100, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                                          : userData.profilePhoto == "profile_photo" ?
-                                      Container(color: Colors.grey, width: 100, height: 100, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                                          : Image.network(userData.profilePhoto, width: 100, height: 100, fit: BoxFit.contain)),
+                                  GestureDetector(
+                                    onTap:() {
+                                      Navigator.push(
+                                          context, MaterialPageRoute(builder: (context) => ChangeUserProfilePhoto()));
+                                    },
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(height: 25, width: 160,
+                                          child: Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: Icon(Icons.add_a_photo),
+                                          ),
+                                        ),
+                                        ClipRRect(
+                                            borderRadius: BorderRadius.circular(20),
+                                            child: userData.profilePhoto == null ?
+                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
+                                                : userData.profilePhoto == "profile_photo" ?
+                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
+                                                : Image.network(userData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   SizedBox(height: 16),
                                   Portfolio(),
                                   SizedBox(height: 8),
