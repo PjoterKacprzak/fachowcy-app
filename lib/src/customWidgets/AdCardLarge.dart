@@ -71,7 +71,10 @@ class AdCardLarge extends StatelessWidget {
                                         ),
                                       ),
                                     ],
-                                ): Column(
+                                ):
+                              Container(
+                                margin: new EdgeInsets.only(left: 20, right: 20),
+                                child: Column(
                                 children: <Widget>[
                                   SizedBox(height: 16),
                                   Row(
@@ -93,20 +96,16 @@ class AdCardLarge extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  Container(
-                                    margin: new EdgeInsets.only(left: 20, right: 20),
-                                    child: Column(
-                                      children: <Widget>[
-                                        SizedBox(height: 16),
-                                        TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
-                                        SizedBox(height: 16),
-                                      ],
-                                    ),
+                                  Column(
+                                    children: <Widget>[
+                                      SizedBox(height: 16),
+                                      TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
+                                      SizedBox(height: 16),
+                                    ],
                                   ),
                                 ],
-
+                                ),
                               ),
-
                             ],
                           ),
                         ),
