@@ -50,7 +50,9 @@ class AdCardSmall extends StatelessWidget {
                       SizedBox(height: 10,),
                       ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: photo == "link_to_photo" ?
+                          child: photo == null ?
+                          Container(color: Colors.grey, width: 120, height: 90, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                          photo == "link_to_photo" ?
                           Container(color: Colors.grey, width: 120, height: 90, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
                           Image.network(photo, width: 120, height: 90, fit: BoxFit.contain)
                       ),

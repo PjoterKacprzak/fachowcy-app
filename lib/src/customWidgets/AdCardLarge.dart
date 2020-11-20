@@ -62,7 +62,7 @@ class AdCardLarge extends StatelessWidget {
                                         margin: const EdgeInsets.all(12),
                                         child: Column(
                                           children: <Widget>[
-                                            TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
+                                            TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description, adData.serviceCardLists[index].serviceType, adData.serviceCardLists[index].price, adData.serviceCardLists[index].exchangeDescription),
                                             SizedBox(height: 16),
                                             UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
                                             SizedBox(height: 16),
@@ -99,7 +99,7 @@ class AdCardLarge extends StatelessWidget {
                                   Column(
                                     children: <Widget>[
                                       SizedBox(height: 16),
-                                      TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
+                                      TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description, adData.serviceCardLists[index].serviceType, adData.serviceCardLists[index].price, adData.serviceCardLists[index].exchangeDescription),
                                       SizedBox(height: 16),
                                     ],
                                   ),
@@ -271,11 +271,17 @@ class TextSection extends StatelessWidget {
   String title;
   String estimatedTime;
   String text;
+  String serviceType;
+  double price;
+  String exchangeDescription;
 
-  TextSection(String title, String estimatedTime, String text) {
+  TextSection(String title, String estimatedTime, String text, String serviceType, double price, String exchangeDescription) {
     this.title = title;
     this.estimatedTime = estimatedTime;
     this.text = text;
+    this.serviceType = serviceType;
+    this.price = price;
+    this.exchangeDescription = exchangeDescription;
   }
 
   @override
@@ -288,6 +294,35 @@ class TextSection extends StatelessWidget {
           style: const TextStyle(color: Colors.white, fontSize: 32),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
+        ),
+        SizedBox(height: 16),
+        Row(
+          children: <Widget>[
+            serviceType == null ?
+            SizedBox(height: 0.01) :
+            serviceType == "1" ?
+            Icon(Icons.attach_money, color: Colors.green) :
+            Icon(Icons.autorenew, color: Colors.green),
+            SizedBox(width: 8),
+            serviceType == null ?
+            SizedBox(height: 0.01) :
+            serviceType == "1" ?
+            Text(
+              price == null ? "Do negocjacji" : price.toString(),
+              style: new TextStyle(color: Colors.white, fontSize: 24),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ):
+            Container(
+              width: MediaQuery.of(context).size.width*0.7,
+              child: Text(
+                exchangeDescription == null ? "Pisać w tej sprawie" : exchangeDescription,
+                style: new TextStyle(color: Colors.white, fontSize: 24),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 16),
         Row(
@@ -437,6 +472,8 @@ class HorizontalFotoSection extends StatelessWidget {
           Row(
             children: <Widget>[
 
+              photo_1 == null ?
+              Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               photo_1 == "link_to_photo" ?
               Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               Image.network(photo_1, width: 320, height: 200, fit: BoxFit.contain),
