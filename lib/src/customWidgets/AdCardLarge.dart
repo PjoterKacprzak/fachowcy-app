@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/AdData.dart';
 import 'package:fachowcy_app/Data/SimilarAdsData.dart';
@@ -51,18 +53,57 @@ class AdCardLarge extends StatelessWidget {
                           //decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 4.0)),
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: 16),
-                              HorizontalFotoSection(adData.serviceCardLists[index].photo, adData.serviceCardLists[index].serviceCardPhoto_2, adData.serviceCardLists[index].serviceCardPhoto_3, adData.serviceCardLists[index].serviceCardPhoto_4),
+                              MediaQuery.of(context).orientation == Orientation.portrait ?
+                                  Column(
+                                    children: <Widget>[
+                                      SizedBox(height: 16),
+                                      HorizontalFotoSection(adData.serviceCardLists[index].photo, adData.serviceCardLists[index].serviceCardPhoto_2, adData.serviceCardLists[index].serviceCardPhoto_3, adData.serviceCardLists[index].serviceCardPhoto_4),
+                                      Container(
+                                        margin: const EdgeInsets.all(12),
+                                        child: Column(
+                                          children: <Widget>[
+                                            TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description, adData.serviceCardLists[index].serviceType, adData.serviceCardLists[index].price, adData.serviceCardLists[index].exchangeDescription),
+                                            SizedBox(height: 16),
+                                            UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
+                                            SizedBox(height: 16),
+                                            LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                ):
                               Container(
-                                margin: const EdgeInsets.all(12),
+                                margin: new EdgeInsets.only(left: 20, right: 20),
                                 child: Column(
-                                  children: <Widget>[
-                                    TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description),
-                                    SizedBox(height: 16),
-                                    UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
-                                    SizedBox(height: 16),
-                                    LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
-                                  ],
+                                children: <Widget>[
+                                  SizedBox(height: 16),
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 1,
+                                        child: HorizontalFotoSection(adData.serviceCardLists[index].photo, adData.serviceCardLists[index].serviceCardPhoto_2, adData.serviceCardLists[index].serviceCardPhoto_3, adData.serviceCardLists[index].serviceCardPhoto_4),
+                                      ),
+                                      SizedBox(width: 16),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(
+                                          children: <Widget>[
+                                            UserProfileShort(adData.name , adData.lastName, adData.profilePhoto, id),
+                                            SizedBox(height: 16),
+                                            LocalizationSection(adData.serviceCardLists[index].location, adData.phoneNumber),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      SizedBox(height: 16),
+                                      TextSection(adData.serviceCardLists[index].title, adData.serviceCardLists[index].estimatedTime, adData.serviceCardLists[index].description, adData.serviceCardLists[index].serviceType, adData.serviceCardLists[index].price, adData.serviceCardLists[index].exchangeDescription),
+                                      SizedBox(height: 16),
+                                    ],
+                                  ),
+                                ],
                                 ),
                               ),
                             ],
@@ -73,7 +114,6 @@ class AdCardLarge extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(height: 16),
-                          Text("Podobne ogłoszenia", style: new TextStyle(color: Colors.white, fontSize: 24)),
                           SimilarAds(adData.serviceCardLists[index].category, adData.serviceCardLists[index].location),
                         ],
                       ),
@@ -140,55 +180,71 @@ class SimilarAds extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: FutureBuilder(
-          future: getSimilarAds(category, location),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            int numberOfAds = similarAdsData.length;
-            if (numberOfAds == 0) {
-              return Column(
-                children: <Widget>[
-                  Text(
-                    "Nie ma podobnych ogłoszeń",
-                    style: TextStyle(color: Colors.white, fontSize: 24),
+    return Column(
+        children: <Widget>[
+          SizedBox(height: 16),
+          Text(
+              "Podobne ogłoszenia",
+              style: new TextStyle(color: Colors.white, fontSize: 16)
+          ),
+          FutureBuilder(
+            future: getSimilarAds(category, location),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              int numberOfAds = similarAdsData.length;
+              if (numberOfAds == 0) {
+                return Column(
+                  children: <Widget>[
+                    Text(
+                      "Nie ma podobnych ogłoszeń",
+                      style: TextStyle(color: Colors.white, fontSize: 24),
+                    ),
+                    SizedBox(height: 40),
+                  ],
+                );
+              }
+              if (snapshot.data == null) {
+                return Container(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                        SizedBox(height: 8),
+                        Text(
+                          "Loading, please wait..",
+                          style: new TextStyle(color: Colors.white, fontSize: 12),
+                        ),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 40),
-                ],
-              );
-            }
-            if (snapshot.data == null) {
-              return Container(
-                child: Center(
-                  child: Text(
-                    "Loading..",
-                    style: new TextStyle(fontSize: 50),
+                );
+              } else {
+                return GridView.builder(
+                  padding: new EdgeInsets.only(top: 16),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: numberOfAds,
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                    childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
                   ),
-                ),
-              );
-            } else {
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: numberOfAds,
-                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                  childAspectRatio: 0.56, //TODO: zrobić to mądrzej
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return AdCardSmall(
-                    false,
-                    similarAdsData[index].title,
-                    similarAdsData[index].description,
-                    similarAdsData[index].serviceCardId,
-                    similarAdsData[index].photo,
-                  );
-                },
-              );
-            }
-          },
-        ));
+                  itemBuilder: (BuildContext context, int index) {
+                    return AdCardSmall(
+                      false,
+                      similarAdsData[index].title,
+                      similarAdsData[index].description,
+                      similarAdsData[index].serviceCardId,
+                      similarAdsData[index].photo,
+                    );
+                  },
+                );
+              }
+            },
+          ),
+        ],
+    );
   }
 
 
@@ -215,11 +271,17 @@ class TextSection extends StatelessWidget {
   String title;
   String estimatedTime;
   String text;
+  String serviceType;
+  double price;
+  String exchangeDescription;
 
-  TextSection(String title, String estimatedTime, String text) {
+  TextSection(String title, String estimatedTime, String text, String serviceType, double price, String exchangeDescription) {
     this.title = title;
     this.estimatedTime = estimatedTime;
     this.text = text;
+    this.serviceType = serviceType;
+    this.price = price;
+    this.exchangeDescription = exchangeDescription;
   }
 
   @override
@@ -232,6 +294,35 @@ class TextSection extends StatelessWidget {
           style: const TextStyle(color: Colors.white, fontSize: 32),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
+        ),
+        SizedBox(height: 16),
+        Row(
+          children: <Widget>[
+            serviceType == null ?
+            SizedBox(height: 0.01) :
+            serviceType == "1" ?
+            Icon(Icons.attach_money, color: Colors.green) :
+            Icon(Icons.autorenew, color: Colors.green),
+            SizedBox(width: 8),
+            serviceType == null ?
+            SizedBox(height: 0.01) :
+            serviceType == "1" ?
+            Text(
+              price == null ? "Do negocjacji" : price.toString(),
+              style: new TextStyle(color: Colors.white, fontSize: 24),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ):
+            Container(
+              width: MediaQuery.of(context).size.width*0.7,
+              child: Text(
+                exchangeDescription == null ? "Pisać w tej sprawie" : exchangeDescription,
+                style: new TextStyle(color: Colors.white, fontSize: 24),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 16),
         Row(
@@ -345,6 +436,8 @@ class UserProfileShort extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: photoLink == null ?
             Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+            photoLink == "profile_photo" ?
+            Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
             Image.network(photoLink, width: 60, height: 60, fit: BoxFit.contain)
           ),
 
@@ -379,21 +472,29 @@ class HorizontalFotoSection extends StatelessWidget {
           Row(
             children: <Widget>[
 
+              photo_1 == null ?
+              Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               photo_1 == "link_to_photo" ?
               Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               Image.network(photo_1, width: 320, height: 200, fit: BoxFit.contain),
 
               photo_2 == null ?
               SizedBox(width: 0.01,) :
+              photo_2 == "" ?
+              SizedBox(width: 0.01,) :
               // Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               Image.network(photo_2, width: 320, height: 200, fit: BoxFit.contain),
 
               photo_3 == null ?
               SizedBox(width: 0.01,) :
+              photo_3 == "" ?
+              SizedBox(width: 0.01,) :
               //Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               Image.network(photo_3, width: 320, height: 200, fit: BoxFit.contain),
 
               photo_4 == null ?
+              SizedBox(width: 0.01,) :
+              photo_4 == "" ?
               SizedBox(width: 0.01,) :
               //Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
               Image.network(photo_4, width: 320, height: 200, fit: BoxFit.contain),

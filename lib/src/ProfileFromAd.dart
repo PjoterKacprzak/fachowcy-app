@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 
 import 'customWidgets/AdCardSmall.dart';
@@ -39,19 +40,62 @@ class ProfileFromAd extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         SizedBox(height: 30),
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: profileData.profilePhoto == null ?
-//                          Image.network("https://www.fillmurray.com//200/200", width: 120, height: 120, fit: BoxFit.contain) :
-                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                            Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                        ),
-                        SizedBox(height: 16),
-                        UserNameSection(profileData.name, profileData.lastName),
-                        ContactSection(profileData.phoneNumber, profileData.email),
-                        RatingSection(),
-                        UserAds(profileData, adNumber),
-                        CommentSection(profileData, adNumber),
+                        MediaQuery.of(context).orientation == Orientation.portrait ?
+                            Column(
+                              children: <Widget>[
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: profileData.profilePhoto == null ?
+                                    Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                    profileData.profilePhoto == "profile_photo" ?
+                                    Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                    Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                                ),
+                                SizedBox(height: 16),
+                                UserNameSection(profileData.name, profileData.lastName),
+                                ContactSection(profileData.phoneNumber, profileData.email),
+                                RatingSection(profileData.rate),
+                                UserAds(profileData, adNumber),
+                                CommentSection(profileData, adNumber),
+                              ],
+                            ):
+                            Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Column(
+                                      children: <Widget>[
+                                        ClipRRect(
+                                            borderRadius: BorderRadius.circular(20),
+                                            child: profileData.profilePhoto == null ?
+                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                            profileData.profilePhoto == "profile_photo" ?
+                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                            Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                                        ),
+                                        SizedBox(height: 16),
+                                        UserNameSection(profileData.name, profileData.lastName),
+                                      ],
+                                    ),
+                                    SizedBox(width: 64),
+                                    Column(
+                                      children: <Widget>[
+                                        ContactSection(profileData.phoneNumber, profileData.email),
+                                        RatingSection(profileData.rate),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: <Widget>[
+                                    UserAds(profileData, adNumber),
+                                    CommentSection(profileData, adNumber),
+                                  ],
+                                ),
+                              ],
+                            ),
+
 
                       ],
                     ),
@@ -187,9 +231,11 @@ class ContactSection extends StatelessWidget {
 
 class RatingSection extends StatelessWidget {
 
-  double avgRate = 5.0;
-  double overallRating;
-  int numberOfRatings;
+ double rate;
+
+ RatingSection(double rate) {
+   this.rate = rate;
+ }
 
 
   @override
@@ -202,24 +248,36 @@ class RatingSection extends StatelessWidget {
           style: new TextStyle(color: Colors.white, fontSize: 16),
         ),
         SizedBox(height: 8),
+        rate == null ?
         Text(
-          avgRate.toString(),
-          style: new TextStyle(color: Colors.white, fontSize: 24),
-        ),
-//        Row( //TODO: wczytywać gwiazdki za pomocą oceny użytkownika
-//          mainAxisAlignment: MainAxisAlignment.center,
-//          children: <Widget>[
-//            Icon(Icons.star_rate, color: Colors.white),
-//            Icon(Icons.star_rate, color: Colors.white),
-//            Icon(Icons.star_rate, color: Colors.white),
-//            Icon(Icons.star_rate, color: Colors.white),
-//            Icon(Icons.star_rate, color: Colors.white),
-//          ],
-//        ),
+          "Nie ma jeszcze żadnej oceny",
+          style: new TextStyle(color: Colors.white, fontSize: 24),) :
+        StarDisplay(value: rate),
       ],
     );
   }
 
+}
+
+class StarDisplay extends StatelessWidget {
+  final double value;
+  const StarDisplay({Key key, this.value = 0})
+      : assert(value != null),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (index) {
+        return Icon(
+          index < value - 0.75 ? Icons.star :
+          0.75 > value - index && value - index > 0.25 ? Icons.star_half :
+          Icons.star_border,
+          color: Colors.white, size: 40,);
+      }),
+    );
+  }
 }
 
 class UserAds extends StatelessWidget {
@@ -267,22 +325,30 @@ class UserAds extends StatelessWidget {
             if(snapshot.data == null) {
               return Container(
                 child: Center(
-                  child: Text(
-                    "Loading..",
-                    style: new TextStyle(fontSize: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                      SizedBox(height: 8),
+                      Text(
+                        "Loading, please wait..",
+                        style: new TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
                   ),
                 ),
               );
             } else {
               return GridView.builder(
+                padding: new EdgeInsets.only(top: 16),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: 0.58, //TODO: zrobić to mądrzej
+                  childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
 
@@ -328,7 +394,7 @@ class CommentSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        SizedBox(height: 16),
+        SizedBox(height: 40),
         Text(
           "Komentarze",
           style: new TextStyle(color: Colors.white, fontSize: 16),
@@ -341,9 +407,11 @@ class CommentSection extends StatelessWidget {
             if(numberOfAds == 0) {
               return Column(
                 children: <Widget>[
+                  SizedBox(height: 8,),
                   Text(
                     "Nie ma jeszcze żadnych komentarzy!",
                     style: TextStyle(color: Colors.white, fontSize: 24),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 40),
                 ],
@@ -352,14 +420,22 @@ class CommentSection extends StatelessWidget {
             if(snapshot.data == null) {
               return Container(
                 child: Center(
-                  child: Text(
-                    "Loading..",
-                    style: new TextStyle(fontSize: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                      SizedBox(height: 8),
+                      Text(
+                        "Loading, please wait..",
+                        style: new TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
                   ),
                 ),
               );
             } else {
               return ListView.builder(
+                padding: new EdgeInsets.all(0),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
@@ -367,10 +443,13 @@ class CommentSection extends StatelessWidget {
 
                   //getUserCommentingData(userData.userCommentList[index].userCommentingId);
                   return ListTile(
-                    title: Text(
+                    title: userData.userCommentList[index].name == null ?
+                    Text(
                       "ID komentującego usera:" + userData.userCommentList[index].userCommentingId.toString(),
-                      style: new TextStyle(color: Colors.green, fontSize: 20),
-                    ),
+                      style: new TextStyle(color: Colors.green, fontSize: 20),) :
+                    Text(
+                      userData.userCommentList[index].name + " " + userData.userCommentList[index].lastName,
+                      style: new TextStyle(color: Colors.green, fontSize: 20),),
                     subtitle: Text(
                       userData.userCommentList[index].rate.toString() + "\n" + userData.userCommentList[index].description,
                       style: new TextStyle(color: Colors.white, fontSize: 16),
@@ -378,9 +457,11 @@ class CommentSection extends StatelessWidget {
                     isThreeLine: true,
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: null == null ? //TODO: do zrobienia jak zrobię user ID
+                      child:  userData.userCommentList[index].profilePhoto == null ?
                       Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                      Image.network("wstawić link jak ogarne id usera wstawiajacego", width: 60, height: 60, fit: BoxFit.contain)
+                      userData.userCommentList[index].profilePhoto == "profile_photo" ?
+                      Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                      Image.network(userData.userCommentList[index].profilePhoto, width: 60, height: 60, fit: BoxFit.contain)
                     ),
                   );
                 },

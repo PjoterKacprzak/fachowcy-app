@@ -105,7 +105,13 @@ class ServiceCardListPaid extends StatelessWidget {
         child: FutureBuilder(
           future: HomePage.getAllCards(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            int numberOfAds = HomePage.cardInfoData.length;
+            int numberOfAds = 0;
+            try{
+              numberOfAds = HomePage.cardInfoData.length;
+            }
+            catch(Exception){
+              print("Couldn't receive data");
+            }
             if (numberOfAds == 0) {
               return Column(
                 children: <Widget>[
@@ -121,9 +127,16 @@ class ServiceCardListPaid extends StatelessWidget {
             if (snapshot.data == null) {
               return Container(
                 child: Center(
-                  child: Text(
-                    "Loading..",
-                    style: new TextStyle(fontSize: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                      SizedBox(height: 8),
+                      Text(
+                        "Loading, please wait..",
+                        style: new TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -133,10 +146,10 @@ class ServiceCardListPaid extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: 0.56, //TODO: zrobić to mądrzej
+                  childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return AdCardSmall(
@@ -153,3 +166,4 @@ class ServiceCardListPaid extends StatelessWidget {
         ));
   }
 }
+

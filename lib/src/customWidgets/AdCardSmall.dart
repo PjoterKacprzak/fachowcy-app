@@ -26,7 +26,7 @@ class AdCardSmall extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         SizedBox(
-          width: MediaQuery.of(context).size.width / 2.3, //TODO: jakby coś się sypało na innych kształtach to tu
+          width:  MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2.3 : MediaQuery.of(context).size.width / 3.3, //TODO: jakby coś się sypało na innych kształtach to tu
           child: Card(
             color: Colors.blueGrey, //TODO: Zmienić kolor i dopasować do tła reszty
             elevation: 4.0,
@@ -50,13 +50,15 @@ class AdCardSmall extends StatelessWidget {
                       SizedBox(height: 10,),
                       ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: photo == "link_to_photo" ?
+                          child: photo == null ?
+                          Container(color: Colors.grey, width: 120, height: 90, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                          photo == "link_to_photo" ?
                           Container(color: Colors.grey, width: 120, height: 90, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
                           Image.network(photo, width: 120, height: 90, fit: BoxFit.contain)
                       ),
                       SizedBox(height: 10,),
                       Text(
-                        title + "\n",
+                        title + "\n\n",
                         style: const TextStyle(color: Colors.white, fontSize: 24),
                         textAlign: TextAlign.center,
                         maxLines: 3,
@@ -79,9 +81,23 @@ class AdCardSmall extends StatelessWidget {
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              flex: 3,
+                              flex: 2,
                               child: Container(
 
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                icon: new Icon(Icons.edit),
+                                color: Colors.white,
+                                onPressed: () {
+
+//                                    Navigator.push(
+//                                        context,
+//                                        MaterialPageRoute(builder: (context) => UserProfile()));
+
+                                },
                               ),
                             ),
                             Expanded(
