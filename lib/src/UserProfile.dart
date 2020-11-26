@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'ChangePortfolio.dart';
 import 'LoginPage.dart';
 import 'customWidgets/CustomAppBar.dart';
 import 'customWidgets/CustomBottomNavigation.dart';
@@ -449,9 +450,9 @@ class Portfolio extends StatelessWidget {
         onTap: () {
           print("Portfolio");
 
-//          Navigator.push(
-//              context,
-//              MaterialPageRoute(builder: (context) => LoginPage()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChangePortfolio()));
         },
         child: Text(
           "Dodaj portfolio",

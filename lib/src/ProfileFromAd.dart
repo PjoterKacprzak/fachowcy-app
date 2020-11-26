@@ -181,21 +181,13 @@ class UserNameSection extends StatelessWidget {
         SizedBox(height: 8),
         GestureDetector(
           onTap: (){
-            print("Portfolio");
+            print("email : $email");
+
+            Navigator.push(context,MaterialPageRoute(
+                builder: (context) =>AddComment(email)));
           },
-          child: FlatButton(
-            onPressed:(){
-
-
-              print("email : $email");
-
-              Navigator.push(
-              context,
-              MaterialPageRoute(
-              builder: (context) =>AddComment(email)));
-            },
-            child: Text("Wystaw komentarz")
-
+          child: Text("Wystaw komentarz",
+            style: new TextStyle(color: Colors.green, fontSize: 20),
           ),
         ),
         SizedBox(height: 8),
