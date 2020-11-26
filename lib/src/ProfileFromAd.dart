@@ -2,6 +2,7 @@ import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/UserCommentingData.dart';
 import 'package:fachowcy_app/Data/UserProfileFromAdData.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
+import 'package:fachowcy_app/src/AddComment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,8 +13,12 @@ import 'dart:convert';
 
 import 'customWidgets/AdCardSmall.dart';
 
-class ProfileFromAd extends StatelessWidget {
+class ProfileFromAd extends StatefulWidget {
 
+  @override
+  _ProfileFromAdState createState() =>_ProfileFromAdState();
+
+  static int userId;
   int adNumber;
   static var profileData;
   static int index;
@@ -40,62 +45,20 @@ class ProfileFromAd extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         SizedBox(height: 30),
-                        MediaQuery.of(context).orientation == Orientation.portrait ?
-                            Column(
-                              children: <Widget>[
-                                ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: profileData.profilePhoto == null ?
-                                    Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                                    profileData.profilePhoto == "profile_photo" ?
-                                    Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                                    Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                                ),
-                                SizedBox(height: 16),
-                                UserNameSection(profileData.name, profileData.lastName),
-                                ContactSection(profileData.phoneNumber, profileData.email),
-                                RatingSection(profileData.rate),
-                                UserAds(profileData, adNumber),
-                                CommentSection(profileData, adNumber),
-                              ],
-                            ):
-                            Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        ClipRRect(
-                                            borderRadius: BorderRadius.circular(20),
-                                            child: profileData.profilePhoto == null ?
-                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                                            profileData.profilePhoto == "profile_photo" ?
-                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                                            Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                                        ),
-                                        SizedBox(height: 16),
-                                        UserNameSection(profileData.name, profileData.lastName),
-                                      ],
-                                    ),
-                                    SizedBox(width: 64),
-                                    Column(
-                                      children: <Widget>[
-                                        ContactSection(profileData.phoneNumber, profileData.email),
-                                        RatingSection(profileData.rate),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: <Widget>[
-                                    UserAds(profileData, adNumber),
-                                    CommentSection(profileData, adNumber),
-                                  ],
-                                ),
-                              ],
-                            ),
-
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: profileData.profilePhoto == null ?
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            profileData.profilePhoto == "profile_photo" ?
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                        ),
+                        SizedBox(height: 16),
+                        UserNameSection(profileData.name, profileData.lastName,profileData.id),
+                        ContactSection(profileData.phoneNumber, profileData.email),
+                        RatingSection(profileData.rate),
+                        UserAds(profileData, adNumber),
+                        CommentSection(profileData, adNumber),
 
                       ],
                     ),
@@ -122,7 +85,9 @@ class ProfileFromAd extends StatelessWidget {
     );
 
     Map userProfileDataMap = jsonDecode(response.body);
+
     var userProfileData = UserProfileFromAdData.fromJson(userProfileDataMap);
+
     int indexx;
 
     for(int i = 0; i < userProfileData.serviceCardLists.length; i++) {
@@ -147,15 +112,62 @@ class ProfileFromAd extends StatelessWidget {
 
 }
 
+class _ProfileFromAdState extends State<ProfileFromAd> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          color: Colors.blueGrey,
+          child: CustomScrollView(
+            slivers: <Widget>[
+              CustomAppBar(),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  Container(
+                    margin: const EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 30),
+                        ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: ProfileFromAd.profileData.profilePhoto == null ?
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            ProfileFromAd.profileData.profilePhoto == "profile_photo" ?
+                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                            Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                        ),
+                        SizedBox(height: 16),
+                        UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email),
+                        ContactSection(ProfileFromAd.profileData.phoneNumber, ProfileFromAd.profileData.email),
+                        RatingSection(ProfileFromAd.profileData.rate),
+                        UserAds(ProfileFromAd.profileData, widget.adNumber),
+                        CommentSection(ProfileFromAd.profileData, widget.adNumber),
+
+                      ],
+                    ),
+                  ),
+                ]),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class UserNameSection extends StatelessWidget {
 
   String name;
   String lastName;
+  String email;
 
 
-  UserNameSection(String name, String lastName) {
+  UserNameSection(String name, String lastName,String email) {
     this.name = name;
     this.lastName = lastName;
+    this.email = email;
   }
 
   @override
@@ -171,9 +183,19 @@ class UserNameSection extends StatelessWidget {
           onTap: (){
             print("Portfolio");
           },
-          child: Text(
-            "Skomentuj użytkownika",
-            style: new TextStyle(color: Colors.green, fontSize: 20),
+          child: FlatButton(
+            onPressed:(){
+
+
+              print("email : $email");
+
+              Navigator.push(
+              context,
+              MaterialPageRoute(
+              builder: (context) =>AddComment(email)));
+            },
+            child: Text("Wystaw komentarz")
+
           ),
         ),
         SizedBox(height: 8),
