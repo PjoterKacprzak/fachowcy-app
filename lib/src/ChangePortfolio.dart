@@ -132,7 +132,7 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                           }
                         },
                         child: Text(
-                          "Zmień zdjęcie profilowe",
+                          "Załaduj portfolio",
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
