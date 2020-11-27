@@ -55,7 +55,7 @@ class ProfileFromAd extends StatefulWidget {
                             Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                         ),
                         SizedBox(height: 16),
-                        UserNameSection(profileData.name, profileData.lastName,profileData.id),
+                        UserNameSection(profileData.name, profileData.lastName,profileData.id, profileData.userId),
                         ContactSection(profileData.phoneNumber, profileData.email),
                         RatingSection(profileData.rate),
                         UserAds(profileData, adNumber),
@@ -139,7 +139,7 @@ class _ProfileFromAdState extends State<ProfileFromAd> {
                             Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                         ),
                         SizedBox(height: 16),
-                        UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email),
+                        UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId),
                         ContactSection(ProfileFromAd.profileData.phoneNumber, ProfileFromAd.profileData.email),
                         RatingSection(ProfileFromAd.profileData.rate),
                         UserAds(ProfileFromAd.profileData, widget.adNumber),
@@ -163,12 +163,14 @@ class UserNameSection extends StatelessWidget {
   String name;
   String lastName;
   String email;
+  int id;
 
 
-  UserNameSection(String name, String lastName,String email) {
+  UserNameSection(String name, String lastName,String email, int id) {
     this.name = name;
     this.lastName = lastName;
     this.email = email;
+    this.id = id;
   }
 
   @override
@@ -185,7 +187,7 @@ class UserNameSection extends StatelessWidget {
             print("email : $email");
 
             Navigator.push(context,MaterialPageRoute(
-                builder: (context) =>AddComment(email)));
+                builder: (context) =>AddComment(email, id)));
           },
           child: Text("Wystaw komentarz",
             style: new TextStyle(color: Colors.green, fontSize: 20),

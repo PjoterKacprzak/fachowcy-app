@@ -10,6 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+import 'ProfileFromAd.dart';
+import 'ProfileFromComment.dart';
+
 
 class AddComment extends StatefulWidget {
 
@@ -17,161 +20,312 @@ class AddComment extends StatefulWidget {
    String email;
    String name;
    String lastName;
+   int id;
 
-  AddComment(String email) {
+  AddComment(String email, int id) {
     this.email = email;
     this.name = name;
     this.lastName = lastName;
-
+    this.id = id;
   }
 
   @override
   _AddCommentState createState()
    {
-     return _AddCommentState(this.email);
+     return _AddCommentState(this.email, this.id);
    }
 }
 
 
 class _AddCommentState extends State<AddComment> {
 
-_AddCommentState(String email)
+_AddCommentState(String email, int id)
 {
   _email = email;
+  _id = id;
 }
 
   String _email;
+  int _id;
   File _image;
   double _rating =3.0;
+  static int responseCode;
   TextEditingController commentController = new TextEditingController();
 
   Widget build(BuildContext context) {
 
     return Scaffold(
+      
         backgroundColor: Colors.blue,
-      body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    _showPicker(context);
-
-                  },
-                  child: CircleAvatar(
-                    radius: 55,
-                    backgroundColor: Color(0xffFDCF09),
-                    child: _image != null
-                        ? ClipRRect(
-                      borderRadius:
-                      BorderRadius.circular(50),
-                      child: Image.file(
-                        _image,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    )
-                        : Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius:
-                          BorderRadius.circular(
-                              50)),
-                      width: 100,
-                      height: 100,
-                      child: Icon(
-                        Icons.camera_alt,
-                        color: Colors.grey[800],
+      body: Container(
+        margin: MediaQuery.of(context).orientation == Orientation.portrait ?
+        const EdgeInsets.only(left: 40, right: 40) :
+        const EdgeInsets.only(left: 40, right: 40),
+        child: Center(
+              child: MediaQuery.of(context).orientation == Orientation.portrait ?
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: 160.0, height: 160.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          _showPicker(context);
+                        },
+                        child: Container(
+                          color: Colors.black12,
+                          child: _image == null
+                              ? Icon(Icons.add)
+                              : Image.file(_image),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(20.0),
-
-                ),
-                TextFormField(
-                  controller: commentController,
-                  style: TextStyle(
+                  SizedBox(height: 32),
+                  TextFormField(
+                    controller: commentController,
+                    style: TextStyle(color: Colors.white, fontSize: 24,),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.comment, color: Colors.white,),
+                      labelText: 'Oceń użytkownika!',
+                      labelStyle: TextStyle(color: Colors.white,),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white,),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderRadius: BorderRadius.circular(24.0),
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 3.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  SmoothStarRating(
+                    rating: _rating,
+                    isReadOnly: false,
+                    size: 40,
+                    allowHalfRating: true,
                     color: Colors.white,
-                    fontSize: 25,
+                    borderColor: Colors.white,
+                    filledIconData: Icons.star,
+                    halfFilledIconData: Icons.star_half,
+                    defaultIconData: Icons.star_border,
+                    starCount: 5,
+                    spacing: 0.5,
+                    onRated: (value) {
+                      _rating = value;
+                      // print("rating value -> $_rating");
+                    },
                   ),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.comment,
-                      color: Colors.white,
-                    ),
-                    labelText: 'Ocen użytkownika !',
-                    labelStyle: TextStyle(
-                      color: Colors.white,
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
+                  SizedBox(height: 32),
+                  Builder(
+                    builder: (context) => Center(
+                      child: FlatButton(
+                        color: Colors.green,
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(16.0),
+                        splashColor: Colors.greenAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        onPressed: () {
+                          sendComment(_email, commentController.text, _image, _rating);
+                          print(responseCode);
+                          if(responseCode == 200) {
+                            _showToastGood(context, "Dodano komentarz!");
+                          } else {
+                            _showToastWrong(context, "Ups.. coś poszło nie tak.");
+                          }
+                        },
+                        child: Text(
+                          "Skomentuj",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
                       ),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderRadius: BorderRadius.circular(25.0),
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 3.0,
-                      ),
+                  ),
+                  SizedBox(height: 8),
+                  FlatButton(
+                    color: Colors.green,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(16.0),
+                    splashColor: Colors.greenAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfileFromComment(_id)));
+                    },
+                    child: Text(
+                      "Wróć",
+                      style: TextStyle(fontSize: 20.0),
                     ),
                   ),
-                ),
-                 Padding(
-                  padding: EdgeInsets.all(16.0),
+                ],
+              ) :
+                  SingleChildScrollView(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              TextFormField(
+                                controller: commentController,
+                                style: TextStyle(color: Colors.white, fontSize: 24,),
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.comment, color: Colors.white,),
+                                  labelText: 'Oceń użytkownika!',
+                                  labelStyle: TextStyle(color: Colors.white,),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.white,),
+                                  ),
+                                  enabledBorder: UnderlineInputBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 3.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              SmoothStarRating(
+                                rating: _rating,
+                                isReadOnly: false,
+                                size: 40,
+                                allowHalfRating: true,
+                                color: Colors.white,
+                                borderColor: Colors.white,
+                                filledIconData: Icons.star,
+                                halfFilledIconData: Icons.star_half,
+                                defaultIconData: Icons.star_border,
+                                starCount: 5,
+                                spacing: 0.5,
+                                onRated: (value) {
+                                  _rating = value;
+                                  // print("rating value -> $_rating");
+                                },
+                              ),
+                              SizedBox(height: 16),
+                              Builder(
+                                builder: (context) => Center(
+                                  child: FlatButton(
+                                    color: Colors.green,
+                                    textColor: Colors.white,
+                                    padding: EdgeInsets.all(16.0),
+                                    splashColor: Colors.greenAccent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    onPressed: () {
+                                      sendComment(_email, commentController.text, _image, _rating);
+                                      print(responseCode);
+                                      if(responseCode == 200) {
+                                        _showToastGood(context, "Dodano komentarz!");
+                                      } else {
+                                        _showToastWrong(context, "Ups.. coś poszło nie tak.");
+                                      }
+                                    },
+                                    child: Text(
+                                      "Skomentuj",
+                                      style: TextStyle(fontSize: 20.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              FlatButton(
+                                color: Colors.green,
+                                textColor: Colors.white,
+                                padding: EdgeInsets.all(16.0),
+                                splashColor: Colors.greenAccent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ProfileFromComment(_id)));
+                                },
+                                child: Text(
+                                  "Wróć",
+                                  style: TextStyle(fontSize: 20.0),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 32),
+                        Expanded(
+                          flex: 1,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              width: 160.0, height: 160.0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showPicker(context);
+                                },
+                                child: Container(
+                                  color: Colors.black12,
+                                  child: _image == null
+                                      ? Icon(Icons.add)
+                                      : Image.file(_image),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
 
-                ),
-                SmoothStarRating(
-                  rating: _rating,
-                  isReadOnly: false,
-                  size: 50,
-                  allowHalfRating: true,
-                  color: Colors.orange,
-                  borderColor: Colors.white,
-                  filledIconData: Icons.star,
-                  halfFilledIconData: Icons.star_half,
-                  defaultIconData: Icons.star_border,
-                  starCount: 5,
-                  spacing: 2.0,
-                  onRated: (value) {
-                    _rating = value;
-                    // print("rating value -> $_rating");
-                  },
-                ),
-                Padding(
-                  padding: EdgeInsets.all(20.0),
-
-                ),
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                      side: BorderSide(color: Colors.black)),
-                  color: Colors.blueGrey,
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(8.0),
-                  onPressed: () {
-                    sendComment(_email, commentController.text, _image, _rating);
-                  },
-                  child: Text(
-                    "Zatwierdź".toUpperCase(),
-                    style: TextStyle(
-                      fontSize:17.0,
+                      ],
                     ),
                   ),
-                ),
-              ],
             ),
-          )
+      )
 
         );
 
 
   }
+
+    void _showToastGood(BuildContext context, String text) {
+      final scaffold = Scaffold.of(context);
+      scaffold.showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: new Text(text,
+              style: const TextStyle(fontSize: 20)),
+          action: SnackBarAction(
+              label: 'Zamknij',
+              onPressed: scaffold.hideCurrentSnackBar,
+              textColor: Colors.white),
+        ),
+      );
+    }
+    void _showToastWrong(BuildContext context, String message) {
+      final scaffold = Scaffold.of(context);
+      scaffold.showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: new Text(message, style: const TextStyle(fontSize: 16)),
+          action: SnackBarAction(
+              label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+        ),
+      );
+
+    }
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -220,9 +374,6 @@ _AddCommentState(String email)
         });
   }
 
-
-
-
   Future<void>sendComment(String email,String comment,File file,double rating)async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final ownerEmail  = prefs.getString('email');
@@ -244,6 +395,10 @@ _AddCommentState(String email)
       headers: {'Content-Type': 'application/json'},
       body: commentJson,
     );
+
+    print(response.statusCode);
+    responseCode = response.statusCode;
+
    //  int commentedUserId =int.parse(response.body);
    //  String commentingUserName;
    //  String commentingUserLastName;
