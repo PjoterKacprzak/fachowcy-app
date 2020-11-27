@@ -23,6 +23,8 @@ class ChangeUserProfilePhoto extends StatefulWidget {
 class _ChangeUserProfilePhotoState extends State<ChangeUserProfilePhoto> {
 
   File _image;
+  static var photoUrl;
+  static int status;
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +68,10 @@ class _ChangeUserProfilePhotoState extends State<ChangeUserProfilePhoto> {
                             ),
                             onPressed: () async {
 
-//                      await(createUrlFromPhoto(
-//                          _image, _image2, _image3, _image4));
+                              await(createUrlFromPhoto(_image));
+                              await(changeUserProfilePhoto(photoUrl.photo1));
 
-                              if ( _image != null) {
+                              if (status == 200) {
                                 _showToastGood(context, "Udało się zmienić zdjęcie profilowe");
                               } else {
                                 _showToastWrong(context, "Upss.. coś poszło nie tak!");
@@ -93,9 +95,12 @@ class _ChangeUserProfilePhotoState extends State<ChangeUserProfilePhoto> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => UserProfile()));
+                            onPressed: () async {
+                              var result = await UserProfile.getDataFromJson();
+                              if(result==200)
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => UserProfile()));
                             },
                             child: Text(
                               "Wróć",
@@ -121,10 +126,10 @@ class _ChangeUserProfilePhotoState extends State<ChangeUserProfilePhoto> {
                             ),
                             onPressed: () async {
 
-//                      await(createUrlFromPhoto(
-//                          _image, _image2, _image3, _image4));
+                              await(createUrlFromPhoto(_image));
+                              await(changeUserProfilePhoto(photoUrl.photo1));
 
-                              if ( _image != null) {
+                              if (status == 200) {
                                 _showToastGood(context, "Udało się zmienić zdjęcie profilowe");
                               } else {
                                 _showToastWrong(context, "Upss.. coś poszło nie tak!");
@@ -148,9 +153,12 @@ class _ChangeUserProfilePhotoState extends State<ChangeUserProfilePhoto> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context, MaterialPageRoute(builder: (context) => UserProfile()));
+                            onPressed: () async {
+                              var result = await UserProfile.getDataFromJson();
+                              if(result==200)
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => UserProfile()));
                             },
                             child: Text(
                               "Wróć",
@@ -167,6 +175,58 @@ class _ChangeUserProfilePhotoState extends State<ChangeUserProfilePhoto> {
         ),
       ),
     );
+  }
+
+  Future<void> changeUserProfilePhoto(String photo) async {
+    var newPostJson = {};
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString('email');
+
+    newPostJson["email"] = email;
+    newPostJson["profilePhoto"] = photo;
+    String profilePhoto = json.encode(newPostJson);
+
+
+    final http.Response response = await http.post(
+        Config.serverHostString + '/api/users/updateProfilePhoto',
+        headers: {'Content-Type': 'application/json'},
+        body: profilePhoto
+    );
+
+    print("Kod z change photo: " + response.statusCode.toString());
+    status = response.statusCode;
+  }
+
+  Future<String> createUrlFromPhoto(File file) async {
+
+    var UserXML = {};
+    UserXML["photo1"] = '';
+    UserXML["photo2"] = '';
+    UserXML["photo3"] = '';
+    UserXML["photo4"] = '';
+
+    String base64Image1;
+
+    if (file != null) {
+      List<int> imageBytes = file.readAsBytesSync();
+      base64Image1 = base64.encode(imageBytes);
+      UserXML["photo1"] = base64Image1;
+    }
+
+    String photo = json.encode(UserXML);
+
+    final http.Response response = await http.post(
+        Config.serverHostString + '/api/service-card/addPhotoToCloudinary',
+        headers: {'Content-Type': 'application/json'},
+        body: photo
+    );
+
+    print(response.body);
+
+    Map photosMap = jsonDecode(response.body);
+    photoUrl = Photos.fromJson(photosMap);
+    return response.body;
   }
 
   Future<void> _getImage() async {
