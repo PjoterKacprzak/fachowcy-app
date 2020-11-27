@@ -128,27 +128,68 @@ class _ProfileFromAdState extends State<ProfileFromAd> {
                   Container(
                     margin: const EdgeInsets.only(left: 20, right: 20),
                     child: Column(
-                      children: <Widget>[
-                        SizedBox(height: 30),
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: ProfileFromAd.profileData.profilePhoto == null ?
-                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                            ProfileFromAd.profileData.profilePhoto == "profile_photo" ?
-                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                            Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                        ),
-                        SizedBox(height: 16),
-                        UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId),
-                        ContactSection(ProfileFromAd.profileData.phoneNumber, ProfileFromAd.profileData.email),
-                        RatingSection(ProfileFromAd.profileData.rate),
-                        UserAds(ProfileFromAd.profileData, widget.adNumber),
-                        CommentSection(ProfileFromAd.profileData, widget.adNumber),
-
-                      ],
+                        children: <Widget>[
+                          SizedBox(height: 30),
+                          MediaQuery.of(context).orientation == Orientation.portrait ?
+                          Column(
+                            children: <Widget>[
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: ProfileFromAd.profileData.profilePhoto == null ?
+                                  Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                  ProfileFromAd.profileData.profilePhoto == "profile_photo" ?
+                                  Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                  Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                              ),
+                              SizedBox(height: 16),
+                              UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId),
+                              ContactSection(ProfileFromAd.profileData.phoneNumber, ProfileFromAd.profileData.email),
+                              RatingSection(ProfileFromAd.profileData.rate),
+                              UserAds(ProfileFromAd.profileData, widget.adNumber),
+                              CommentSection(ProfileFromAd.profileData, widget.adNumber),
+                            ],
+                          ):
+                          Column(
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: ProfileFromAd.profileData.profilePhoto == null ?
+                                          Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                          ProfileFromAd.profileData.profilePhoto == "profile_photo" ?
+                                          Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                          Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                                      ),
+                                      SizedBox(height: 16),
+                                      UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId),
+                                    ],
+                                  ),
+                                  SizedBox(width: 64),
+                                  Column(
+                                    children: <Widget>[
+                                      ContactSection(ProfileFromAd.profileData.phoneNumber, ProfileFromAd.profileData.email),
+                                      RatingSection(ProfileFromAd.profileData.rate),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  UserAds(ProfileFromAd.profileData, widget.adNumber),
+                                  CommentSection(ProfileFromAd.profileData, widget.adNumber),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                     ),
                   ),
-                ]),
+                ],
+                ),
               ),
             ],
           ),

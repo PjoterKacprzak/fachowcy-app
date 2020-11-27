@@ -115,25 +115,66 @@ class _ProfileFromCommentState extends State<ProfileFromComment> {
                     child: Column(
                       children: <Widget>[
                         SizedBox(height: 30),
-                        ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: ProfileFromComment.profileData.profilePhoto == null ?
-                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                            ProfileFromComment.profileData.profilePhoto == "profile_photo" ?
-                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                            Image.network(ProfileFromComment.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                        MediaQuery.of(context).orientation == Orientation.portrait ?
+                        Column(
+                          children: <Widget>[
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: ProfileFromComment.profileData.profilePhoto == null ?
+                                Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                ProfileFromComment.profileData.profilePhoto == "profile_photo" ?
+                                Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                Image.network(ProfileFromComment.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                            ),
+                            SizedBox(height: 16),
+                            UserNameSection(ProfileFromComment.profileData.name, ProfileFromComment.profileData.lastName,ProfileFromComment.profileData.email, ProfileFromComment.profileData.userId),
+                            ContactSection(ProfileFromComment.profileData.phoneNumber, ProfileFromComment.profileData.email),
+                            RatingSection(ProfileFromComment.profileData.rate),
+                            UserAds(ProfileFromComment.profileData, widget.adNumber),
+                            CommentSection(ProfileFromComment.profileData, widget.adNumber),
+                          ],
+                        ):
+                        Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: ProfileFromComment.profileData.profilePhoto == null ?
+                                        Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                        ProfileFromComment.profileData.profilePhoto == "profile_photo" ?
+                                        Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+                                        Image.network(ProfileFromComment.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
+                                    ),
+                                    SizedBox(height: 16),
+                                    UserNameSection(ProfileFromComment.profileData.name, ProfileFromComment.profileData.lastName,ProfileFromComment.profileData.email, ProfileFromComment.profileData.userId),
+                                  ],
+                                ),
+                                SizedBox(width: 64),
+                                Column(
+                                  children: <Widget>[
+                                    ContactSection(ProfileFromComment.profileData.phoneNumber, ProfileFromComment.profileData.email),
+                                    RatingSection(ProfileFromComment.profileData.rate),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: <Widget>[
+                                UserAds(ProfileFromComment.profileData, widget.adNumber),
+                                CommentSection(ProfileFromComment.profileData, widget.adNumber),
+                              ],
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 16),
-                        UserNameSection(ProfileFromComment.profileData.name, ProfileFromComment.profileData.lastName,ProfileFromComment.profileData.email, ProfileFromComment.profileData.userId),
-                        ContactSection(ProfileFromComment.profileData.phoneNumber, ProfileFromComment.profileData.email),
-                        RatingSection(ProfileFromComment.profileData.rate),
-                        UserAds(ProfileFromComment.profileData, widget.adNumber),
-                        CommentSection(ProfileFromComment.profileData, widget.adNumber),
-
                       ],
                     ),
                   ),
-                ]),
+                ],
+                ),
               ),
             ],
           ),
