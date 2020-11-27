@@ -23,6 +23,8 @@ class ChangePortfolio extends StatefulWidget {
 class _ChangePortfolioState extends State<ChangePortfolio> {
 
   File _portfolio;
+  static var photoUrl;
+  static int status;
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +68,11 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                         ),
                         onPressed: () async {
 
+                          await(createUrlFromPhoto(_portfolio));
+                          await(changeUserPortfolio(photoUrl.photo1));
 
-//                      await(createUrlFromPhoto(
-//                          _image, _image2, _image3, _image4));
-
-                          if ( _portfolio != null) {
-                            _showToastGood(context, "Udało się załadować portfolio");
+                          if (status == 200) {
+                            _showToastGood(context, "Udało się zmienić zdjęcie profilowe");
                           } else {
                             _showToastWrong(context, "Upss.. coś poszło nie tak!");
                           }
@@ -94,9 +95,12 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => UserProfile()));
+                        onPressed: () async {
+                          var result = await UserProfile.getDataFromJson();
+                          if(result==200)
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => UserProfile()));
                         },
                         child: Text(
                           "Wróć",
@@ -122,11 +126,11 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                         ),
                         onPressed: () async {
 
-//                      await(createUrlFromPhoto(
-//                          _image, _image2, _image3, _image4));
+                          await(createUrlFromPhoto(_portfolio));
+                          await(changeUserPortfolio(photoUrl.photo1));
 
-                          if ( _portfolio != null) {
-                            _showToastGood(context, "Udało się zmienić zdjęcie profilowe");
+                          if (status == 200) {
+                            _showToastGood(context, "Udało Ci się zmienić portfolio!");
                           } else {
                             _showToastWrong(context, "Upss.. coś poszło nie tak!");
                           }
@@ -149,9 +153,12 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => UserProfile()));
+                        onPressed: () async {
+                          var result = await UserProfile.getDataFromJson();
+                          if(result==200)
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => UserProfile()));
                         },
                         child: Text(
                           "Wróć",
@@ -167,6 +174,58 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
         ),
       ),
     );
+  }
+
+  Future<void> changeUserPortfolio(String portfolio) async {
+    var newPostJson = {};
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = prefs.getString('email');
+
+    newPostJson["email"] = email;
+    newPostJson["portfolio"] = portfolio;
+    String portfolioJson = json.encode(newPostJson);
+
+
+    final http.Response response = await http.post(
+        Config.serverHostString + '/api/users/updatePortfolio',
+        headers: {'Content-Type': 'application/json'},
+        body: portfolioJson
+    );
+
+    print("Kod z change portfolio: " + response.statusCode.toString());
+    status = response.statusCode;
+  }
+
+  Future<String> createUrlFromPhoto(File file) async {
+
+    var UserXML = {};
+    UserXML["photo1"] = '';
+    UserXML["photo2"] = '';
+    UserXML["photo3"] = '';
+    UserXML["photo4"] = '';
+
+    String base64Image1;
+
+    if (file != null) {
+      List<int> imageBytes = file.readAsBytesSync();
+      base64Image1 = base64.encode(imageBytes);
+      UserXML["photo1"] = base64Image1;
+    }
+
+    String photo = json.encode(UserXML);
+
+    final http.Response response = await http.post(
+        Config.serverHostString + '/api/service-card/addPhotoToCloudinary',
+        headers: {'Content-Type': 'application/json'},
+        body: photo
+    );
+
+    print(response.body);
+
+    Map photosMap = jsonDecode(response.body);
+    photoUrl = Photos.fromJson(photosMap);
+    return response.body;
   }
 
   Future<void> _getPortfolio() async {
