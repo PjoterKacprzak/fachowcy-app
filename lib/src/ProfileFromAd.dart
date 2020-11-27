@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:convert';
 
+import 'Portfolio.dart';
 import 'ProfileFromComment.dart';
 import 'customWidgets/AdCardSmall.dart';
 
@@ -55,7 +56,7 @@ class ProfileFromAd extends StatefulWidget {
                             Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                         ),
                         SizedBox(height: 16),
-                        UserNameSection(profileData.name, profileData.lastName,profileData.id, profileData.userId),
+                        UserNameSection(profileData.name, profileData.lastName,profileData.id, profileData.userId, profileData.portfolio),
                         ContactSection(profileData.phoneNumber, profileData.email),
                         RatingSection(profileData.rate),
                         UserAds(profileData, adNumber),
@@ -142,7 +143,7 @@ class _ProfileFromAdState extends State<ProfileFromAd> {
                                   Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                               ),
                               SizedBox(height: 16),
-                              UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId),
+                              UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId, ProfileFromAd.profileData.portfolio),
                               ContactSection(ProfileFromAd.profileData.phoneNumber, ProfileFromAd.profileData.email),
                               RatingSection(ProfileFromAd.profileData.rate),
                               UserAds(ProfileFromAd.profileData, widget.adNumber),
@@ -165,7 +166,7 @@ class _ProfileFromAdState extends State<ProfileFromAd> {
                                           Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
                                       ),
                                       SizedBox(height: 16),
-                                      UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId),
+                                      UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId, ProfileFromAd.profileData.portfolio),
                                     ],
                                   ),
                                   SizedBox(width: 64),
@@ -205,13 +206,14 @@ class UserNameSection extends StatelessWidget {
   String lastName;
   String email;
   int id;
+  String portfolio;
 
-
-  UserNameSection(String name, String lastName,String email, int id) {
+  UserNameSection(String name, String lastName,String email, int id, String portfolio) {
     this.name = name;
     this.lastName = lastName;
     this.email = email;
     this.id = id;
+    this.portfolio = portfolio;
   }
 
   @override
@@ -238,6 +240,9 @@ class UserNameSection extends StatelessWidget {
         GestureDetector(
           onTap: (){
             print("Portfolio");
+
+            Navigator.push(context,MaterialPageRoute(
+                builder: (context) =>Portfolio(portfolio, id)));
           },
           child: Text(
             "Zobacz portfolio",
