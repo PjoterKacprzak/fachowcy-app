@@ -10,10 +10,17 @@ class _Notifications extends State<NotificationPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-      child: Text("Powiadomienia"),
-    )
+      body: CustomScrollView(
+        slivers: <Widget>[
+          CustomAppBar(),
+          SliverList(
+              delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+                return Text("powiadomienie");
+              },
+              childCount: 50,)
+          ),
+        ],
+      ),
     );
   }
 

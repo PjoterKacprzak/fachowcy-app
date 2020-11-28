@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/ServiceCard.dart';
 import 'package:fachowcy_app/Data/User.dart';
+import 'package:fachowcy_app/src/FilteredAds.dart';
 import 'package:fachowcy_app/src/LoginPage.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,11 +22,12 @@ class FilterPage extends StatefulWidget {
 }
 
 class _FilterPageState extends State<FilterPage> {
+  static List<ServiceCard> cardInfoData;
   String _priceMin = '0';
   String _priceMax;
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> _category = [
+    'Wybierz',
     'Wykonczenia',
     'AGD',
     'Stolarka',
@@ -32,14 +35,15 @@ class _FilterPageState extends State<FilterPage> {
     'Malowanie'
   ];
   List<String> _localization = [
+    'Wybierz',
     'Lodz',
     'Wraszawa',
     'Poznan',
     'Lodz-Centrum',
     'Zgierz'
   ];
-  String _currentLocalization = "Lodz";
-  String _currentCategory = 'Wykonczenia';
+  String _currentLocalization = "Wybierz";
+  String _currentCategory = 'Wybierz';
   double _rating = 3.0;
   int _type = 1;
 
@@ -158,7 +162,7 @@ class _FilterPageState extends State<FilterPage> {
                                         materialTapTargetSize:
                                             MaterialTapTargetSize.shrinkWrap,
                                         activeColor: Colors.white,
-                                        value: 0,
+                                        value: 1,
                                         groupValue: _type,
                                         onChanged: (value) {
                                           // print(value);
@@ -179,7 +183,7 @@ class _FilterPageState extends State<FilterPage> {
                                         materialTapTargetSize:
                                             MaterialTapTargetSize.shrinkWrap,
                                         activeColor: Colors.white,
-                                        value: 1,
+                                        value: 0,
                                         groupValue: _type,
                                         onChanged: (value) {
                                           // print(value);
@@ -196,95 +200,95 @@ class _FilterPageState extends State<FilterPage> {
                                   ),
                                 ]),
                           ),
-                          Container(
-                              child: (_type == 0)
-                                  ? Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Flexible(
-                                          child: TextFormField(
-                                            // Walidacja jeśli potrzebna
-                                            // validator: (String value){
-                                              // if(value.isEmpty) {
-                                              //   return 'Podaj cenę minimalną';
-                                              // }
-                                            //   int cena = int.tryParse(value);
-                                            //   if(cena < 0)
-                                            //     return 'Cena minimalna musi być większa od 0';
-                                            // },
-                                            onSaved: (String value){
-                                              _priceMin = value;
-                                            },
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 25,
-                                            ),
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              labelText: '    Cena od',
-                                              labelStyle: TextStyle(
-                                                color: Colors.white,
-                                              ),
-                                              focusedBorder:
-                                                  UnderlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              enabledBorder:
-                                                  UnderlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(25.0),
-                                                borderSide: BorderSide(
-                                                  color: Colors.white,
-                                                  width: 3.0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        // Flexible(
-                                        //   child: TextFormField(
-                                        //     onSaved: (String value){
-                                        //       _priceMax = value;
-                                        //     },
-                                        //     // ignore: missing_return
-                                        //     validator: (String value){
-                                        //       if(int.tryParse(_priceMax) < int.tryParse(_priceMin))
-                                        //         return 'Cena od powinna być mniejsza niż do';
-                                        //     },
-                                        //     keyboardType: TextInputType.number,
-                                        //     style: TextStyle(
-                                        //       color: Colors.white,
-                                        //       fontSize: 25,
-                                        //     ),
-                                        //     decoration: InputDecoration(
-                                        //       labelText: 'Cena do',
-                                        //       labelStyle: TextStyle(
-                                        //         color: Colors.white,
-                                        //       ),
-                                        //       focusedBorder:
-                                        //           UnderlineInputBorder(
-                                        //         borderSide: BorderSide(
-                                        //           color: Colors.white,
-                                        //         ),
-                                        //       ),
-                                        //       enabledBorder:
-                                        //           UnderlineInputBorder(
-                                        //         borderRadius:
-                                        //             BorderRadius.circular(25.0),
-                                        //         borderSide: BorderSide(
-                                        //           color: Colors.white,
-                                        //           width: 3.0,
-                                        //         ),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // )
-                                      ],
-                                    )
-                                  : SizedBox(height: 10)),
-                          SizedBox(height: 10),
+                          // Container(
+                          //     child: (_type == 1)
+                          //         ? Row(
+                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //             children: <Widget>[
+                          //               Flexible(
+                          //                 child: TextFormField(
+                          //                   // Walidacja jeśli potrzebna
+                          //                   // validator: (String value){
+                          //                     // if(value.isEmpty) {
+                          //                     //   return 'Podaj cenę minimalną';
+                          //                     // }
+                          //                   //   int cena = int.tryParse(value);
+                          //                   //   if(cena < 0)
+                          //                   //     return 'Cena minimalna musi być większa od 0';
+                          //                   // },
+                          //                   onSaved: (String value){
+                          //                     _priceMin = value;
+                          //                   },
+                          //                   style: TextStyle(
+                          //                     color: Colors.white,
+                          //                     fontSize: 25,
+                          //                   ),
+                          //                   keyboardType: TextInputType.number,
+                          //                   decoration: InputDecoration(
+                          //                     labelText: '    Cena od',
+                          //                     labelStyle: TextStyle(
+                          //                       color: Colors.white,
+                          //                     ),
+                          //                     focusedBorder:
+                          //                         UnderlineInputBorder(
+                          //                       borderSide: BorderSide(
+                          //                         color: Colors.white,
+                          //                       ),
+                          //                     ),
+                          //                     enabledBorder:
+                          //                         UnderlineInputBorder(
+                          //                       borderRadius:
+                          //                           BorderRadius.circular(25.0),
+                          //                       borderSide: BorderSide(
+                          //                         color: Colors.white,
+                          //                         width: 3.0,
+                          //                       ),
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //               ),
+                          //               // Flexible(
+                          //               //   child: TextFormField(
+                          //               //     onSaved: (String value){
+                          //               //       _priceMax = value;
+                          //               //     },
+                          //               //     // ignore: missing_return
+                          //               //     validator: (String value){
+                          //               //       if(int.tryParse(_priceMax) < int.tryParse(_priceMin))
+                          //               //         return 'Cena od powinna być mniejsza niż do';
+                          //               //     },
+                          //               //     keyboardType: TextInputType.number,
+                          //               //     style: TextStyle(
+                          //               //       color: Colors.white,
+                          //               //       fontSize: 25,
+                          //               //     ),
+                          //               //     decoration: InputDecoration(
+                          //               //       labelText: 'Cena do',
+                          //               //       labelStyle: TextStyle(
+                          //               //         color: Colors.white,
+                          //               //       ),
+                          //               //       focusedBorder:
+                          //               //           UnderlineInputBorder(
+                          //               //         borderSide: BorderSide(
+                          //               //           color: Colors.white,
+                          //               //         ),
+                          //               //       ),
+                          //               //       enabledBorder:
+                          //               //           UnderlineInputBorder(
+                          //               //         borderRadius:
+                          //               //             BorderRadius.circular(25.0),
+                          //               //         borderSide: BorderSide(
+                          //               //           color: Colors.white,
+                          //               //           width: 3.0,
+                          //               //         ),
+                          //               //       ),
+                          //               //     ),
+                          //               //   ),
+                          //               // )
+                          //             ],
+                          //           )
+                          //         : SizedBox(height: 10)),
+                          // SizedBox(height: 10),
                           SmoothStarRating(
                             rating: _rating,
                             isReadOnly: false,
@@ -311,13 +315,14 @@ class _FilterPageState extends State<FilterPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (!_formKey.currentState.validate()) {
                                 return;
                               }
                               print(_priceMin.isEmpty);
                               _formKey.currentState.save();
-                              searchForCards(_currentCategory,_currentLocalization, _type.toString(), _priceMin, _rating.toString());
+                              await searchForCards(_currentCategory,_currentLocalization, _type.toString(), _priceMin, _rating.toString());
+                              await Navigator.push(context, MaterialPageRoute(builder: (context) => FilteredAds(cardInfoData)));
                             },
                             child: Text(
                               "Szukaj",
@@ -340,18 +345,45 @@ class _FilterPageState extends State<FilterPage> {
       ),
     );
   }
-
   Future<int> searchForCards (String category,String localization ,String type,String priceMin, String rating)async {
+    ServiceCard serviceCard = new ServiceCard();
+    // var FilterJson = {};
+    // FilterJson["category"] = category;
+    // FilterJson["localization"] = localization;
+    // FilterJson["type"] = type;
+    // FilterJson["priceMin"] = priceMin;
+    // FilterJson["rating"] = rating;
+    // String str = json.encode(FilterJson);
+    String _category;
+    if(category == 'Wybierz')
+      _category = 'null';
+    else
+      _category = category;
 
-    var FilterJson = {};
-    FilterJson["category"] = category;
-    FilterJson["localization"] = localization;
-    FilterJson["type"] = type;
-    FilterJson["priceMin"] = priceMin;
-    FilterJson["rating"] = rating;
-    String str = json.encode(FilterJson);
-    print(str);
+    String _localization;
+    if(localization == 'Wybierz')
+      _localization = 'null';
+    else
+      _localization = localization;
 
+
+    print( Config.serverHostString + 'api/service-card/filterCard?category='+_category+'&location='+_localization+'&service_type='+_type.toString());
+    print( Config.serverHostString + 'api/service-card/filterCard?category='+_category+'&location='+_localization);
+    // http://localhost:8080/api/service-card/filterCard?category=null&location=Wroclaw&price=12
+    final http.Response response = await http.get(
+      // Config.serverHostString + 'api/service-card/filterCard?category='+_category+'&location='+_localization,
+        Config.serverHostString + 'api/service-card/filterCard?category='+_category+'&location='+_localization+'&service_type='+_type.toString(),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
+      cardInfoData = serviceCard.parseServiceCard(response.body);
+      print("CardData received");
+      print(cardInfoData);
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to find Card.');
+    }
     //TODO: Dorobienie widoku Filtrowaynch wyników oraz to co w komentarzu zmienić na docelowy endpoint
     // final http.Response response = await http.post(
     //     Config.serverHostString + '/api/users/addUser',
@@ -368,5 +400,6 @@ class _FilterPageState extends State<FilterPage> {
     //   throw Exception('Failed to create User.');
     // }
   }
+
 
 }

@@ -21,6 +21,7 @@ class PostNewAd extends StatefulWidget {
 
 class _PostNewAdState extends State<PostNewAd> {
   String _priceMin;
+  // int returnValue = 1;
   static var PHOTO_URL;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -123,7 +124,25 @@ class _PostNewAdState extends State<PostNewAd> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueAccent,
-      body: CustomScrollView(
+      body:
+      // returnValue == 0? Container(
+      //   child: Center(
+      //     child: Column(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       children: <Widget>[
+      //         CircularProgressIndicator(
+      //             valueColor:
+      //             new AlwaysStoppedAnimation<Color>(Colors.white)),
+      //         SizedBox(height: 8),
+      //         Text(
+      //           "Loading, please wait..",
+      //           style: new TextStyle(color: Colors.white, fontSize: 12),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ):
+      CustomScrollView(
         slivers: <Widget>[
           CustomAppBar(),
           SliverList(
@@ -525,6 +544,7 @@ class _PostNewAdState extends State<PostNewAd> {
                                   if (!_formKey.currentState.validate()) {
                                     return;
                                   }
+                                  // returnValue = 0;
                                   _formKey.currentState.save();
                                   // print(images[0].toString());
                                   print(_title);
@@ -586,7 +606,6 @@ class _PostNewAdState extends State<PostNewAd> {
   // _imgFromGallery(File filename) async {
   //   File image = await ImagePicker.pickImage(source: ImageSource.gallery);
   //   setState(() {
-  //     //TODO:wykasować
   //     filename = image;
   //   });
   // }
