@@ -22,6 +22,7 @@ class FilterPage extends StatefulWidget {
 }
 
 class _FilterPageState extends State<FilterPage> {
+  bool isLoading = false;
   static List<ServiceCard> cardInfoData;
   String _priceMin = '0';
   String _priceMax;
@@ -319,6 +320,7 @@ class _FilterPageState extends State<FilterPage> {
                               if (!_formKey.currentState.validate()) {
                                 return;
                               }
+                              setState(() => isLoading = true);
                               print(_priceMin.isEmpty);
                               _formKey.currentState.save();
                               await searchForCards(_currentCategory,_currentLocalization, _type.toString(), _priceMin, _rating.toString());

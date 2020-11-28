@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/User.dart';
+import 'package:fachowcy_app/src/customWidgets/Loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +30,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLoading = false;
   TextEditingController emailController = new TextEditingController();
   TextEditingController passwordController = new TextEditingController();
   bool isLoggedIn = false;
@@ -43,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading ? Loader() : Scaffold(
       backgroundColor: Colors.blue,
       body: SingleChildScrollView(
         child: Container(
@@ -129,17 +131,17 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     onPressed: ()async {
+                      // setState(() => isLoading = true);
                       var result = await login(emailController.text,passwordController.text);
-                      print(result);
                       if(result==200) {
-                        Navigator.push(
+                        // setState(() => isLoading = false);
+                        await Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => UserMainPage()));
                       } else {
+                        // setState(() => isLoading = false);
                         _showToastWrong(context, 'Coś poszło nie tak!');
                       }
-
-
                     },
                     child: Text(
                       "Zaloguj się",
@@ -223,7 +225,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         emailShared = emailController.text;
         passwordShared = passwordController.text;
-        isLoggedIn = true;
+        isLoggedIn = false;
+        // isLoading = false;
       });
 
         return response.statusCode;
@@ -233,6 +236,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void autoLogIn() async {
+
+    setState(() {
+      isLoggedIn = true;
+    });
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String userEmail = prefs.getString('email');
     final String userPassword = prefs.getString('password');
@@ -251,6 +258,9 @@ class _LoginPageState extends State<LoginPage> {
                 MaterialPageRoute(builder: (context) => UserMainPage()));
           }
         else {
+          // setState(() {
+          //   isLoading = false;
+          // });
             print('Failed to Auto login');
           }
       };
@@ -279,6 +289,8 @@ class _LoginPageState extends State<LoginPage> {
         headers:{'Content-Type': 'application/json'},
         body: str
     );
+
+
     print('Auto login response code '  + response.statusCode.toString());
     print('Auto login response body '  + response.body.toString());
     // CHECK THE REPOSONE NUMBERS
@@ -300,9 +312,10 @@ class _LoginPageState extends State<LoginPage> {
       // return User.fromJson(jsonDecode(response.body));
       return 1;
     }
-    else
+    else {
+      // setState(() =>isLoading = false );
       return 0;
-
+    }
     }
 
 
