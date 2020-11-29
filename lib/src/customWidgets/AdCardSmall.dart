@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../EditServiceCard.dart';
+
 class AdCardSmall extends StatelessWidget {
 
   String title;
@@ -91,7 +93,9 @@ class AdCardSmall extends StatelessWidget {
                               child: IconButton(
                                 icon: new Icon(Icons.edit),
                                 color: Colors.white,
-                                onPressed: () {
+                                onPressed: () {Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => EditServiceCard(userAdId)));
 
 //                                    Navigator.push(
 //                                        context,

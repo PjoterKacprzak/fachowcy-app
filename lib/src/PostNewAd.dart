@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/Photos.dart';
+import 'package:fachowcy_app/src/UserMainPage.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -526,6 +527,8 @@ class _PostNewAdState extends State<PostNewAd> {
                                             _exchangeDescription)) == 200) {
                                       setState(() =>isLoading = false);
                                       _showToastGood(context);
+
+
                                     } else {
                                       setState(() =>isLoading = false);
                                       _showToastWrong(context,
@@ -569,7 +572,7 @@ class _PostNewAdState extends State<PostNewAd> {
       List<int> imageBytes = file.readAsBytesSync();
       base64Image1 = base64.encode(imageBytes);
       UserXML["photo1"] = base64Image1;
-      print("TEST1");
+      print("TEST1 $base64Image1");
 
       // encodedPhotos.add(base64Image1);
     }
