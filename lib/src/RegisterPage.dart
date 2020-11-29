@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'LoginPage.dart';
 
 
@@ -74,7 +75,12 @@ class RegisterPage extends StatelessWidget {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  String _email,_password,_name,_lastName,_telephone,_confirmPassword= "";
+  String _email,
+      _password,
+      _name,
+      _lastName,
+      _telephone,
+      _confirmPassword = "";
 
   @override
   Widget build(BuildContext context) {
@@ -88,13 +94,15 @@ class RegisterPage extends StatelessWidget {
               margin: const EdgeInsets.only(left: 40, right: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget> [
+                children: <Widget>[
                   SizedBox(height: 30),
                   MyStatefulWidget(),
                   TextFormField(
-                    inputFormatters: [new WhitelistingTextInputFormatter(RegExp("[a-zA-Z ']")),],
+                    inputFormatters: [
+                      new WhitelistingTextInputFormatter(RegExp("[a-zA-Z ']")),
+                    ],
                     validator: NameValidator.validate,
-                    onSaved: (name)=> _name = name,
+                    onSaved: (name) => _name = name,
                     //: nameController,
                     style: TextStyle(
 
@@ -126,9 +134,11 @@ class RegisterPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                    inputFormatters: [new WhitelistingTextInputFormatter(RegExp("[a-zA-Z ']")),],
+                    inputFormatters: [
+                      new WhitelistingTextInputFormatter(RegExp("[a-zA-Z ']")),
+                    ],
                     validator: LastNameValidator.validate,
-                    onSaved: (lastName)=> _lastName = lastName,
+                    onSaved: (lastName) => _lastName = lastName,
 
                     // controller: lastNameController,
                     style: TextStyle(
@@ -161,8 +171,11 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(height: 10),
                   TextFormField(
                     //controller:emailController,
-                    validator: (email)=>EmailValidator.validate(email)? null:"Invalid email address",
-                    onSaved: (email)=> _email = email,
+                    validator: (email) =>
+                    EmailValidator.validate(email)
+                        ? null
+                        : "Invalid email address",
+                    onSaved: (email) => _email = email,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -192,8 +205,8 @@ class RegisterPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
-                    validator:TelephoneValidator.validate,
-                    onSaved: (telephone)=> _telephone = telephone,
+                    validator: TelephoneValidator.validate,
+                    onSaved: (telephone) => _telephone = telephone,
                     //controller: telephoneController,
                     style: TextStyle(
                       color: Colors.white,
@@ -225,8 +238,8 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(height: 10),
                   TextFormField(
                     controller: passwordController,
-                    validator:PasswordValidator.validate,
-                    onSaved: (password)=> _password = password,
+                    validator: PasswordValidator.validate,
+                    onSaved: (password) => _password = password,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -258,7 +271,7 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(height: 10),
                   TextFormField(
                     controller: confirmPassowrdController,
-                    validator: (confirmPassword){
+                    validator: (confirmPassword) {
                       Pattern pattern =
                           r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
                       RegExp regex = new RegExp(pattern);
@@ -267,7 +280,8 @@ class RegisterPage extends StatelessWidget {
                       else
                         return null;
                     },
-                    onSaved: (confirmPassword)=> _confirmPassword = confirmPassword,
+                    onSaved: (confirmPassword) =>
+                    _confirmPassword = confirmPassword,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -298,53 +312,58 @@ class RegisterPage extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Builder(
-                    builder: (context) => Center(
-                      child: FlatButton(
-                        color: Colors.green,
-                        textColor: Colors.white,
-                        padding: EdgeInsets.all(16.0),
-                        splashColor: Colors.greenAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        onPressed: () async{
+                    builder: (context) =>
+                        Center(
+                          child: FlatButton(
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(16.0),
+                            splashColor: Colors.greenAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                {
+                                  if (passwordController.text !=
+                                      confirmPassowrdController.text) {
+                                    print(passwordController);
+                                    print(confirmPassowrdController);
+                                    _showToastWrong(context, 'Hasła są różne!');
+                                    print("Hasła są różne");
+                                  }
+                                  else {
+                                    _formKey.currentState.save();
 
-                          if(_formKey.currentState.validate()){
-                            {
-                              if (passwordController.text !=
-                                  confirmPassowrdController.text) {
-                                print(passwordController);
-                                print(confirmPassowrdController);
-                                _showToastWrong(context, 'Hasła są różne!');
-                                print("Hasła są różne");
-                              }
-                              else {
-                                _formKey.currentState.save();
-
-                                if(await createUser(_name,
-                                    _email, _lastName,
-                                    _telephone,
-                                    adresseController.text,
-                                    _password,_character) == 200) {
-                                  _showToastGood(context);
-                                } else {
-                                  _showToastWrong(context, 'Podany email jest w użyciu!');
-                                }
+                                    if (await createUser(
+                                        _name,
+                                        _email,
+                                        _lastName,
+                                        _telephone,
+                                        adresseController.text,
+                                        _password,
+                                        _character) == 200) {
+                                      _showToastGood(context);
+                                    } else {
+                                      _showToastWrong(context,
+                                          'Podany email jest w użyciu!');
+                                    }
 
 //                            Navigator.pop(
 //                                context,
 //                                MaterialPageRoute(
 //                                    builder: (context) => LoginPage()));
+                                  }
+                                }
                               }
-                            }
-                          }},
+                            },
 
-                        child: Text(
-                          "Zarejestruj się",
-                          style: TextStyle(fontSize: 20.0),
+                            child: Text(
+                              "Zarejestruj się",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
                   ),
                   SizedBox(height: 8),
                   FlatButton(
@@ -378,12 +397,14 @@ class RegisterPage extends StatelessWidget {
     scaffold.showSnackBar(
       SnackBar(
         backgroundColor: Colors.green,
-        content: const Text('Użytkownik zarejestrowany!', style: const TextStyle(fontSize: 20)),
+        content: const Text(
+            'Użytkownik zarejestrowany!', style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
-            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+            label: 'Zamknij',
+            onPressed: scaffold.hideCurrentSnackBar,
+            textColor: Colors.white),
       ),
     );
-
   }
 
   void _showToastWrong(BuildContext context, String message) {
@@ -393,26 +414,25 @@ class RegisterPage extends StatelessWidget {
         backgroundColor: Colors.red,
         content: new Text(message, style: const TextStyle(fontSize: 16)),
         action: SnackBarAction(
-            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+            label: 'Zamknij',
+            onPressed: scaffold.hideCurrentSnackBar,
+            textColor: Colors.white),
       ),
     );
-
   }
 
-  Future<int> createUser (String name,String email,String lastName,String telephone,
-      String adresse,String password, WhoUsing role)async {
-
+  Future<int> createUser(String name, String email, String lastName,
+      String telephone,
+      String adresse, String password, WhoUsing role) async {
     var actualDate = new DateTime.now();
     print(actualDate);
     var dateFormatter = new DateFormat.yMd().add_jm();
     String formattedDate = dateFormatter.format(actualDate);
     String whoIs;
-    if(role==WhoUsing.user)
-    {
+    if (role == WhoUsing.user) {
       whoIs = "user";
     }
-    else
-    {
+    else {
       whoIs = "specialist";
     }
 
@@ -424,30 +444,82 @@ class RegisterPage extends StatelessWidget {
     UserXML["phoneNumber"] = telephone;
     UserXML["adresse"] = adresse;
     UserXML["email"] = email;
-    UserXML["createdAt"]= formattedDate;
-    UserXML["role"]= whoIs;
+    UserXML["rate"] = 0;
+    UserXML["createdAt"] = formattedDate;
+    UserXML["role"] = whoIs;
     String str = json.encode(UserXML);
     print(str);
 
     final http.Response response = await http.post(
         Config.serverHostString + '/api/users/addUser',
-        headers:{'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json'},
         body: str
     );
     print(response.statusCode);
     // CHECK THE REPOSONE NUMBERS
-    if ((response.statusCode >= 200)||(response.statusCode <=299)) {
+    if ((response.statusCode >= 200) || (response.statusCode <= 299)) {
       return response.statusCode;
-    } else if ((response.statusCode >= 400)||(response.statusCode <=499)) {
+    } else if ((response.statusCode >= 400) || (response.statusCode <= 499)) {
       return response.statusCode;
     } else {
       throw Exception('Failed to create User.');
     }
   }
 
+
+  Future<int> createUserFacebook(String name, String email, String lastName,
+      String telephone,
+      String adresse, String password, WhoUsing role) async {
+    var actualDate = new DateTime.now();
+    print(actualDate);
+    var dateFormatter = new DateFormat.yMd().add_jm();
+    String formattedDate = dateFormatter.format(actualDate);
+    String whoIs;
+    if (role == WhoUsing.user) {
+      whoIs = "user";
+    }
+    else {
+      whoIs = "specialist";
+    }
+
+
+    var UserXML = {};
+    UserXML["name"] = name;
+    UserXML["lastName"] = lastName;
+    UserXML["password"] = password;
+    UserXML["phoneNumber"] = telephone;
+    UserXML["adresse"] = adresse;
+    UserXML["email"] = email;
+    UserXML["rate"] = 0;
+    UserXML["createdAt"] = formattedDate;
+    UserXML["role"] = whoIs;
+    String str = json.encode(UserXML);
+    print(str);
+
+    final http.Response response = await http.post(
+        Config.serverHostString + '/api/users/addUser',
+        headers: {'Content-Type': 'application/json'},
+        body: str
+    );
+
+    Map<String,dynamic> result = jsonDecode(response.body);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('email', email);
+    prefs.setString('password',result.values.elementAt(2));
+    print(result.values.elementAt(2));
+
+
+    print(response.statusCode);
+    // CHECK THE REPOSONE NUMBERS
+    if ((response.statusCode >= 200) || (response.statusCode <= 299)) {
+      return response.statusCode;
+    } else if ((response.statusCode >= 400) || (response.statusCode <= 499)) {
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to create User.');
+    }
+  }
 }
-
-
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 

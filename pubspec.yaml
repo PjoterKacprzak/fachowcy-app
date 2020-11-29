@@ -28,6 +28,8 @@ dependencies:
   multi_image_picker: ^4.7.14
   image_picker: ^0.6.6+5
   smooth_star_rating: ^1.1.1
+  flutter_signin_button: ^1.1.0
+  flutter_facebook_login: ^3.0.0
   flutter:
     sdk: flutter
 

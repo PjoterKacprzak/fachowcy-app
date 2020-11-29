@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:fachowcy_app/Config/Authentication.dart';
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/User.dart';
 import 'package:fachowcy_app/src/customWidgets/Loader.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_builder.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -150,12 +154,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
-              Text(
-                "Nie masz konta?",
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 10),
+
+
+
               FlatButton(
                 color: Colors.green,
                 textColor: Colors.white,
@@ -173,6 +174,26 @@ class _LoginPageState extends State<LoginPage> {
                   "Zarejestruj się",
                   style: TextStyle(fontSize: 20.0),
                 ),
+              ),
+              SignInButton(
+                  Buttons.Facebook,
+                  text: "Zaloguj przez Facebook",
+
+                  onPressed: () async{
+                    Authentication auth = Authentication();
+                    var resultFacebook = await auth.signInFB();
+                    print(resultFacebook);
+
+                    if(resultFacebook!=null)
+                    {
+                      RegisterPage().createUserFacebook(resultFacebook.values.elementAt(1), resultFacebook.values.elementAt(3), resultFacebook.values.elementAt(2),
+                          '', '', resultFacebook.values.elementAt(3)+resultFacebook.values.elementAt(4),WhoUsing.user);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => UserMainPage()));
+                    }
+
+                    // .whenComplete((onComplete) {
+                    //   Navigator.of(context}.push(MaterialPageRoute(builder: (context)=>HomePage()));},
+                  }
               ),
             ],
           ),
