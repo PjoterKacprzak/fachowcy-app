@@ -29,13 +29,13 @@ class FilteredAds extends StatelessWidget {
                   ? Container(
                       child: Center(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              SizedBox(height: 20),
-                              Text(
-                                "Brak ogłoszeń",
-                                style: TextStyle(color: Colors.white, fontSize: 25),
-                              )
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 20),
+                        Text(
+                          "Brak ogłoszeń",
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        )
                       ],
                     )))
                   : GridView.builder(

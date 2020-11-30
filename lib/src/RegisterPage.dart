@@ -11,23 +11,23 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'LoginPage.dart';
 
-
 //TODO: -Krystian musiałem dać to jako globalną bo stworzyłeś nową klasę dla Widgetu górnego, ta nowa klasa jest potrzebna? nie moze być jako zwykly Widget? bo uzywanie globalnej to sredni pomysl
 enum WhoUsing { user, specialist }
 WhoUsing _character = WhoUsing.user;
 
-class NameValidator{
-  static String validate(String value){
+class NameValidator {
+  static String validate(String value) {
     Pattern pattern = r'[A-Za-z]\w{0,40}';
     RegExp regex = new RegExp(pattern);
-    if(!regex.hasMatch(value) || value.length > 40)
+    if (!regex.hasMatch(value) || value.length > 40)
       return 'Błedny format';
     else
       return null;
-
   }
-}class LastNameValidator{
-  static String validate(String value){
+}
+
+class LastNameValidator {
+  static String validate(String value) {
     {
       Pattern pattern = r'[A-Za-z]+';
       RegExp regex = new RegExp(pattern);
@@ -37,20 +37,11 @@ class NameValidator{
         return null;
     }
   }
-}class TelephoneValidator{
-  static String validate(String value){
-    Pattern pattern =
-        r'(^(?:[+0]9)?[0-9]{9,12}$)';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Błedny format';
-    else
-      return null;
-  }
-}class PasswordValidator{
-  static String validate(String value){
-    Pattern pattern =
-        r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
+}
+
+class TelephoneValidator {
+  static String validate(String value) {
+    Pattern pattern = r'(^(?:[+0]9)?[0-9]{9,12}$)';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
       return 'Błedny format';
@@ -59,10 +50,16 @@ class NameValidator{
   }
 }
 
-
-
-
-
+class PasswordValidator {
+  static String validate(String value) {
+    Pattern pattern = r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Błedny format';
+    else
+      return null;
+  }
+}
 
 class RegisterPage extends StatelessWidget {
   TextEditingController nameController = new TextEditingController();
@@ -75,12 +72,7 @@ class RegisterPage extends StatelessWidget {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  String _email,
-      _password,
-      _name,
-      _lastName,
-      _telephone,
-      _confirmPassword = "";
+  String _email, _password, _name, _lastName, _telephone, _confirmPassword = "";
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +97,6 @@ class RegisterPage extends StatelessWidget {
                     onSaved: (name) => _name = name,
                     //: nameController,
                     style: TextStyle(
-
                       color: Colors.white,
                       fontSize: 25,
                     ),
@@ -171,8 +162,7 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(height: 10),
                   TextFormField(
                     //controller:emailController,
-                    validator: (email) =>
-                    EmailValidator.validate(email)
+                    validator: (email) => EmailValidator.validate(email)
                         ? null
                         : "Invalid email address",
                     onSaved: (email) => _email = email,
@@ -281,7 +271,7 @@ class RegisterPage extends StatelessWidget {
                         return null;
                     },
                     onSaved: (confirmPassword) =>
-                    _confirmPassword = confirmPassword,
+                        _confirmPassword = confirmPassword,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -312,58 +302,56 @@ class RegisterPage extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Builder(
-                    builder: (context) =>
-                        Center(
-                          child: FlatButton(
-                            color: Colors.green,
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(16.0),
-                            splashColor: Colors.greenAccent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                {
-                                  if (passwordController.text !=
-                                      confirmPassowrdController.text) {
-                                    print(passwordController);
-                                    print(confirmPassowrdController);
-                                    _showToastWrong(context, 'Hasła są różne!');
-                                    print("Hasła są różne");
-                                  }
-                                  else {
-                                    _formKey.currentState.save();
+                    builder: (context) => Center(
+                      child: FlatButton(
+                        color: Colors.green,
+                        textColor: Colors.white,
+                        padding: EdgeInsets.all(16.0),
+                        splashColor: Colors.greenAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            {
+                              if (passwordController.text !=
+                                  confirmPassowrdController.text) {
+                                print(passwordController);
+                                print(confirmPassowrdController);
+                                _showToastWrong(context, 'Hasła są różne!');
+                                print("Hasła są różne");
+                              } else {
+                                _formKey.currentState.save();
 
-                                    if (await createUser(
+                                if (await createUser(
                                         _name,
                                         _email,
                                         _lastName,
                                         _telephone,
                                         adresseController.text,
                                         _password,
-                                        _character) == 200) {
-                                      _showToastGood(context);
-                                    } else {
-                                      _showToastWrong(context,
-                                          'Podany email jest w użyciu!');
-                                    }
+                                        _character) ==
+                                    200) {
+                                  _showToastGood(context);
+                                } else {
+                                  _showToastWrong(
+                                      context, 'Podany email jest w użyciu!');
+                                }
 
 //                            Navigator.pop(
 //                                context,
 //                                MaterialPageRoute(
 //                                    builder: (context) => LoginPage()));
-                                  }
-                                }
                               }
-                            },
-
-                            child: Text(
-                              "Zarejestruj się",
-                              style: TextStyle(fontSize: 20.0),
-                            ),
-                          ),
+                            }
+                          }
+                        },
+                        child: Text(
+                          "Zarejestruj się",
+                          style: TextStyle(fontSize: 20.0),
                         ),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 8),
                   FlatButton(
@@ -375,10 +363,8 @@ class RegisterPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     onPressed: () {
-                      Navigator.pop(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginPage()));
+                      Navigator.pop(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     },
                     child: Text(
                       "Wróć",
@@ -397,8 +383,8 @@ class RegisterPage extends StatelessWidget {
     scaffold.showSnackBar(
       SnackBar(
         backgroundColor: Colors.green,
-        content: const Text(
-            'Użytkownik zarejestrowany!', style: const TextStyle(fontSize: 20)),
+        content: const Text('Użytkownik zarejestrowany!',
+            style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
             label: 'Zamknij',
             onPressed: scaffold.hideCurrentSnackBar,
@@ -422,8 +408,7 @@ class RegisterPage extends StatelessWidget {
   }
 
   Future<int> createUser(String name, String email, String lastName,
-      String telephone,
-      String adresse, String password, WhoUsing role) async {
+      String telephone, String adresse, String password, WhoUsing role) async {
     var actualDate = new DateTime.now();
     print(actualDate);
     var dateFormatter = new DateFormat.yMd().add_jm();
@@ -431,11 +416,9 @@ class RegisterPage extends StatelessWidget {
     String whoIs;
     if (role == WhoUsing.user) {
       whoIs = "user";
-    }
-    else {
+    } else {
       whoIs = "specialist";
     }
-
 
     var UserXML = {};
     UserXML["name"] = name;
@@ -453,8 +436,7 @@ class RegisterPage extends StatelessWidget {
     final http.Response response = await http.post(
         Config.serverHostString + '/api/users/addUser',
         headers: {'Content-Type': 'application/json'},
-        body: str
-    );
+        body: str);
     print(response.statusCode);
     // CHECK THE REPOSONE NUMBERS
     if ((response.statusCode >= 200) || (response.statusCode <= 299)) {
@@ -466,10 +448,8 @@ class RegisterPage extends StatelessWidget {
     }
   }
 
-
   Future<int> createUserFacebook(String name, String email, String lastName,
-      String telephone,
-      String adresse, String password, WhoUsing role) async {
+      String telephone, String adresse, String password, WhoUsing role) async {
     var actualDate = new DateTime.now();
     print(actualDate);
     var dateFormatter = new DateFormat.yMd().add_jm();
@@ -477,11 +457,9 @@ class RegisterPage extends StatelessWidget {
     String whoIs;
     if (role == WhoUsing.user) {
       whoIs = "user";
-    }
-    else {
+    } else {
       whoIs = "specialist";
     }
-
 
     var UserXML = {};
     UserXML["name"] = name;
@@ -499,15 +477,13 @@ class RegisterPage extends StatelessWidget {
     final http.Response response = await http.post(
         Config.serverHostString + '/api/users/addUser',
         headers: {'Content-Type': 'application/json'},
-        body: str
-    );
+        body: str);
 
-    Map<String,dynamic> result = jsonDecode(response.body);
+    Map<String, dynamic> result = jsonDecode(response.body);
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('email', email);
-    prefs.setString('password',result.values.elementAt(2));
+    prefs.setString('password', result.values.elementAt(2));
     print(result.values.elementAt(2));
-
 
     print(response.statusCode);
     // CHECK THE REPOSONE NUMBERS
@@ -520,14 +496,15 @@ class RegisterPage extends StatelessWidget {
     }
   }
 }
+
 class MyStatefulWidget extends StatefulWidget {
   MyStatefulWidget({Key key}) : super(key: key);
 
   @override
   _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
@@ -552,11 +529,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
           Expanded(
             flex: 3,
-            child: const Text(
-                'Użytkownik',
+            child: const Text('Użytkownik',
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 20, color: Colors.white)
-            ),
+                style: TextStyle(fontSize: 20, color: Colors.white)),
           ),
           Expanded(
             flex: 1,
@@ -578,15 +553,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
           Expanded(
             flex: 3,
-            child: const Text(
-                'Fachowiec',
+            child: const Text('Fachowiec',
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 20, color: Colors.white)
-            ),
+                style: TextStyle(fontSize: 20, color: Colors.white)),
           ),
         ],
       ),
     );
   }
-
 }

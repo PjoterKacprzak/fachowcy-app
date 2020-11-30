@@ -254,7 +254,6 @@ class _PostNewAdState extends State<PostNewAd> {
                                                 ),
                                               )),
                                         ])),
-
                                 SizedBox(height: 10),
                                 Row(
                                     crossAxisAlignment:
@@ -385,7 +384,8 @@ class _PostNewAdState extends State<PostNewAd> {
                                               Flexible(
                                                 child: TextFormField(
                                                   onSaved: (String value) {
-                                                    _exchangeDescription = value;
+                                                    _exchangeDescription =
+                                                        value;
                                                   },
                                                   style: TextStyle(
                                                     color: Colors.white,
@@ -524,16 +524,16 @@ class _PostNewAdState extends State<PostNewAd> {
                                             _currentLocalization,
                                             _estimatedTime,
                                             _price,
-                                            _exchangeDescription)) == 200) {
-                                      setState(() =>isLoading = false);
+                                            _exchangeDescription)) ==
+                                        200) {
+                                      setState(() => isLoading = false);
                                       _showToastGood(context);
-
-
                                     } else {
-                                      setState(() =>isLoading = false);
+                                      setState(() => isLoading = false);
                                       _showToastWrong(context,
                                           'Nie udało się dodać ogłoszenia!');
-                                    };
+                                    }
+                                    ;
                                   },
                                   child: Text(
                                     "Dodaj",

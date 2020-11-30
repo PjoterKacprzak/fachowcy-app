@@ -12,11 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'UserProfile.dart';
 
-
-class PasswordValidator{
-  static String validate(String value){
-    Pattern pattern =
-        r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
+class PasswordValidator {
+  static String validate(String value) {
+    Pattern pattern = r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
       return 'Błedny format';
@@ -25,9 +23,7 @@ class PasswordValidator{
   }
 }
 
-
 class ChangePasswordFromUserProfile extends StatelessWidget {
-
 //  String userEmail;
 //  String userOldPassword;
 
@@ -40,10 +36,9 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController confirmPassowrdController = new TextEditingController();
 
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  String _password,_confirmPassword= "";
+  String _password, _confirmPassword = "";
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +49,17 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
           child: Form(
             key: _formKey,
             child: Container(
-              margin: MediaQuery.of(context).orientation == Orientation.portrait ? const EdgeInsets.only(left: 40, right: 40, top: 120) : const EdgeInsets.only(left: 40, right: 40, top: 10),
+              margin: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? const EdgeInsets.only(left: 40, right: 40, top: 120)
+                  : const EdgeInsets.only(left: 40, right: 40, top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget> [
+                children: <Widget>[
                   SizedBox(height: 30),
                   TextFormField(
                     controller: oldPasswordController,
-                    validator:PasswordValidator.validate,
-                    onSaved: (password)=> _password = password,
+                    validator: PasswordValidator.validate,
+                    onSaved: (password) => _password = password,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -94,8 +91,8 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                   SizedBox(height: 10),
                   TextFormField(
                     controller: passwordController,
-                    validator:PasswordValidator.validate,
-                    onSaved: (password)=> _password = password,
+                    validator: PasswordValidator.validate,
+                    onSaved: (password) => _password = password,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -127,7 +124,7 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                   SizedBox(height: 10),
                   TextFormField(
                     controller: confirmPassowrdController,
-                    validator: (confirmPassword){
+                    validator: (confirmPassword) {
                       Pattern pattern =
                           r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
                       RegExp regex = new RegExp(pattern);
@@ -136,7 +133,8 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                       else
                         return null;
                     },
-                    onSaved: (confirmPassword)=> _confirmPassword = confirmPassword,
+                    onSaved: (confirmPassword) =>
+                        _confirmPassword = confirmPassword,
                     obscureText: true,
                     style: TextStyle(
                       color: Colors.white,
@@ -166,152 +164,158 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  MediaQuery.of(context).orientation == Orientation.portrait ?
-                  Column(
-                    children: <Widget>[
-                      Builder(
-                        builder: (context) => Center(
-                          child: FlatButton(
-                            color: Colors.green,
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(16.0),
-                            splashColor: Colors.greenAccent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            onPressed: () async{
+                  MediaQuery.of(context).orientation == Orientation.portrait
+                      ? Column(
+                          children: <Widget>[
+                            Builder(
+                              builder: (context) => Center(
+                                child: FlatButton(
+                                  color: Colors.green,
+                                  textColor: Colors.white,
+                                  padding: EdgeInsets.all(16.0),
+                                  splashColor: Colors.greenAccent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  onPressed: () async {
+                                    final SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    final String userEmail =
+                                        prefs.getString('email');
 
-                              final SharedPreferences prefs = await SharedPreferences.getInstance();
-                              final String userEmail = prefs.getString('email');
+                                    if (_formKey.currentState.validate()) {
+                                      {
+                                        if (await checkOldPassword(userEmail,
+                                                oldPasswordController.text) ==
+                                            1) {
+                                          _showToastWrong(context,
+                                              'Stare hasło jest nieprawidłowe!');
+                                          print("Old password is wrong");
+                                        } else if (passwordController.text !=
+                                            confirmPassowrdController.text) {
+                                          _showToastWrong(
+                                              context, 'Hasła są różne!');
+                                          print("Passwords are different");
+                                        } else {
+                                          _formKey.currentState.save();
 
-                              if(_formKey.currentState.validate()){
-                                {
-                                  if(await checkOldPassword(userEmail, oldPasswordController.text) == 1) {
-                                    _showToastWrong(context, 'Stare hasło jest nieprawidłowe!');
-                                    print("Old password is wrong");
-                                  } else
-                                  if (passwordController.text != confirmPassowrdController.text) {
-                                    _showToastWrong(context, 'Hasła są różne!');
-                                    print("Passwords are different");
-                                  }
-                                  else {
-                                    _formKey.currentState.save();
-
-                                    changePassword(userEmail, _password);
-                                    _showToastGood(context, 'Hasło zostało zmienione!');
-
-//                                Navigator.push(
-//                                    context,
-//                                    MaterialPageRoute(
-//                                        builder: (context) => UserProfile()));
-                                  }
-                                }
-                              }},
-
-                            child: Text(
-                              "Zmień hasło",
-                              style: TextStyle(fontSize: 20.0),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      SizedBox(height: 16),
-                      FlatButton(
-                        color: Colors.green,
-                        textColor: Colors.white,
-                        padding: EdgeInsets.all(16.0),
-                        splashColor: Colors.greenAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserProfile()));
-                        },
-                        child: Text(
-                          "Wróć",
-                          style: TextStyle(fontSize: 20.0),
-                        ),
-                      ),
-                    ],
-                  ):
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Builder(
-                        builder: (context) => Center(
-                          child: FlatButton(
-                            color: Colors.green,
-                            textColor: Colors.white,
-                            padding: EdgeInsets.all(16.0),
-                            splashColor: Colors.greenAccent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            onPressed: () async{
-
-                              final SharedPreferences prefs = await SharedPreferences.getInstance();
-                              final String userEmail = prefs.getString('email');
-
-                              if(_formKey.currentState.validate()){
-                                {
-                                  if(await checkOldPassword(userEmail, oldPasswordController.text) == 1) {
-                                    _showToastWrong(context, 'Stare hasło jest nieprawidłowe!');
-                                    print("Old password is wrong");
-                                  } else
-                                  if (passwordController.text != confirmPassowrdController.text) {
-                                    _showToastWrong(context, 'Hasła są różne!');
-                                    print("Passwords are different");
-                                  }
-                                  else {
-                                    _formKey.currentState.save();
-
-                                    changePassword(userEmail, _password);
-                                    _showToastGood(context, 'Hasło zostało zmienione!');
+                                          changePassword(userEmail, _password);
+                                          _showToastGood(context,
+                                              'Hasło zostało zmienione!');
 
 //                                Navigator.push(
 //                                    context,
 //                                    MaterialPageRoute(
 //                                        builder: (context) => UserProfile()));
-                                  }
-                                }
-                              }},
-
-                            child: Text(
-                              "Zmień hasło",
-                              style: TextStyle(fontSize: 20.0),
+                                        }
+                                      }
+                                    }
+                                  },
+                                  child: Text(
+                                    "Zmień hasło",
+                                    style: TextStyle(fontSize: 20.0),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
+                            SizedBox(height: 16),
+                            FlatButton(
+                              color: Colors.green,
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(16.0),
+                              splashColor: Colors.greenAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserProfile()));
+                              },
+                              child: Text(
+                                "Wróć",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Builder(
+                              builder: (context) => Center(
+                                child: FlatButton(
+                                  color: Colors.green,
+                                  textColor: Colors.white,
+                                  padding: EdgeInsets.all(16.0),
+                                  splashColor: Colors.greenAccent,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                  onPressed: () async {
+                                    final SharedPreferences prefs =
+                                        await SharedPreferences.getInstance();
+                                    final String userEmail =
+                                        prefs.getString('email');
 
-                      SizedBox(width: 16),
-                      FlatButton(
-                        color: Colors.green,
-                        textColor: Colors.white,
-                        padding: EdgeInsets.all(16.0),
-                        splashColor: Colors.greenAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UserProfile()));
-                        },
-                        child: Text(
-                          "Wróć",
-                          style: TextStyle(fontSize: 20.0),
-                        ),
-                      ),
-                    ],
-                  ),
+                                    if (_formKey.currentState.validate()) {
+                                      {
+                                        if (await checkOldPassword(userEmail,
+                                                oldPasswordController.text) ==
+                                            1) {
+                                          _showToastWrong(context,
+                                              'Stare hasło jest nieprawidłowe!');
+                                          print("Old password is wrong");
+                                        } else if (passwordController.text !=
+                                            confirmPassowrdController.text) {
+                                          _showToastWrong(
+                                              context, 'Hasła są różne!');
+                                          print("Passwords are different");
+                                        } else {
+                                          _formKey.currentState.save();
 
+                                          changePassword(userEmail, _password);
+                                          _showToastGood(context,
+                                              'Hasło zostało zmienione!');
 
+//                                Navigator.push(
+//                                    context,
+//                                    MaterialPageRoute(
+//                                        builder: (context) => UserProfile()));
+                                        }
+                                      }
+                                    }
+                                  },
+                                  child: Text(
+                                    "Zmień hasło",
+                                    style: TextStyle(fontSize: 20.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 16),
+                            FlatButton(
+                              color: Colors.green,
+                              textColor: Colors.white,
+                              padding: EdgeInsets.all(16.0),
+                              splashColor: Colors.greenAccent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserProfile()));
+                              },
+                              child: Text(
+                                "Wróć",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ),
+                          ],
+                        ),
                 ],
               ),
             ),
@@ -326,10 +330,11 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
         backgroundColor: Colors.green,
         content: new Text(message, style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
-            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+            label: 'Zamknij',
+            onPressed: scaffold.hideCurrentSnackBar,
+            textColor: Colors.white),
       ),
     );
-
   }
 
   void _showToastWrong(BuildContext context, String message) {
@@ -339,13 +344,14 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
         backgroundColor: Colors.red,
         content: new Text(message, style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
-            label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
+            label: 'Zamknij',
+            onPressed: scaffold.hideCurrentSnackBar,
+            textColor: Colors.white),
       ),
     );
-
   }
 
-  Future<int>checkOldPassword(String email,String password)async {
+  Future<int> checkOldPassword(String email, String password) async {
     var UserXML = {};
     UserXML["name"] = '';
     UserXML["lastName"] = '';
@@ -357,16 +363,16 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
 
     final http.Response response = await http.post(
         Config.serverHostString + '/api/users/login',
-        headers:{'Content-Type': 'application/json'},
-        body: str
-    );
+        headers: {'Content-Type': 'application/json'},
+        body: str);
 
     // CHECK THE REPOSONE NUMBERS
-    if((response.statusCode >= 200)&&(response.statusCode <=299)) {
+    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
       print(123);
       print(response.statusCode);
       return 0;
-    } else  return 1;
+    } else
+      return 1;
   }
 
   static Future<int> changePassword(String email, String newPassword) async {
@@ -376,21 +382,19 @@ class ChangePasswordFromUserProfile extends StatelessWidget {
     String newPasswordBody = json.encode(UserXML);
 
     final http.Response response = await http.post(
-      Config.serverHostString +  '/api/users/update-password',
-      headers:{'Content-Type': 'application/json'},
+      Config.serverHostString + '/api/users/update-password',
+      headers: {'Content-Type': 'application/json'},
       body: newPasswordBody,
     );
 
-
     // TODO: CHECK THE REPOSONE NUMBERS
 
-    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
-
+    if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
       print("Password changed for user with email: " + email + ".");
       return response.statusCode;
     } else {
-      throw new Exception("Failed to change password for user with email " + email + ".");
+      throw new Exception(
+          "Failed to change password for user with email " + email + ".");
     }
   }
-
 }

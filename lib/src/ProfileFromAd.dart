@@ -16,9 +16,8 @@ import 'ProfileFromComment.dart';
 import 'customWidgets/AdCardSmall.dart';
 
 class ProfileFromAd extends StatefulWidget {
-
   @override
-  _ProfileFromAdState createState() =>_ProfileFromAdState();
+  _ProfileFromAdState createState() => _ProfileFromAdState();
 
   static int userId;
   int adNumber;
@@ -49,19 +48,46 @@ class ProfileFromAd extends StatefulWidget {
                         SizedBox(height: 30),
                         ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: profileData.profilePhoto == null ?
-                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                            profileData.profilePhoto == "profile_photo" ?
-                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                            Image.network(profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                        ),
+                            child: profileData.profilePhoto == null
+                                ? Container(
+                                    color: Colors.grey,
+                                    width: 120,
+                                    height: 120,
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.no_photography,
+                                        size: 32.0,
+                                      ),
+                                    ),
+                                  )
+                                : profileData.profilePhoto == "profile_photo"
+                                    ? Container(
+                                        color: Colors.grey,
+                                        width: 120,
+                                        height: 120,
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.no_photography,
+                                            size: 32.0,
+                                          ),
+                                        ),
+                                      )
+                                    : Image.network(profileData.profilePhoto,
+                                        width: 120,
+                                        height: 120,
+                                        fit: BoxFit.contain)),
                         SizedBox(height: 16),
-                        UserNameSection(profileData.name, profileData.lastName,profileData.id, profileData.userId, profileData.portfolio),
-                        ContactSection(profileData.phoneNumber, profileData.email),
+                        UserNameSection(
+                            profileData.name,
+                            profileData.lastName,
+                            profileData.id,
+                            profileData.userId,
+                            profileData.portfolio),
+                        ContactSection(
+                            profileData.phoneNumber, profileData.email),
                         RatingSection(profileData.rate),
                         UserAds(profileData, adNumber),
                         CommentSection(profileData, adNumber),
-
                       ],
                     ),
                   ),
@@ -92,8 +118,8 @@ class ProfileFromAd extends StatefulWidget {
 
     int indexx;
 
-    for(int i = 0; i < userProfileData.serviceCardLists.length; i++) {
-      if(userProfileData.serviceCardLists[i].serviceCardId == id) {
+    for (int i = 0; i < userProfileData.serviceCardLists.length; i++) {
+      if (userProfileData.serviceCardLists[i].serviceCardId == id) {
         indexx = i;
         break;
       }
@@ -102,7 +128,6 @@ class ProfileFromAd extends StatefulWidget {
     // TODO: CHECK THE REPOSONE NUMBERS
 
     if ((response.statusCode >= 200) && (response.statusCode <= 299)) {
-
       profileData = userProfileData;
       index = indexx;
       print("User profile data from ad received from server");
@@ -111,7 +136,6 @@ class ProfileFromAd extends StatefulWidget {
       throw new Exception('Failed to load profile data after ad.');
     }
   }
-
 }
 
 class _ProfileFromAdState extends State<ProfileFromAd> {
@@ -125,71 +149,161 @@ class _ProfileFromAdState extends State<ProfileFromAd> {
             slivers: <Widget>[
               CustomAppBar(),
               SliverList(
-                delegate: SliverChildListDelegate([
-                  Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Column(
+                delegate: SliverChildListDelegate(
+                  [
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      child: Column(
                         children: <Widget>[
                           SizedBox(height: 30),
-                          MediaQuery.of(context).orientation == Orientation.portrait ?
-                          Column(
-                            children: <Widget>[
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: ProfileFromAd.profileData.profilePhoto == null ?
-                                  Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                                  ProfileFromAd.profileData.profilePhoto == "profile_photo" ?
-                                  Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                                  Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                              ),
-                              SizedBox(height: 16),
-                              UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId, ProfileFromAd.profileData.portfolio),
-                              ContactSection(ProfileFromAd.profileData.phoneNumber, ProfileFromAd.profileData.email),
-                              RatingSection(ProfileFromAd.profileData.rate),
-                              UserAds(ProfileFromAd.profileData, widget.adNumber),
-                              CommentSection(ProfileFromAd.profileData, widget.adNumber),
-                            ],
-                          ):
-                          Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      ClipRRect(
-                                          borderRadius: BorderRadius.circular(20),
-                                          child: ProfileFromAd.profileData.profilePhoto == null ?
-                                          Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                                          ProfileFromAd.profileData.profilePhoto == "profile_photo" ?
-                                          Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                                          Image.network(ProfileFromAd.profileData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                                      ),
-                                      SizedBox(height: 16),
-                                      UserNameSection(ProfileFromAd.profileData.name, ProfileFromAd.profileData.lastName,ProfileFromAd.profileData.email, ProfileFromAd.profileData.userId, ProfileFromAd.profileData.portfolio),
-                                    ],
-                                  ),
-                                  SizedBox(width: 64),
-                                  Column(
-                                    children: <Widget>[
-                                      ContactSection(ProfileFromAd.profileData.phoneNumber, ProfileFromAd.profileData.email),
-                                      RatingSection(ProfileFromAd.profileData.rate),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                children: <Widget>[
-                                  UserAds(ProfileFromAd.profileData, widget.adNumber),
-                                  CommentSection(ProfileFromAd.profileData, widget.adNumber),
-                                ],
-                              ),
-                            ],
-                          ),
+                          MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? Column(
+                                  children: <Widget>[
+                                    ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: ProfileFromAd
+                                                    .profileData.profilePhoto ==
+                                                null
+                                            ? Container(
+                                                color: Colors.grey,
+                                                width: 120,
+                                                height: 120,
+                                                child: Center(
+                                                  child: Icon(
+                                                    Icons.no_photography,
+                                                    size: 32.0,
+                                                  ),
+                                                ),
+                                              )
+                                            : ProfileFromAd.profileData
+                                                        .profilePhoto ==
+                                                    "profile_photo"
+                                                ? Container(
+                                                    color: Colors.grey,
+                                                    width: 120,
+                                                    height: 120,
+                                                    child: Center(
+                                                      child: Icon(
+                                                        Icons.no_photography,
+                                                        size: 32.0,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Image.network(
+                                                    ProfileFromAd.profileData
+                                                        .profilePhoto,
+                                                    width: 120,
+                                                    height: 120,
+                                                    fit: BoxFit.contain)),
+                                    SizedBox(height: 16),
+                                    UserNameSection(
+                                        ProfileFromAd.profileData.name,
+                                        ProfileFromAd.profileData.lastName,
+                                        ProfileFromAd.profileData.email,
+                                        ProfileFromAd.profileData.userId,
+                                        ProfileFromAd.profileData.portfolio),
+                                    ContactSection(
+                                        ProfileFromAd.profileData.phoneNumber,
+                                        ProfileFromAd.profileData.email),
+                                    RatingSection(
+                                        ProfileFromAd.profileData.rate),
+                                    UserAds(ProfileFromAd.profileData,
+                                        widget.adNumber),
+                                    CommentSection(ProfileFromAd.profileData,
+                                        widget.adNumber),
+                                  ],
+                                )
+                              : Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[
+                                            ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                child: ProfileFromAd.profileData
+                                                            .profilePhoto ==
+                                                        null
+                                                    ? Container(
+                                                        color: Colors.grey,
+                                                        width: 120,
+                                                        height: 120,
+                                                        child: Center(
+                                                          child: Icon(
+                                                            Icons
+                                                                .no_photography,
+                                                            size: 32.0,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : ProfileFromAd.profileData
+                                                                .profilePhoto ==
+                                                            "profile_photo"
+                                                        ? Container(
+                                                            color: Colors.grey,
+                                                            width: 120,
+                                                            height: 120,
+                                                            child: Center(
+                                                              child: Icon(
+                                                                Icons
+                                                                    .no_photography,
+                                                                size: 32.0,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Image.network(
+                                                            ProfileFromAd
+                                                                .profileData
+                                                                .profilePhoto,
+                                                            width: 120,
+                                                            height: 120,
+                                                            fit: BoxFit
+                                                                .contain)),
+                                            SizedBox(height: 16),
+                                            UserNameSection(
+                                                ProfileFromAd.profileData.name,
+                                                ProfileFromAd
+                                                    .profileData.lastName,
+                                                ProfileFromAd.profileData.email,
+                                                ProfileFromAd
+                                                    .profileData.userId,
+                                                ProfileFromAd
+                                                    .profileData.portfolio),
+                                          ],
+                                        ),
+                                        SizedBox(width: 64),
+                                        Column(
+                                          children: <Widget>[
+                                            ContactSection(
+                                                ProfileFromAd
+                                                    .profileData.phoneNumber,
+                                                ProfileFromAd
+                                                    .profileData.email),
+                                            RatingSection(
+                                                ProfileFromAd.profileData.rate),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: <Widget>[
+                                        UserAds(ProfileFromAd.profileData,
+                                            widget.adNumber),
+                                        CommentSection(
+                                            ProfileFromAd.profileData,
+                                            widget.adNumber),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                         ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
                 ),
               ),
             ],
@@ -201,14 +315,14 @@ class _ProfileFromAdState extends State<ProfileFromAd> {
 }
 
 class UserNameSection extends StatelessWidget {
-
   String name;
   String lastName;
   String email;
   int id;
   String portfolio;
 
-  UserNameSection(String name, String lastName,String email, int id, String portfolio) {
+  UserNameSection(
+      String name, String lastName, String email, int id, String portfolio) {
     this.name = name;
     this.lastName = lastName;
     this.email = email;
@@ -226,23 +340,26 @@ class UserNameSection extends StatelessWidget {
         ),
         SizedBox(height: 8),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             print("email : $email");
 
-            Navigator.push(context,MaterialPageRoute(
-                builder: (context) =>AddComment(email, id)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddComment(email, id)));
           },
-          child: Text("Wystaw komentarz",
+          child: Text(
+            "Wystaw komentarz",
             style: new TextStyle(color: Colors.green, fontSize: 20),
           ),
         ),
         SizedBox(height: 8),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             print("Portfolio");
 
-            Navigator.push(context,MaterialPageRoute(
-                builder: (context) =>Portfolio(portfolio, id)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Portfolio(portfolio, id)));
           },
           child: Text(
             "Zobacz portfolio",
@@ -252,11 +369,9 @@ class UserNameSection extends StatelessWidget {
       ],
     );
   }
-
 }
 
 class ContactSection extends StatelessWidget {
-
   String telephone;
   String email;
 
@@ -287,19 +402,14 @@ class ContactSection extends StatelessWidget {
       ],
     );
   }
-
 }
 
-
-
 class RatingSection extends StatelessWidget {
+  double rate;
 
- double rate;
-
- RatingSection(double rate) {
-   this.rate = rate;
- }
-
+  RatingSection(double rate) {
+    this.rate = rate;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -311,15 +421,15 @@ class RatingSection extends StatelessWidget {
           style: new TextStyle(color: Colors.white, fontSize: 16),
         ),
         SizedBox(height: 8),
-        rate == null ?
-        Text(
-          "Nie ma jeszcze żadnej oceny",
-          style: new TextStyle(color: Colors.white, fontSize: 24),) :
-        StarDisplay(value: rate),
+        rate == null
+            ? Text(
+                "Nie ma jeszcze żadnej oceny",
+                style: new TextStyle(color: Colors.white, fontSize: 24),
+              )
+            : StarDisplay(value: rate),
       ],
     );
   }
-
 }
 
 class StarDisplay extends StatelessWidget {
@@ -334,20 +444,22 @@ class StarDisplay extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: List.generate(5, (index) {
         return Icon(
-          index < value - 0.75 ? Icons.star :
-          0.75 > value - index && value - index > 0.25 ? Icons.star_half :
-          Icons.star_border,
-          color: Colors.white, size: 40,);
+          index < value - 0.75
+              ? Icons.star
+              : 0.75 > value - index && value - index > 0.25
+                  ? Icons.star_half
+                  : Icons.star_border,
+          color: Colors.white,
+          size: 40,
+        );
       }),
     );
   }
 }
 
 class UserAds extends StatelessWidget {
-
   var userData;
   int id;
-
 
   UserAds(var userData, int id) {
     this.userData = userData;
@@ -368,13 +480,13 @@ class UserAds extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             int numberOfAds = 0;
             int myIndex = 0;
-            for(int i = 0; i < userData.serviceCardLists.length; i++) {
-              if(userData.serviceCardLists[i].active == true) {
+            for (int i = 0; i < userData.serviceCardLists.length; i++) {
+              if (userData.serviceCardLists[i].active == true) {
                 numberOfAds++;
               }
             }
 
-            if(numberOfAds == 0) {
+            if (numberOfAds == 0) {
               return Column(
                 children: <Widget>[
                   Text(
@@ -385,13 +497,15 @@ class UserAds extends StatelessWidget {
                 ],
               );
             }
-            if(snapshot.data == null) {
+            if (snapshot.data == null) {
               return Container(
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                      CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.white)),
                       SizedBox(height: 8),
                       Text(
                         "Loading, please wait..",
@@ -408,18 +522,22 @@ class UserAds extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+                  crossAxisCount:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 2
+                          : 3,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
+                  childAspectRatio:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 0.58
+                          : 0.76, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
-
                   bool flag = true;
-                  while(flag) {
-                    if(userData.serviceCardLists[myIndex].active == false) {
-
-                      if(myIndex <= userData.serviceCardLists.length) {
+                  while (flag) {
+                    if (userData.serviceCardLists[myIndex].active == false) {
+                      if (myIndex <= userData.serviceCardLists.length) {
                         myIndex++;
                       }
                     } else {
@@ -427,11 +545,16 @@ class UserAds extends StatelessWidget {
                     }
                   }
 
-                  if(myIndex <= userData.serviceCardLists.length) {
+                  if (myIndex <= userData.serviceCardLists.length) {
                     myIndex++;
                   }
 
-                  return AdCardSmall(false, userData.serviceCardLists[myIndex-1].title, userData.serviceCardLists[myIndex-1].description, userData.serviceCardLists[myIndex-1].serviceCardId, userData.serviceCardLists[myIndex-1].photo);
+                  return AdCardSmall(
+                      false,
+                      userData.serviceCardLists[myIndex - 1].title,
+                      userData.serviceCardLists[myIndex - 1].description,
+                      userData.serviceCardLists[myIndex - 1].serviceCardId,
+                      userData.serviceCardLists[myIndex - 1].photo);
                 },
               );
             }
@@ -443,7 +566,6 @@ class UserAds extends StatelessWidget {
 }
 
 class CommentSection extends StatelessWidget {
-
   var userData;
   int id;
   static var userCommentingData;
@@ -467,10 +589,12 @@ class CommentSection extends StatelessWidget {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             int numberOfAds = userData.userCommentList.length;
 
-            if(numberOfAds == 0) {
+            if (numberOfAds == 0) {
               return Column(
                 children: <Widget>[
-                  SizedBox(height: 8,),
+                  SizedBox(
+                    height: 8,
+                  ),
                   Text(
                     "Nie ma jeszcze żadnych komentarzy!",
                     style: TextStyle(color: Colors.white, fontSize: 24),
@@ -480,13 +604,15 @@ class CommentSection extends StatelessWidget {
                 ],
               );
             }
-            if(snapshot.data == null) {
+            if (snapshot.data == null) {
               return Container(
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                      CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.white)),
                       SizedBox(height: 8),
                       Text(
                         "Loading, please wait..",
@@ -503,36 +629,75 @@ class CommentSection extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 itemBuilder: (BuildContext context, int index) {
-
                   return GestureDetector(
-                    onTap: () async{
-                      await ProfileFromComment.getProfileDataById(userData.userCommentList[index].userCommentingId);
+                    onTap: () async {
+                      await ProfileFromComment.getProfileDataById(
+                          userData.userCommentList[index].userCommentingId);
 
                       Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfileFromComment(userData.userCommentList[index].userCommentingId)));
+                          MaterialPageRoute(
+                              builder: (context) => ProfileFromComment(userData
+                                  .userCommentList[index].userCommentingId)));
                     },
                     child: ListTile(
-                      title: userData.userCommentList[index].name == null ?
-                      Text(
-                        "ID komentującego usera:" + userData.userCommentList[index].userCommentingId.toString(),
-                        style: new TextStyle(color: Colors.green, fontSize: 20),) :
-                      Text(
-                        userData.userCommentList[index].name + " " + userData.userCommentList[index].lastName,
-                        style: new TextStyle(color: Colors.green, fontSize: 20),),
+                      title: userData.userCommentList[index].name == null
+                          ? Text(
+                              "ID komentującego usera:" +
+                                  userData
+                                      .userCommentList[index].userCommentingId
+                                      .toString(),
+                              style: new TextStyle(
+                                  color: Colors.green, fontSize: 20),
+                            )
+                          : Text(
+                              userData.userCommentList[index].name +
+                                  " " +
+                                  userData.userCommentList[index].lastName,
+                              style: new TextStyle(
+                                  color: Colors.green, fontSize: 20),
+                            ),
                       subtitle: Text(
-                        userData.userCommentList[index].rate.toString() + "\n" + userData.userCommentList[index].description,
+                        userData.userCommentList[index].rate.toString() +
+                            "\n" +
+                            userData.userCommentList[index].description,
                         style: new TextStyle(color: Colors.white, fontSize: 16),
                       ),
                       isThreeLine: true,
                       leading: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child:  userData.userCommentList[index].profilePhoto == null ?
-                          Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                          userData.userCommentList[index].profilePhoto == "profile_photo" ?
-                          Container(color: Colors.grey, width: 60, height: 60, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-                          Image.network(userData.userCommentList[index].profilePhoto, width: 60, height: 60, fit: BoxFit.contain)
-                      ),
+                          child: userData.userCommentList[index].profilePhoto ==
+                                  null
+                              ? Container(
+                                  color: Colors.grey,
+                                  width: 60,
+                                  height: 60,
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.no_photography,
+                                      size: 32.0,
+                                    ),
+                                  ),
+                                )
+                              : userData.userCommentList[index].profilePhoto ==
+                                      "profile_photo"
+                                  ? Container(
+                                      color: Colors.grey,
+                                      width: 60,
+                                      height: 60,
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.no_photography,
+                                          size: 32.0,
+                                        ),
+                                      ),
+                                    )
+                                  : Image.network(
+                                      userData
+                                          .userCommentList[index].profilePhoto,
+                                      width: 60,
+                                      height: 60,
+                                      fit: BoxFit.contain)),
                     ),
                   );
                 },

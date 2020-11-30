@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'dart:convert';
 import 'package:fachowcy_app/Config/Config.dart';
@@ -13,14 +12,11 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'ProfileFromAd.dart';
 import 'ProfileFromComment.dart';
 
-
 class AddComment extends StatefulWidget {
-
-
-   String email;
-   String name;
-   String lastName;
-   int id;
+  String email;
+  String name;
+  String lastName;
+  int id;
 
   AddComment(String email, int id) {
     this.email = email;
@@ -30,102 +26,116 @@ class AddComment extends StatefulWidget {
   }
 
   @override
-  _AddCommentState createState()
-   {
-     return _AddCommentState(this.email, this.id);
-   }
+  _AddCommentState createState() {
+    return _AddCommentState(this.email, this.id);
+  }
 }
-
 
 class _AddCommentState extends State<AddComment> {
-
-_AddCommentState(String email, int id)
-{
-  _email = email;
-  _id = id;
-}
+  _AddCommentState(String email, int id) {
+    _email = email;
+    _id = id;
+  }
 
   String _email;
   int _id;
   File _image;
-  double _rating =3.0;
+  double _rating = 3.0;
   static int responseCode;
   TextEditingController commentController = new TextEditingController();
 
   Widget build(BuildContext context) {
-
     return Scaffold(
-      
         backgroundColor: Colors.blue,
-      body: Container(
-        margin: MediaQuery.of(context).orientation == Orientation.portrait ?
-        const EdgeInsets.only(left: 40, right: 40) :
-        const EdgeInsets.only(left: 40, right: 40),
-        child: Center(
-              child: MediaQuery.of(context).orientation == Orientation.portrait ?
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      width: 160.0, height: 160.0,
-                      child: GestureDetector(
-                        onTap: () {
-                          _showPicker(context);
-                        },
-                        child: Container(
-                          color: Colors.black12,
-                          child: _image == null
-                              ? Icon(Icons.add)
-                              : Image.file(_image),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 32),
-                  TextFormField(
-                    controller: commentController,
-                    style: TextStyle(color: Colors.white, fontSize: 24,),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.comment, color: Colors.white,),
-                      labelText: 'Oceń użytkownika!',
-                      labelStyle: TextStyle(color: Colors.white,),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white,),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        borderSide: BorderSide(
+        body: Container(
+          margin: MediaQuery.of(context).orientation == Orientation.portrait
+              ? const EdgeInsets.only(left: 40, right: 40)
+              : const EdgeInsets.only(left: 40, right: 40),
+          child: Center(
+            child: MediaQuery.of(context).orientation == Orientation.portrait
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 32),
+                      TextFormField(
+                        controller: commentController,
+                        style: TextStyle(
                           color: Colors.white,
-                          width: 3.0,
+                          fontSize: 24,
+                        ),
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.comment,
+                            color: Colors.white,
+                          ),
+                          labelText: 'Oceń użytkownika!',
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                            ),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderRadius: BorderRadius.circular(24.0),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 3.0,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  SmoothStarRating(
-                    rating: _rating,
-                    isReadOnly: false,
-                    size: 40,
-                    allowHalfRating: true,
-                    color: Colors.white,
-                    borderColor: Colors.white,
-                    filledIconData: Icons.star,
-                    halfFilledIconData: Icons.star_half,
-                    defaultIconData: Icons.star_border,
-                    starCount: 5,
-                    spacing: 0.5,
-                    onRated: (value) {
-                      _rating = value;
-                      // print("rating value -> $_rating");
-                    },
-                  ),
-                  SizedBox(height: 32),
-                  Builder(
-                    builder: (context) => Center(
-                      child: FlatButton(
+                      SizedBox(height: 16),
+                      SmoothStarRating(
+                        rating: _rating,
+                        isReadOnly: false,
+                        size: 40,
+                        allowHalfRating: true,
+                        color: Colors.white,
+                        borderColor: Colors.white,
+                        filledIconData: Icons.star,
+                        halfFilledIconData: Icons.star_half,
+                        defaultIconData: Icons.star_border,
+                        starCount: 5,
+                        spacing: 0.5,
+                        onRated: (value) {
+                          _rating = value;
+                          // print("rating value -> $_rating");
+                        },
+                      ),
+                      SizedBox(height: 32),
+                      Builder(
+                        builder: (context) => Center(
+                          child: FlatButton(
+                            color: Colors.green,
+                            textColor: Colors.white,
+                            padding: EdgeInsets.all(16.0),
+                            splashColor: Colors.greenAccent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            onPressed: () {
+                              sendComment(_email, commentController.text,
+                                  _image, _rating);
+                              print(responseCode);
+                              if (responseCode == 200) {
+                                _showToastGood(context, "Dodano komentarz!");
+                              } else {
+                                _showToastWrong(
+                                    context, "Ups.. coś poszło nie tak.");
+                              }
+                            },
+                            child: Text(
+                              "Skomentuj",
+                              style: TextStyle(fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      FlatButton(
                         color: Colors.green,
                         textColor: Colors.white,
                         padding: EdgeInsets.all(16.0),
@@ -134,43 +144,20 @@ _AddCommentState(String email, int id)
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         onPressed: () {
-                          sendComment(_email, commentController.text, _image, _rating);
-                          print(responseCode);
-                          if(responseCode == 200) {
-                            _showToastGood(context, "Dodano komentarz!");
-                          } else {
-                            _showToastWrong(context, "Ups.. coś poszło nie tak.");
-                          }
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfileFromComment(_id)));
                         },
                         child: Text(
-                          "Skomentuj",
+                          "Wróć",
                           style: TextStyle(fontSize: 20.0),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  FlatButton(
-                    color: Colors.green,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.all(16.0),
-                    splashColor: Colors.greenAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ProfileFromComment(_id)));
-                    },
-                    child: Text(
-                      "Wróć",
-                      style: TextStyle(fontSize: 20.0),
-                    ),
-                  ),
-                ],
-              ) :
-                  SingleChildScrollView(
+                    ],
+                  )
+                : SingleChildScrollView(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,13 +170,23 @@ _AddCommentState(String email, int id)
                             children: <Widget>[
                               TextFormField(
                                 controller: commentController,
-                                style: TextStyle(color: Colors.white, fontSize: 24,),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                ),
                                 decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.comment, color: Colors.white,),
+                                  prefixIcon: Icon(
+                                    Icons.comment,
+                                    color: Colors.white,
+                                  ),
                                   labelText: 'Oceń użytkownika!',
-                                  labelStyle: TextStyle(color: Colors.white,),
+                                  labelStyle: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                   focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white,),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
                                   ),
                                   enabledBorder: UnderlineInputBorder(
                                     borderRadius: BorderRadius.circular(16.0),
@@ -230,12 +227,18 @@ _AddCommentState(String email, int id)
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
                                     onPressed: () {
-                                      sendComment(_email, commentController.text, _image, _rating);
+                                      sendComment(
+                                          _email,
+                                          commentController.text,
+                                          _image,
+                                          _rating);
                                       print(responseCode);
-                                      if(responseCode == 200) {
-                                        _showToastGood(context, "Dodano komentarz!");
+                                      if (responseCode == 200) {
+                                        _showToastGood(
+                                            context, "Dodano komentarz!");
                                       } else {
-                                        _showToastWrong(context, "Ups.. coś poszło nie tak.");
+                                        _showToastWrong(context,
+                                            "Ups.. coś poszło nie tak.");
                                       }
                                     },
                                     child: Text(
@@ -257,7 +260,9 @@ _AddCommentState(String email, int id)
                                 onPressed: () {
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ProfileFromComment(_id)));
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileFromComment(_id)));
                                 },
                                 child: Text(
                                   "Wróć",
@@ -273,7 +278,8 @@ _AddCommentState(String email, int id)
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Container(
-                              width: 160.0, height: 160.0,
+                              width: 160.0,
+                              height: 160.0,
                               child: GestureDetector(
                                 onTap: () {
                                   _showPicker(context);
@@ -288,52 +294,46 @@ _AddCommentState(String email, int id)
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
-            ),
-      )
-
-        );
-
-
+          ),
+        ));
   }
 
-    void _showToastGood(BuildContext context, String text) {
-      final scaffold = Scaffold.of(context);
-      scaffold.showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.green,
-          content: new Text(text,
-              style: const TextStyle(fontSize: 20)),
-          action: SnackBarAction(
-              label: 'Zamknij',
-              onPressed: scaffold.hideCurrentSnackBar,
-              textColor: Colors.white),
-        ),
-      );
-    }
-    void _showToastWrong(BuildContext context, String message) {
-      final scaffold = Scaffold.of(context);
-      scaffold.showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red,
-          content: new Text(message, style: const TextStyle(fontSize: 16)),
-          action: SnackBarAction(
-              label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),
-        ),
-      );
+  void _showToastGood(BuildContext context, String text) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.green,
+        content: new Text(text, style: const TextStyle(fontSize: 20)),
+        action: SnackBarAction(
+            label: 'Zamknij',
+            onPressed: scaffold.hideCurrentSnackBar,
+            textColor: Colors.white),
+      ),
+    );
+  }
 
-    }
+  void _showToastWrong(BuildContext context, String message) {
+    final scaffold = Scaffold.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red,
+        content: new Text(message, style: const TextStyle(fontSize: 16)),
+        action: SnackBarAction(
+            label: 'Zamknij',
+            onPressed: scaffold.hideCurrentSnackBar,
+            textColor: Colors.white),
+      ),
+    );
+  }
 
   _imgFromCamera() async {
     File image = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       _image = image;
-
     });
-
   }
 
   _imgFromGallery() async {
@@ -374,11 +374,12 @@ _AddCommentState(String email, int id)
         });
   }
 
-  Future<void>sendComment(String email,String comment,File file,double rating)async{
+  Future<void> sendComment(
+      String email, String comment, File file, double rating) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final ownerEmail  = prefs.getString('email');
+    final ownerEmail = prefs.getString('email');
 
-    var newCommentJson ={};
+    var newCommentJson = {};
     newCommentJson["rate"] = rating;
     newCommentJson["description"] = comment;
     String commentJson = json.encode(newCommentJson);
@@ -391,48 +392,16 @@ _AddCommentState(String email, int id)
 
     print(userEmail);
     final http.Response response = await http.post(
-      Config.serverHostString + "/api/comment/add?myEmail=" + ownerEmail +"&email="+email,
+      Config.serverHostString +
+          "/api/comment/add?myEmail=" +
+          ownerEmail +
+          "&email=" +
+          email,
       headers: {'Content-Type': 'application/json'},
       body: commentJson,
     );
 
     print(response.statusCode);
     responseCode = response.statusCode;
-
-   //  int commentedUserId =int.parse(response.body);
-   //  String commentingUserName;
-   //  String commentingUserLastName;
-   //  String commentingUserPhoto;
-   //
-   //
-   //
-   //
-   //  UserXML["email"] = ownerEmail;
-   //
-   //  String ownerEmailJson = json.encode(UserXML);
-   //  final http.Response response2 = await http.post(
-   //    Config.serverHostString + '/api/users//getNameAndLastName',
-   //    headers: {'Content-Type': 'application/json'},
-   //    body: ownerEmailJson,
-   //  );
-   //  String stringToParse = response2.body;
-   // List<String>nameAndLastName =  stringToParse.split("|");
-   //
-   // commentingUserName=nameAndLastName[0];
-   // commentingUserLastName=nameAndLastName[1];
-   // commentingUserPhoto=nameAndLastName[2];
-   //
-
-
-    //
-    // final http.Response response3 = await http.post(
-    //   Config.serverHostString + '/api/users/newUserComment',
-    //   headers: {'Content-Type': 'application/json'},
-    //   body: commentJson,
-    // );
-
-
   }
 }
-
-

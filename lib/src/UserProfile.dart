@@ -36,96 +36,177 @@ class UserProfile extends StatelessWidget {
                       margin: const EdgeInsets.only(left: 20, right: 20),
                       child: Column(
                         children: <Widget>[
-                          MediaQuery.of(context).orientation == Orientation.portrait ?
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  SizedBox(height: 20),
-                                  GestureDetector(
-                                    onTap:() {
-                                      Navigator.push(
-                                          context, MaterialPageRoute(builder: (context) => ChangeUserProfilePhoto()));
-                                    },
-                                    child: Column(
+                          MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    SizedBox(height: 20),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ChangeUserProfilePhoto()));
+                                      },
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 25,
+                                            width: 160,
+                                            child: Align(
+                                              alignment: Alignment.bottomRight,
+                                              child: Icon(Icons.add_a_photo),
+                                            ),
+                                          ),
+                                          ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              child: userData.profilePhoto ==
+                                                      null
+                                                  ? Container(
+                                                      color: Colors.grey,
+                                                      width: 120,
+                                                      height: 120,
+                                                      child: Center(
+                                                        child: Icon(
+                                                          Icons.no_photography,
+                                                          size: 32.0,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : userData.profilePhoto ==
+                                                          "profile_photo"
+                                                      ? Container(
+                                                          color: Colors.grey,
+                                                          width: 120,
+                                                          height: 120,
+                                                          child: Center(
+                                                            child: Icon(
+                                                              Icons
+                                                                  .no_photography,
+                                                              size: 32.0,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : Image.network(
+                                                          userData.profilePhoto,
+                                                          width: 120,
+                                                          height: 120,
+                                                          fit: BoxFit.contain)),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(height: 16),
+                                    Portfolio(),
+                                    SizedBox(height: 8),
+                                    Logout(),
+                                    SizedBox(height: 16),
+                                    CustomLabels(
+                                        "Imię i nazwisko",
+                                        userData.name +
+                                            " " +
+                                            userData.lastName),
+                                    CustomLabels("E-mail", userData.email),
+                                    CustomLabels(
+                                        "Data utworzenia", userData.createdAt),
+                                    PasswordEdit(),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Column(
                                       children: <Widget>[
-                                        SizedBox(height: 25, width: 160,
-                                          child: Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: Icon(Icons.add_a_photo),
+                                        SizedBox(height: 10),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ChangeUserProfilePhoto()));
+                                          },
+                                          child: Column(
+                                            children: <Widget>[
+                                              SizedBox(
+                                                height: 25,
+                                                width: 160,
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child:
+                                                      Icon(Icons.add_a_photo),
+                                                ),
+                                              ),
+                                              ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  child: userData
+                                                              .profilePhoto ==
+                                                          null
+                                                      ? Container(
+                                                          color: Colors.grey,
+                                                          width: 120,
+                                                          height: 120,
+                                                          child: Center(
+                                                            child: Icon(
+                                                              Icons
+                                                                  .no_photography,
+                                                              size: 32.0,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      : userData.profilePhoto ==
+                                                              "profile_photo"
+                                                          ? Container(
+                                                              color:
+                                                                  Colors.grey,
+                                                              width: 120,
+                                                              height: 120,
+                                                              child: Center(
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .no_photography,
+                                                                  size: 32.0,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : Image.network(
+                                                              userData
+                                                                  .profilePhoto,
+                                                              width: 120,
+                                                              height: 120,
+                                                              fit: BoxFit
+                                                                  .contain)),
+                                            ],
                                           ),
                                         ),
-                                        ClipRRect(
-                                            borderRadius: BorderRadius.circular(20),
-                                            child: userData.profilePhoto == null ?
-                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                                                : userData.profilePhoto == "profile_photo" ?
-                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                                                : Image.network(userData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                                        ),
+                                        SizedBox(height: 16),
+                                        Portfolio(),
+                                        SizedBox(height: 8),
+                                        Logout(),
+                                        SizedBox(height: 8),
+                                        PasswordEdit(),
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Portfolio(),
-                                  SizedBox(height: 8),
-                                  Logout(),
-                                  SizedBox(height: 16),
-                                  CustomLabels("Imię i nazwisko",
-                                      userData.name + " " + userData.lastName),
-                                  CustomLabels("E-mail", userData.email),
-                                  CustomLabels("Data utworzenia", userData.createdAt),
-                                  PasswordEdit(),
-                                ],
-                              ):
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  SizedBox(height: 10),
-                                  GestureDetector(
-                                    onTap:() {
-                                      Navigator.push(
-                                          context, MaterialPageRoute(builder: (context) => ChangeUserProfilePhoto()));
-                                    },
-                                    child: Column(
+                                    SizedBox(width: 64),
+                                    Column(
                                       children: <Widget>[
-                                        SizedBox(height: 25, width: 160,
-                                          child: Align(
-                                            alignment: Alignment.bottomRight,
-                                            child: Icon(Icons.add_a_photo),
-                                          ),
-                                        ),
-                                        ClipRRect(
-                                            borderRadius: BorderRadius.circular(20),
-                                            child: userData.profilePhoto == null ?
-                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                                                : userData.profilePhoto == "profile_photo" ?
-                                            Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                                                : Image.network(userData.profilePhoto, width: 120, height: 120, fit: BoxFit.contain)
-                                        ),
+                                        SizedBox(height: 16),
+                                        CustomLabels(
+                                            "Imię i nazwisko",
+                                            userData.name +
+                                                " " +
+                                                userData.lastName),
+                                        CustomLabels("E-mail", userData.email),
+                                        CustomLabels("Data utworzenia",
+                                            userData.createdAt),
                                       ],
                                     ),
-                                  ),
-                                  SizedBox(height: 16),
-                                  Portfolio(),
-                                  SizedBox(height: 8),
-                                  Logout(),
-                                  SizedBox(height: 8),
-                                  PasswordEdit(),
-                                ],
-                              ),
-                              SizedBox(width: 64),
-                              Column(
-                                children: <Widget>[
-                                  SizedBox(height: 16),
-                                  CustomLabels("Imię i nazwisko", userData.name + " " + userData.lastName),
-                                  CustomLabels("E-mail", userData.email),
-                                  CustomLabels("Data utworzenia", userData.createdAt),
-                                ],
-                              ),
-                            ],
-                          ),
+                                  ],
+                                ),
                           SizedBox(height: 40),
                           UserAdSection(userData),
                           SizedBox(height: 40),
@@ -200,16 +281,20 @@ class PasswordEdit extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        MediaQuery.of(context).orientation == Orientation.portrait ? SizedBox(height: 16) : SizedBox(height: 0),
+        MediaQuery.of(context).orientation == Orientation.portrait
+            ? SizedBox(height: 16)
+            : SizedBox(height: 0),
         Center(
           child: Column(
             children: <Widget>[
-              MediaQuery.of(context).orientation == Orientation.portrait ? Text(
-                "Hasło",
-                style: const TextStyle(color: Colors.white, fontSize: 18),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ): SizedBox(height: 0.01),
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? Text(
+                      "Hasło",
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : SizedBox(height: 0.01),
               SizedBox(height: 4),
               GestureDetector(
                 onTap: () {
@@ -300,10 +385,16 @@ class UserAdSection extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+                  crossAxisCount:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 2
+                          : 3,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.52 : 0.7, //TODO: zrobić to mądrzej
+                  childAspectRatio:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 0.52
+                          : 0.7, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   bool flag = true;
@@ -407,10 +498,16 @@ class UserHistorySection extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+                  crossAxisCount:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 2
+                          : 3,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
+                  childAspectRatio:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 0.58
+                          : 0.76, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   bool flag = true;
@@ -450,8 +547,7 @@ class Portfolio extends StatelessWidget {
         onTap: () {
           print("Portfolio");
 
-          Navigator.push(
-              context,
+          Navigator.push(context,
               MaterialPageRoute(builder: (context) => ChangePortfolio()));
         },
         child: Text(

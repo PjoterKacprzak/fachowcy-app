@@ -43,8 +43,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    autoLogIn();
-
   }
 
   @override
@@ -250,94 +248,13 @@ class _LoginPageState extends State<LoginPage> {
         // isLoading = false;
       });
 
-        return response.statusCode;
+      return response.statusCode;
       // return User.fromJson(jsonDecode(response.body));
     }
     return response.statusCode;
   }
 
-  void autoLogIn() async {
 
-    setState(() {
-      isLoggedIn = true;
-    });
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userEmail = prefs.getString('email');
-    final String userPassword = prefs.getString('password');
-
-    if (userEmail != null) {
-      setState(() {
-        isLoggedIn = true;
-        emailShared = userEmail;
-        passwordShared = userPassword;
-      });
-        final temp=  await loginFromSharedData(userEmail, userPassword);
-
-        if(temp==1) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UserMainPage()));
-          }
-        else {
-          // setState(() {
-          //   isLoading = false;
-          // });
-            print('Failed to Auto login');
-          }
-      };
-
-    }
-
-
-
-  Future<int> loginFromSharedData(String email,String password)async {
-    var UserXML = {};
-    // UserXML["id"] = 4444;
-    UserXML["name"] = '';
-    UserXML["lastName"] = '';
-    UserXML["password"] = password;
-    UserXML["telephone"] = '';
-    UserXML["adresse"] = '';
-    UserXML["email"] = email;
-    String str = json.encode(UserXML);
-
-    emailController.clear();
-    passwordController.clear();
-
-
-    final http.Response response = await http.post(
-        Config.serverHostString + 'api/users/loginHashed',
-        headers:{'Content-Type': 'application/json'},
-        body: str
-    );
-
-
-    print('Auto login response code '  + response.statusCode.toString());
-    print('Auto login response body '  + response.body.toString());
-    // CHECK THE REPOSONE NUMBERS
-    if ((response.statusCode >= 200)&&(response.statusCode <=299)) {
-
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-     // User temp = User.fromJson(jsonDecode(response.body));
-      prefs.setString('email', email);
-      prefs.setString('password', password);
-      setState(() {
-        emailShared = email;
-        passwordShared = password;
-        isLoggedIn = true;
-      });
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => UserMainPage()));
-      // return User.fromJson(jsonDecode(response.body));
-      return 1;
-    }
-    else {
-      // setState(() =>isLoading = false );
-      return 0;
-    }
-    }
 
 
 }

@@ -155,7 +155,8 @@ class _FilterPageState extends State<FilterPage> {
                             data:
                                 ThemeData(unselectedWidgetColor: Colors.white),
                             child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Row(
                                     children: <Widget>[
@@ -323,8 +324,17 @@ class _FilterPageState extends State<FilterPage> {
                               setState(() => isLoading = true);
                               print(_priceMin.isEmpty);
                               _formKey.currentState.save();
-                              await searchForCards(_currentCategory,_currentLocalization, _type.toString(), _priceMin, _rating.toString());
-                              await Navigator.push(context, MaterialPageRoute(builder: (context) => FilteredAds(cardInfoData)));
+                              await searchForCards(
+                                  _currentCategory,
+                                  _currentLocalization,
+                                  _type.toString(),
+                                  _priceMin,
+                                  _rating.toString());
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          FilteredAds(cardInfoData)));
                             },
                             child: Text(
                               "Szukaj",
@@ -347,7 +357,9 @@ class _FilterPageState extends State<FilterPage> {
       ),
     );
   }
-  Future<int> searchForCards (String category,String localization ,String type,String priceMin, String rating)async {
+
+  Future<int> searchForCards(String category, String localization, String type,
+      String priceMin, String rating) async {
     ServiceCard serviceCard = new ServiceCard();
     // var FilterJson = {};
     // FilterJson["category"] = category;
@@ -357,24 +369,39 @@ class _FilterPageState extends State<FilterPage> {
     // FilterJson["rating"] = rating;
     // String str = json.encode(FilterJson);
     String _category;
-    if(category == 'Wybierz')
+    if (category == 'Wybierz')
       _category = 'null';
     else
       _category = category;
 
     String _localization;
-    if(localization == 'Wybierz')
+    if (localization == 'Wybierz')
       _localization = 'null';
     else
       _localization = localization;
 
-
-    print( Config.serverHostString + 'api/service-card/filterCard?category='+_category+'&location='+_localization+'&service_type='+_type.toString());
-    print( Config.serverHostString + 'api/service-card/filterCard?category='+_category+'&location='+_localization);
+    print(Config.serverHostString +
+        'api/service-card/filterCard?category=' +
+        _category +
+        '&location=' +
+        _localization +
+        '&service_type=' +
+        _type.toString());
+    print(Config.serverHostString +
+        'api/service-card/filterCard?category=' +
+        _category +
+        '&location=' +
+        _localization);
     // http://localhost:8080/api/service-card/filterCard?category=null&location=Wroclaw&price=12
     final http.Response response = await http.get(
       // Config.serverHostString + 'api/service-card/filterCard?category='+_category+'&location='+_localization,
-        Config.serverHostString + 'api/service-card/filterCard?category='+_category+'&location='+_localization+'&service_type='+_type.toString(),
+      Config.serverHostString +
+          'api/service-card/filterCard?category=' +
+          _category +
+          '&location=' +
+          _localization +
+          '&service_type=' +
+          _type.toString(),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -402,6 +429,4 @@ class _FilterPageState extends State<FilterPage> {
     //   throw Exception('Failed to create User.');
     // }
   }
-
-
 }

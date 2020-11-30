@@ -1,11 +1,8 @@
-import 'dart:convert';
 
-import 'package:fachowcy_app/src/LoginPage.dart';
+import 'package:fachowcy_app/src/AutoLogin.dart';
+
 import 'package:flutter/material.dart';
 
-import 'package:http/http.dart' as http;
-
-import 'Data/User.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +22,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.red,
       ),
-      home: LoginPage(title: 'FachOwcy'),
+      home: AutoLogin(title: 'FachOwcy'),
     );
   }
 }

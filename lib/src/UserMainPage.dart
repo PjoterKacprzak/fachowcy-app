@@ -21,7 +21,7 @@ class _UserMainPageState extends State<UserMainPage> {
   int _selectedIndex = 0;
 
   static var data;
-  void _onItemTapped(int index){
+  void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -30,42 +30,36 @@ class _UserMainPageState extends State<UserMainPage> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-        home :Scaffold(
-          // body: Center(child: _widgetOptions.elementAt(_selectedIndex),),
-          body: [
-            HomePage(),
-            FilterPage(),
-            PostNewAd(),
-            NotificationPage()
-          ].elementAt(_selectedIndex),
-          bottomNavigationBar: BottomNavigationBar(
-            unselectedItemColor: Colors.grey[300],
-            selectedItemColor: Colors.white,
-            backgroundColor: Colors.blue,
-            type: BottomNavigationBarType.fixed,
+      home: Scaffold(
+        // body: Center(child: _widgetOptions.elementAt(_selectedIndex),),
+        body: [HomePage(), FilterPage(), PostNewAd(), NotificationPage()]
+            .elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          unselectedItemColor: Colors.grey[300],
+          selectedItemColor: Colors.white,
+          backgroundColor: Colors.blue,
+          type: BottomNavigationBarType.fixed,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Ogłoszenia',
+              icon: Icon(Icons.home),
+              label: 'Ogłoszenia',
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Filtruj',
+              icon: Icon(Icons.search),
+              label: 'Filtruj',
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.add_circle_outline),
-                label: 'Dodaj',
+              icon: Icon(Icons.add_circle_outline),
+              label: 'Dodaj',
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.notifications),
-                label: 'Powiadomienia',
+              icon: Icon(Icons.notifications),
+              label: 'Powiadomienia',
             ),
           ],
           currentIndex: _selectedIndex,
@@ -74,5 +68,4 @@ class _UserMainPageState extends State<UserMainPage> {
       ),
     );
   }
-
 }

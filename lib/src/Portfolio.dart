@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Portfolio extends StatelessWidget {
-
   String portfolioString;
   int userId;
 
@@ -23,24 +22,36 @@ class Portfolio extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                portfolioString == null ?
-                Column(
-                  children: <Widget>[
-                    Text(
-                      "Brak portfolio",
-                      style: const TextStyle(color: Colors.white, fontSize: 24, decoration: TextDecoration.none),
-                    ),
-                    SizedBox(height: 8),
-                    ClipRRect(
+                portfolioString == null
+                    ? Column(
+                        children: <Widget>[
+                          Text(
+                            "Brak portfolio",
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                decoration: TextDecoration.none),
+                          ),
+                          SizedBox(height: 8),
+                          ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                color: Colors.grey,
+                                width: 120,
+                                height: 120,
+                                child: Center(
+                                  child: Icon(
+                                    Icons.no_photography,
+                                    size: 32.0,
+                                  ),
+                                ),
+                              )),
+                        ],
+                      )
+                    : ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Container(color: Colors.grey, width: 120, height: 120, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)
-                    ),
-                  ],
-                ):
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(portfolioString),
-                ),
+                        child: Image.network(portfolioString),
+                      ),
                 SizedBox(height: 16),
                 FlatButton(
                   color: Colors.green,
@@ -65,9 +76,8 @@ class Portfolio extends StatelessWidget {
               ],
             ),
           ),
-          ),
+        ),
       ),
-      );
+    );
   }
-
 }

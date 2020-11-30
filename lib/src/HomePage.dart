@@ -106,10 +106,9 @@ class ServiceCardListPaid extends StatelessWidget {
           future: HomePage.getAllCards(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             int numberOfAds = 0;
-            try{
+            try {
               numberOfAds = HomePage.cardInfoData.length;
-            }
-            catch(Exception){
+            } catch (Exception) {
               print("Couldn't receive data");
             }
             if (numberOfAds == 0) {
@@ -130,7 +129,9 @@ class ServiceCardListPaid extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Colors.white)),
+                      CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(Colors.white)),
                       SizedBox(height: 8),
                       Text(
                         "Loading, please wait..",
@@ -146,18 +147,24 @@ class ServiceCardListPaid extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: numberOfAds,
                 gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+                  crossAxisCount:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 2
+                          : 3,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
-                  childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 0.58 : 0.76, //TODO: zrobić to mądrzej
+                  childAspectRatio:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 0.58
+                          : 0.76, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   return AdCardSmall(
-                      false,
-                      HomePage.cardInfoData[index].title,
-                      HomePage.cardInfoData[index].description,
-                      HomePage.cardInfoData[index].serviceCardId,
-                      HomePage.cardInfoData[index].photo,
+                    false,
+                    HomePage.cardInfoData[index].title,
+                    HomePage.cardInfoData[index].description,
+                    HomePage.cardInfoData[index].serviceCardId,
+                    HomePage.cardInfoData[index].photo,
                   );
                 },
               );
@@ -166,4 +173,3 @@ class ServiceCardListPaid extends StatelessWidget {
         ));
   }
 }
-
