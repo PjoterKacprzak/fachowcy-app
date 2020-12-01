@@ -36,8 +36,7 @@ class UserProfile extends StatelessWidget {
                       margin: const EdgeInsets.only(left: 20, right: 20),
                       child: Column(
                         children: <Widget>[
-                          MediaQuery.of(context).orientation ==
-                                  Orientation.portrait
+                          MediaQuery.of(context).orientation == Orientation.portrait
                               ? Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
@@ -589,7 +588,7 @@ class Logout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton(
-        color: Colors.green,
+        color: Colors.redAccent,
         textColor: Colors.white,
         padding: EdgeInsets.all(12.0),
         splashColor: Colors.greenAccent,
