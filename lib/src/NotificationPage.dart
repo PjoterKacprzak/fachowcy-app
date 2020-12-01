@@ -16,9 +16,21 @@ class _Notifications extends State<NotificationPage> {
           SliverList(
               delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              return Text("powiadomienie");
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 3),
+                  ListTile(
+                    title: Text('Tytuł Powiadomienia'),
+                    subtitle: Text('Tekst Powiadomienia'),
+                    isThreeLine: true,
+                    leading: Icon(Icons.notifications_active),
+                  ),
+                  Divider(height: 1)
+                ],
+              );
             },
-            childCount: 50,
+            childCount: 20,
           )),
         ],
       ),

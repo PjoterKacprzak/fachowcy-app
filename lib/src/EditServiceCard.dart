@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/Photos.dart';
 import 'package:fachowcy_app/Data/ServiceCard.dart';
+import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:fachowcy_app/src/customWidgets/Loader.dart';
 import 'package:flutter/cupertino.dart';
@@ -170,41 +171,50 @@ class _EditServiceCardState extends State<EditServiceCard> {
                                                     ),
                                                   )),
                                               SizedBox(width: 10),
-                                              Container(
-                                                  width: 100.0,
-                                                  child: GestureDetector(
-                                                    onTap: _getImage2,
-                                                    child: Container(
-                                                      color: Colors.black12,
-                                                      child: _image2 == null
-                                                          ? Icon(Icons.add)
-                                                          : Image.file(_image2),
-                                                    ),
-                                                  )),
+                                              if(_image == null)
+                                                SizedBox(width: 0)
+                                              else
+                                                Container(
+                                                    width: 100.0,
+                                                    child: GestureDetector(
+                                                      onTap: _getImage2,
+                                                      child: Container(
+                                                        color: Colors.black12,
+                                                        child: _image2 == null
+                                                            ? Icon(Icons.add_a_photo)
+                                                            : Image.file(_image2),
+                                                      ),
+                                                    )),
                                               SizedBox(width: 10),
-                                              Container(
-                                                  width: 100.0,
-                                                  child: GestureDetector(
-                                                    onTap: _getImage3,
-                                                    child: Container(
-                                                      color: Colors.black12,
-                                                      child: _image3 == null
-                                                          ? Icon(Icons.add)
-                                                          : Image.file(_image3),
-                                                    ),
-                                                  )),
+                                              if(_image2 == null)
+                                                SizedBox(width: 0)
+                                              else
+                                                Container(
+                                                    width: 100.0,
+                                                    child: GestureDetector(
+                                                      onTap: _getImage3,
+                                                      child: Container(
+                                                        color: Colors.black12,
+                                                        child: _image3 == null
+                                                            ? Icon(Icons.add_a_photo)
+                                                            : Image.file(_image3),
+                                                      ),
+                                                    )),
                                               SizedBox(width: 10),
-                                              Container(
-                                                  width: 100.0,
-                                                  child: GestureDetector(
-                                                    onTap: _getImage4,
-                                                    child: Container(
-                                                      color: Colors.black12,
-                                                      child: _image4 == null
-                                                          ? Icon(Icons.add)
-                                                          : Image.file(_image4),
-                                                    ),
-                                                  )),
+                                              if(_image3 == null)
+                                                SizedBox(width: 0)
+                                              else
+                                                Container(
+                                                    width: 100.0,
+                                                    child: GestureDetector(
+                                                      onTap: _getImage4,
+                                                      child: Container(
+                                                        color: Colors.black12,
+                                                        child: _image4 == null
+                                                            ? Icon(Icons.add_a_photo)
+                                                            : Image.file(_image4),
+                                                      ),
+                                                    )),
                                             ])),
                                     SizedBox(height: 10),
                                     Row(
@@ -494,7 +504,7 @@ class _EditServiceCardState extends State<EditServiceCard> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UserMainPage()));
+                                                      UserProfile()));
                                         } else {
                                           setState(() => isLoading = false);
                                           // _showToastWrong(context,
