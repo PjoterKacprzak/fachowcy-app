@@ -55,21 +55,22 @@ class _EditServiceCardState extends State<EditServiceCard> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<String> _category = [
-    'Wykonczenia',
-    'AGD',
-    'Stolarka',
+    'Malowanie',
+    'Remont',
     'Elektryka',
-    'Malowanie'
+    'Meble i zabudowa',
+    'Ogrod',
+    'Hydraulika',
+    'Elektryka',
+    'Hydraulika',
   ];
   List<String> _localization = [
     'Lodz',
-    'Warszawa',
-    'Poznan',
-    'Lodz-Centrum',
-    'Zgierz'
+    'Wraszawa',
+    'Wroclaw',
   ];
   String _currentLocalization = "Lodz";
-  String _currentCategory = 'Wykonczenia';
+  String _currentCategory = 'Malowanie';
   int _type = 0;
   String _title;
   String _description;

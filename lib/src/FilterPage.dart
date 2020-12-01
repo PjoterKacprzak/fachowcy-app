@@ -29,19 +29,20 @@ class _FilterPageState extends State<FilterPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> _category = [
     'Wybierz',
-    'Wykonczenia',
-    'AGD',
-    'Stolarka',
+    'Malowanie',
+    'Remont',
     'Elektryka',
-    'Malowanie'
+    'Meble i zabudowa',
+    'Ogrod',
+    'Hydraulika',
+    'Elektryka',
+    'Hydraulika',
   ];
   List<String> _localization = [
     'Wybierz',
     'Lodz',
     'Wraszawa',
-    'Poznan',
-    'Lodz-Centrum',
-    'Zgierz'
+    'Wroclaw',
   ];
   String _currentLocalization = "Wybierz";
   String _currentCategory = 'Wybierz';
@@ -101,7 +102,7 @@ class _FilterPageState extends State<FilterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: Colors.blue,
       body: CustomScrollView(
         slivers: <Widget>[
           CustomAppBar(),
@@ -202,95 +203,7 @@ class _FilterPageState extends State<FilterPage> {
                                   ),
                                 ]),
                           ),
-                          // Container(
-                          //     child: (_type == 1)
-                          //         ? Row(
-                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //             children: <Widget>[
-                          //               Flexible(
-                          //                 child: TextFormField(
-                          //                   // Walidacja jeśli potrzebna
-                          //                   // validator: (String value){
-                          //                     // if(value.isEmpty) {
-                          //                     //   return 'Podaj cenę minimalną';
-                          //                     // }
-                          //                   //   int cena = int.tryParse(value);
-                          //                   //   if(cena < 0)
-                          //                   //     return 'Cena minimalna musi być większa od 0';
-                          //                   // },
-                          //                   onSaved: (String value){
-                          //                     _priceMin = value;
-                          //                   },
-                          //                   style: TextStyle(
-                          //                     color: Colors.white,
-                          //                     fontSize: 25,
-                          //                   ),
-                          //                   keyboardType: TextInputType.number,
-                          //                   decoration: InputDecoration(
-                          //                     labelText: '    Cena od',
-                          //                     labelStyle: TextStyle(
-                          //                       color: Colors.white,
-                          //                     ),
-                          //                     focusedBorder:
-                          //                         UnderlineInputBorder(
-                          //                       borderSide: BorderSide(
-                          //                         color: Colors.white,
-                          //                       ),
-                          //                     ),
-                          //                     enabledBorder:
-                          //                         UnderlineInputBorder(
-                          //                       borderRadius:
-                          //                           BorderRadius.circular(25.0),
-                          //                       borderSide: BorderSide(
-                          //                         color: Colors.white,
-                          //                         width: 3.0,
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                 ),
-                          //               ),
-                          //               // Flexible(
-                          //               //   child: TextFormField(
-                          //               //     onSaved: (String value){
-                          //               //       _priceMax = value;
-                          //               //     },
-                          //               //     // ignore: missing_return
-                          //               //     validator: (String value){
-                          //               //       if(int.tryParse(_priceMax) < int.tryParse(_priceMin))
-                          //               //         return 'Cena od powinna być mniejsza niż do';
-                          //               //     },
-                          //               //     keyboardType: TextInputType.number,
-                          //               //     style: TextStyle(
-                          //               //       color: Colors.white,
-                          //               //       fontSize: 25,
-                          //               //     ),
-                          //               //     decoration: InputDecoration(
-                          //               //       labelText: 'Cena do',
-                          //               //       labelStyle: TextStyle(
-                          //               //         color: Colors.white,
-                          //               //       ),
-                          //               //       focusedBorder:
-                          //               //           UnderlineInputBorder(
-                          //               //         borderSide: BorderSide(
-                          //               //           color: Colors.white,
-                          //               //         ),
-                          //               //       ),
-                          //               //       enabledBorder:
-                          //               //           UnderlineInputBorder(
-                          //               //         borderRadius:
-                          //               //             BorderRadius.circular(25.0),
-                          //               //         borderSide: BorderSide(
-                          //               //           color: Colors.white,
-                          //               //           width: 3.0,
-                          //               //         ),
-                          //               //       ),
-                          //               //     ),
-                          //               //   ),
-                          //               // )
-                          //             ],
-                          //           )
-                          //         : SizedBox(height: 10)),
-                          // SizedBox(height: 10),
+
                           SmoothStarRating(
                             rating: _rating,
                             isReadOnly: false,

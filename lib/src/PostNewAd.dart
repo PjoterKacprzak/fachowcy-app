@@ -31,21 +31,22 @@ class _PostNewAdState extends State<PostNewAd> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<String> _category = [
-    'Wykonczenia',
-    'AGD',
-    'Stolarka',
+    'Malowanie',
+    'Remont',
     'Elektryka',
-    'Malowanie'
+    'Meble i zabudowa',
+    'Ogrod',
+    'Hydraulika',
+    'Elektryka',
+    'Hydraulika',
   ];
   List<String> _localization = [
     'Lodz',
     'Wraszawa',
-    'Poznan',
-    'Lodz-Centrum',
-    'Zgierz'
+    'Wroclaw',
   ];
   String _currentLocalization = "Lodz";
-  String _currentCategory = 'Wykonczenia';
+  String _currentCategory = 'Malowanie';
   int _type = 0;
   String _title;
   String _description;
@@ -142,7 +143,7 @@ class _PostNewAdState extends State<PostNewAd> {
     return isLoading
         ? Loader()
         : Scaffold(
-            backgroundColor: Colors.blueAccent,
+            backgroundColor: Colors.blue,
             body: CustomScrollView(
               slivers: <Widget>[
                 CustomAppBar(),
@@ -202,58 +203,70 @@ class _PostNewAdState extends State<PostNewAd> {
                                 SizedBox(height: 10),
                                 Container(
                                     height: 160,
-                                    child: ListView(
-                                        // This next line does the trick.
-                                        scrollDirection: Axis.horizontal,
-                                        children: <Widget>[
-                                          Container(
-                                              width: 100.0,
-                                              child: GestureDetector(
-                                                onTap: _getImage1,
-                                                child: Container(
-                                                  color: Colors.black12,
-                                                  child: _image == null
-                                                      ? Icon(Icons.add)
-                                                      : Image.file(_image),
-                                                ),
-                                              )),
-                                          SizedBox(width: 10),
-                                          Container(
-                                              width: 100.0,
-                                              child: GestureDetector(
-                                                onTap: _getImage2,
-                                                child: Container(
-                                                  color: Colors.black12,
-                                                  child: _image2 == null
-                                                      ? Icon(Icons.add)
-                                                      : Image.file(_image2),
-                                                ),
-                                              )),
-                                          SizedBox(width: 10),
-                                          Container(
-                                              width: 100.0,
-                                              child: GestureDetector(
-                                                onTap: _getImage3,
-                                                child: Container(
-                                                  color: Colors.black12,
-                                                  child: _image3 == null
-                                                      ? Icon(Icons.add)
-                                                      : Image.file(_image3),
-                                                ),
-                                              )),
-                                          SizedBox(width: 10),
-                                          Container(
-                                              width: 100.0,
-                                              child: GestureDetector(
-                                                onTap: _getImage4,
-                                                child: Container(
-                                                  color: Colors.black12,
-                                                  child: _image4 == null
-                                                      ? Icon(Icons.add)
-                                                      : Image.file(_image4),
-                                                ),
-                                              )),
-                                        ])),
+                                    child: OrientationBuilder(
+                                      builder: (context, orientation) {
+                                        return ListView(
+                                          // This next line does the trick.
+                                            scrollDirection: Axis.horizontal,
+                                            children: <Widget>[
+                                              Container(
+                                                  width: 100.0,
+                                                  child: GestureDetector(
+                                                    onTap: _getImage1,
+                                                    child: Container(
+                                                      color: Colors.black12,
+                                                      child: _image == null
+                                                          ? Icon(Icons.add_a_photo)
+                                                          : Image.file(_image),
+                                                    ),
+                                                  )),
+                                              SizedBox(width: 10),
+                                              if(_image == null)
+                                                SizedBox(width: 0)
+                                              else
+                                              Container(
+                                                  width: 100.0,
+                                                  child: GestureDetector(
+                                                    onTap: _getImage2,
+                                                    child: Container(
+                                                      color: Colors.black12,
+                                                      child: _image2 == null
+                                                          ? Icon(Icons.add_a_photo)
+                                                          : Image.file(_image2),
+                                                    ),
+                                                  )),
+                                              SizedBox(width: 10),
+                                              if(_image2 == null)
+                                                SizedBox(width: 0)
+                                              else
+                                                Container(
+                                                    width: 100.0,
+                                                    child: GestureDetector(
+                                                      onTap: _getImage3,
+                                                      child: Container(
+                                                        color: Colors.black12,
+                                                        child: _image3 == null
+                                                            ? Icon(Icons.add_a_photo)
+                                                            : Image.file(_image3),
+                                                      ),
+                                                    )),
+                                              SizedBox(width: 10),
+                                              if(_image3 == null)
+                                                SizedBox(width: 0)
+                                              else
+                                                Container(
+                                                    width: 100.0,
+                                                    child: GestureDetector(
+                                                      onTap: _getImage4,
+                                                      child: Container(
+                                                        color: Colors.black12,
+                                                        child: _image4 == null
+                                                            ? Icon(Icons.add_a_photo)
+                                                            : Image.file(_image4),
+                                                      ),
+                                                    )),
+                                            ]);
+                                      })),
                                 SizedBox(height: 10),
                                 Row(
                                     crossAxisAlignment:

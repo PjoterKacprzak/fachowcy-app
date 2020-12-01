@@ -397,7 +397,7 @@ class UserAdSection extends StatelessWidget {
                   childAspectRatio:
                       MediaQuery.of(context).orientation == Orientation.portrait
                           ? 0.52
-                          : 0.7, //TODO: zrobić to mądrzej
+                          : 0.65, //TODO: zrobić to mądrzej
                 ),
                 itemBuilder: (BuildContext context, int index) {
                   bool flag = true;
