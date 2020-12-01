@@ -152,9 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-
-
-
+              SizedBox(height: 8),
               FlatButton(
                 color: Colors.green,
                 textColor: Colors.white,
@@ -173,9 +171,14 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(fontSize: 20.0),
                 ),
               ),
+              SizedBox(height: 8),
               SignInButton(
                   Buttons.Facebook,
                   text: "Zaloguj przez Facebook",
+                  padding: EdgeInsets.all(16.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
 
                   onPressed: () async{
                     Authentication auth = Authentication();
