@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:fachowcy_app/Config/Config.dart';
+import 'package:fachowcy_app/src/HomePage.dart';
 import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -116,11 +117,12 @@ class _AddCommentState extends State<AddComment> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15.0),
                             ),
-                            onPressed: () {
-                              sendComment(_email, commentController.text,
+                            onPressed: () async {
+                              await sendComment(_email, commentController.text,
                                   _image, _rating);
                               print(responseCode);
                               if (responseCode == 200) {
+                                Future.delayed(const Duration(seconds: 2), () => "2");
                                 _showToastGood(context, "Dodano komentarz!");
                               } else {
                                 _showToastWrong(
@@ -146,7 +148,7 @@ class _AddCommentState extends State<AddComment> {
                         onPressed: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ProfileFromComment(_id)));
+                              MaterialPageRoute(builder: (context) => HomePage()));
                         },
                         child: Text(
                           "Wróć",
@@ -224,8 +226,8 @@ class _AddCommentState extends State<AddComment> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15.0),
                                     ),
-                                    onPressed: () {
-                                      sendComment(
+                                    onPressed: () async {
+                                      await sendComment(
                                           _email,
                                           commentController.text,
                                           _image,
@@ -258,7 +260,7 @@ class _AddCommentState extends State<AddComment> {
                                 onPressed: () {
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => ProfileFromComment(_id)));
+                                      MaterialPageRoute(builder: (context) => HomePage()));
                                 },
                                 child: Text(
                                   "Wróć",

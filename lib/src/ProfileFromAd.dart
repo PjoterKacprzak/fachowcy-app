@@ -435,7 +435,7 @@ class RatingSection extends StatelessWidget {
           style: new TextStyle(color: Colors.white, fontSize: 16),
         ),
         SizedBox(height: 8),
-        rate == null
+        rate == 0
             ? Text(
                 "Nie ma jeszcze żadnej oceny",
                 style: new TextStyle(color: Colors.white, fontSize: 24),

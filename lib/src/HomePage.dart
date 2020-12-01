@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return [
                 SliverAppBar(
-                  backgroundColor: Colors.blue,
+                  backgroundColor: Colors.lightBlueAccent[200],
                   floating: false,
                   pinned: false,
                   snap: false,

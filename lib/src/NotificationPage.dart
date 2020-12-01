@@ -25,6 +25,7 @@ class _Notifications extends State<NotificationPage> {
                     subtitle: Text('Tekst Powiadomienia'),
                     isThreeLine: true,
                     leading: Icon(Icons.notifications_active),
+                    // shape: ,
                   ),
                   Divider(height: 1)
                 ],
