@@ -31,7 +31,7 @@ class AdCardLarge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blueGrey,
+        color: Colors.blue,
         child: CustomScrollView(
           slivers: <Widget>[
             CustomAppBar(),
@@ -43,11 +43,11 @@ class AdCardLarge extends StatelessWidget {
                     children: <Widget>[
                       SizedBox(height: 20),
                       Card(
-                        color: Colors.blueGrey, //TODO: Zmienić kolor i dopasować do tła reszty
+                        color: Colors.blue, //TODO: Zmienić kolor i dopasować do tła reszty
                         elevation: 4.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
-                          side: BorderSide(width: 4, color: Colors.white),
+                          side: BorderSide(width: 6, color: Colors.white),
                         ),
                         child: Container(
                           //decoration: BoxDecoration(border: Border.all(color: Colors.white, width: 4.0)),
@@ -473,10 +473,10 @@ class HorizontalFotoSection extends StatelessWidget {
             children: <Widget>[
 
               photo_1 == null ?
-              Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
+              ClipRRect(borderRadius: BorderRadius.circular(20),child: Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)) :
               photo_1 == "link_to_photo" ?
-              Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),) :
-              Image.network(photo_1, width: 320, height: 200, fit: BoxFit.contain),
+              ClipRRect(borderRadius: BorderRadius.circular(20),child: Container(color: Colors.grey, width: 320, height: 200, child: Center(child: Icon(Icons.no_photography, size: 32.0,),),)) :
+              ClipRRect(borderRadius: BorderRadius.circular(20),child: Image.network(photo_1, width: 320, height: 200, fit: BoxFit.contain)),
 
               photo_2 == null ?
               SizedBox(width: 0.01,) :

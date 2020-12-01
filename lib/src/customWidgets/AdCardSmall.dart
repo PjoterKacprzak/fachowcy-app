@@ -30,11 +30,11 @@ class AdCardSmall extends StatelessWidget {
         SizedBox(
           width:  MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2.3 : MediaQuery.of(context).size.width / 3.3, //TODO: jakby coś się sypało na innych kształtach to tu
           child: Card(
-            color: Colors.blueGrey, //TODO: Zmienić kolor i dopasować do tła reszty
+            color: Colors.blue, //TODO: Zmienić kolor i dopasować do tła reszty
             elevation: 4.0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
-              side: BorderSide(width: 2, color: Colors.white),
+              side: BorderSide(width: 4, color: Colors.white),
             ),
             child: GestureDetector(
               onTap:() async{
@@ -44,7 +44,6 @@ class AdCardSmall extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => AdCardLarge(userAdId)));
               },
               child: Container(
-                //color: Colors.blueGrey,
                 child: Center(
                   child: Column(
                     children: <Widget>[
@@ -59,20 +58,26 @@ class AdCardSmall extends StatelessWidget {
                           Image.network(photo, width: 120, height: 90, fit: BoxFit.contain)
                       ),
                       SizedBox(height: 10,),
-                      Text(
-                        title + "\n\n",
-                        style: const TextStyle(color: Colors.white, fontSize: 24),
-                        textAlign: TextAlign.center,
-                        maxLines: 3,
-                        overflow: TextOverflow.fade,
+                      Container(
+                        margin: const EdgeInsets.only(left: 4, right: 4),
+                        child: Text(
+                          title + "\n\n",
+                          style: const TextStyle(color: Colors.white, fontSize: 24),
+                          textAlign: TextAlign.center,
+                          maxLines: 3,
+                          overflow: TextOverflow.fade,
+                        ),
                       ),
                       SizedBox(height: 10),
-                      Text(
-                        text + "\n\n",
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
-                        textAlign: TextAlign.center,
-                        maxLines: 3,
-                        overflow: TextOverflow.fade,
+                      Container(
+                        margin: const EdgeInsets.only(left: 4, right: 4),
+                        child: Text(
+                          text + "\n\n",
+                          style: const TextStyle(color: Colors.white, fontSize: 16),
+                          textAlign: TextAlign.center,
+                          maxLines: 3,
+                          overflow: TextOverflow.fade,
+                        ),
                       ),
                       SizedBox(height: 10),
                       Visibility(

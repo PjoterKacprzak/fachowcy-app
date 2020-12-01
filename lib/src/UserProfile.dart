@@ -25,7 +25,7 @@ class UserProfile extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          color: Colors.blueGrey,
+          color: Colors.blue,
           child: CustomScrollView(
             slivers: <Widget>[
               CustomAppBar(),
@@ -57,18 +57,14 @@ class UserProfile extends StatelessWidget {
                                             width: 160,
                                             child: Align(
                                               alignment: Alignment.bottomRight,
-                                              child: Icon(Icons.add_a_photo),
+                                              child: Icon(Icons.add_a_photo,),
                                             ),
                                           ),
                                           ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(20),
-                                              child: userData.profilePhoto ==
-                                                      null
-                                                  ? Container(
-                                                      color: Colors.grey,
-                                                      width: 120,
-                                                      height: 120,
+                                              child: userData.profilePhoto == null
+                                                  ? Container(color: Colors.grey, width: 120, height: 120,
                                                       child: Center(
                                                         child: Icon(
                                                           Icons.no_photography,
@@ -100,18 +96,13 @@ class UserProfile extends StatelessWidget {
                                     ),
                                     SizedBox(height: 16),
                                     Portfolio(),
+                                    PasswordEdit(),
                                     SizedBox(height: 8),
                                     Logout(),
                                     SizedBox(height: 16),
-                                    CustomLabels(
-                                        "Imię i nazwisko",
-                                        userData.name +
-                                            " " +
-                                            userData.lastName),
+                                    CustomLabels("Imię i nazwisko", userData.name + " " + userData.lastName),
                                     CustomLabels("E-mail", userData.email),
-                                    CustomLabels(
-                                        "Data utworzenia", userData.createdAt),
-                                    PasswordEdit(),
+                                    CustomLabels("Data utworzenia", userData.createdAt),
                                   ],
                                 )
                               : Row(
@@ -186,9 +177,9 @@ class UserProfile extends StatelessWidget {
                                         SizedBox(height: 16),
                                         Portfolio(),
                                         SizedBox(height: 8),
-                                        Logout(),
-                                        SizedBox(height: 8),
                                         PasswordEdit(),
+                                        SizedBox(height: 8),
+                                        Logout(),
                                       ],
                                     ),
                                     SizedBox(width: 64),
@@ -282,22 +273,20 @@ class PasswordEdit extends StatelessWidget {
     return Column(
       children: <Widget>[
         MediaQuery.of(context).orientation == Orientation.portrait
-            ? SizedBox(height: 16)
+            ? SizedBox(height: 8)
             : SizedBox(height: 0),
         Center(
           child: Column(
             children: <Widget>[
-              MediaQuery.of(context).orientation == Orientation.portrait
-                  ? Text(
-                      "Hasło",
-                      style: const TextStyle(color: Colors.white, fontSize: 18),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  : SizedBox(height: 0.01),
-              SizedBox(height: 4),
-              GestureDetector(
-                onTap: () {
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                padding: EdgeInsets.all(12.0),
+                splashColor: Colors.greenAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                onPressed: () {
                   print("Edited");
 
                   Navigator.push(
@@ -308,11 +297,26 @@ class PasswordEdit extends StatelessWidget {
                 },
                 child: Text(
                   "Zmień hasło",
-                  style: const TextStyle(color: Colors.green, fontSize: 24),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 20.0),
                 ),
               ),
+//              GestureDetector(
+//                onTap: () {
+//                  print("Edited");
+//
+//                  Navigator.push(
+//                      context,
+//                      MaterialPageRoute(
+//                          builder: (context) =>
+//                              ChangePasswordFromUserProfile()));
+//                },
+//                child: Text(
+//                  "Zmień hasło",
+//                  style: const TextStyle(color: Colors.lightGreenAccent, fontSize: 24),
+//                  maxLines: 1,
+//                  overflow: TextOverflow.ellipsis,
+//                ),
+//              ),
             ],
           ),
         ),
@@ -543,8 +547,15 @@ class Portfolio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: GestureDetector(
-        onTap: () {
+      child: FlatButton(
+        color: Colors.green,
+        textColor: Colors.white,
+        padding: EdgeInsets.all(12.0),
+        splashColor: Colors.greenAccent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        onPressed: () {
           print("Portfolio");
 
           Navigator.push(context,
@@ -552,11 +563,23 @@ class Portfolio extends StatelessWidget {
         },
         child: Text(
           "Dodaj portfolio",
-          style: const TextStyle(color: Colors.green, fontSize: 24),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 20.0),
         ),
       ),
+//      GestureDetector(
+//        onTap: () {
+//          print("Portfolio");
+//
+//          Navigator.push(context,
+//              MaterialPageRoute(builder: (context) => ChangePortfolio()));
+//        },
+//        child: Text(
+//          "Dodaj portfolio",
+//          style: const TextStyle(color: Colors.green, fontSize: 24),
+//          maxLines: 1,
+//          overflow: TextOverflow.ellipsis,
+//        ),
+//      ),
     );
   }
 }
@@ -565,20 +588,39 @@ class Logout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: GestureDetector(
-        onTap: () {
+      child: FlatButton(
+        color: Colors.green,
+        textColor: Colors.white,
+        padding: EdgeInsets.all(12.0),
+        splashColor: Colors.greenAccent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        onPressed: () {
           print("Logout");
           logout();
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => LoginPage()));
-        },
+    },
         child: Text(
           "Wyloguj",
-          style: const TextStyle(color: Colors.green, fontSize: 24),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 20.0),
         ),
       ),
+//      GestureDetector(
+//        onTap: () {
+//          print("Logout");
+//          logout();
+//          Navigator.push(
+//              context, MaterialPageRoute(builder: (context) => LoginPage()));
+//        },
+//        child: Text(
+//          "Wyloguj",
+//          style: const TextStyle(color: Colors.green, fontSize: 24),
+//          maxLines: 1,
+//          overflow: TextOverflow.ellipsis,
+//        ),
+//      ),
     );
 
 //    return Container(

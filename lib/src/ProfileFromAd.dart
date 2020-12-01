@@ -144,7 +144,7 @@ class _ProfileFromAdState extends State<ProfileFromAd> {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          color: Colors.blueGrey,
+          color: Colors.blue,
           child: CustomScrollView(
             slivers: <Widget>[
               CustomAppBar(),
@@ -339,8 +339,15 @@ class UserNameSection extends StatelessWidget {
           style: new TextStyle(color: Colors.white, fontSize: 32),
         ),
         SizedBox(height: 8),
-        GestureDetector(
-          onTap: () {
+        FlatButton(
+          color: Colors.green,
+          textColor: Colors.white,
+          padding: EdgeInsets.all(12.0),
+          splashColor: Colors.greenAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          onPressed: () {
             print("email : $email");
 
             Navigator.push(context,
@@ -348,12 +355,19 @@ class UserNameSection extends StatelessWidget {
           },
           child: Text(
             "Wystaw komentarz",
-            style: new TextStyle(color: Colors.green, fontSize: 20),
+            style: TextStyle(fontSize: 20.0),
           ),
         ),
         SizedBox(height: 8),
-        GestureDetector(
-          onTap: () {
+        FlatButton(
+          color: Colors.green,
+          textColor: Colors.white,
+          padding: EdgeInsets.all(12.0),
+          splashColor: Colors.greenAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          onPressed: () {
             print("Portfolio");
 
             Navigator.push(
@@ -363,7 +377,7 @@ class UserNameSection extends StatelessWidget {
           },
           child: Text(
             "Zobacz portfolio",
-            style: new TextStyle(color: Colors.green, fontSize: 20),
+            style: TextStyle(fontSize: 20.0),
           ),
         ),
       ],
@@ -648,14 +662,14 @@ class CommentSection extends StatelessWidget {
                                       .userCommentList[index].userCommentingId
                                       .toString(),
                               style: new TextStyle(
-                                  color: Colors.green, fontSize: 20),
+                                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                             )
                           : Text(
                               userData.userCommentList[index].name +
                                   " " +
                                   userData.userCommentList[index].lastName,
                               style: new TextStyle(
-                                  color: Colors.green, fontSize: 20),
+                                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                       subtitle: Text(
                         userData.userCommentList[index].rate.toString() +

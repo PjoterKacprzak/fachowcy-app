@@ -146,9 +146,7 @@ class _AddCommentState extends State<AddComment> {
                         onPressed: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProfileFromComment(_id)));
+                              MaterialPageRoute(builder: (context) => ProfileFromComment(_id)));
                         },
                         child: Text(
                           "Wróć",
@@ -260,9 +258,7 @@ class _AddCommentState extends State<AddComment> {
                                 onPressed: () {
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProfileFromComment(_id)));
+                                      MaterialPageRoute(builder: (context) => ProfileFromComment(_id)));
                                 },
                                 child: Text(
                                   "Wróć",
