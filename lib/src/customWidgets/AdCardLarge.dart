@@ -8,6 +8,7 @@ import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -31,7 +32,7 @@ class AdCardLarge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.blue,
+        color: HexColor(Config.backgroundColor),
         child: CustomScrollView(
           slivers: <Widget>[
             CustomAppBar(),
@@ -43,7 +44,7 @@ class AdCardLarge extends StatelessWidget {
                     children: <Widget>[
                       SizedBox(height: 20),
                       Card(
-                        color: Colors.blue, //TODO: Zmienić kolor i dopasować do tła reszty
+                        color: HexColor(Config.mainColor), //TODO: Zmienić kolor i dopasować do tła reszty
                         elevation: 4.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -301,8 +302,8 @@ class TextSection extends StatelessWidget {
             serviceType == null ?
             SizedBox(height: 0.01) :
             serviceType == "1" ?
-            Icon(Icons.attach_money, color: Colors.green) :
-            Icon(Icons.autorenew, color: Colors.green),
+            Icon(Icons.attach_money, color: HexColor(Config.buttonColor)) :
+            Icon(Icons.autorenew, color: HexColor(Config.buttonColor)),
             SizedBox(width: 8),
             serviceType == null ?
             SizedBox(height: 0.01) :
@@ -327,7 +328,7 @@ class TextSection extends StatelessWidget {
         SizedBox(height: 16),
         Row(
           children: <Widget>[
-            Icon(Icons.timer, color: Colors.green),
+            Icon(Icons.timer, color: HexColor(Config.buttonColor)),
             SizedBox(width: 8),
             Text(
               estimatedTime,

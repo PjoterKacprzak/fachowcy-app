@@ -8,6 +8,7 @@ import 'package:fachowcy_app/src/LoginPage.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -35,13 +36,11 @@ class _FilterPageState extends State<FilterPage> {
     'Meble i zabudowa',
     'Ogrod',
     'Hydraulika',
-    'Elektryka',
-    'Hydraulika',
   ];
   List<String> _localization = [
     'Wybierz',
     'Lodz',
-    'Wraszawa',
+    'Warszawa',
     'Wroclaw',
   ];
   String _currentLocalization = "Wybierz";
@@ -50,59 +49,80 @@ class _FilterPageState extends State<FilterPage> {
   int _type = 1;
 
   Widget DropdownCategories() {
-    return DropdownButton<String>(
-      style: TextStyle(color: Colors.white, fontSize: 20),
-      dropdownColor: Colors.lightBlue,
-      icon: Icon(
-        Icons.keyboard_arrow_down,
-        color: Colors.white,
-      ),
-      isExpanded: true,
-      items: _category.map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (String newValue) {
-        setState(() {
-          _currentCategory = newValue;
-        });
-        // print(_currentCategory);
-      },
-      value: _currentCategory,
-    );
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: PopupMenuButton(
+        child: Container(
+          // padding: EdgeInsets.only(top: 8.0),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 9, child: Text('$_currentCategory',style: TextStyle(color: Colors.white, fontSize: 20),),
+              ),
+              Expanded(
+                  flex: 1, child: Icon(Icons.keyboard_arrow_down,color: Colors.white,)
+              ),
+              // Align(alignment: Alignment.centerRight,child: ,)
+            ],
+          ),
+        ),
+        onSelected: (value) => setState(() => _currentCategory = value),
+        color: HexColor('#40bb45'),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16.0))),
+        itemBuilder: (context) {
+          return _category
+              .map((value) => PopupMenuItem(
+              value: value,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Text('$value',style: TextStyle(color: Colors.white, fontSize: 16)),
+              )))
+              .toList();
+        },
+      ));
   }
 
   Widget DropdownLocalization() {
-    return DropdownButton<String>(
-      style: TextStyle(color: Colors.white, fontSize: 20),
-      dropdownColor: Colors.lightBlue,
-      icon: Icon(
-        Icons.keyboard_arrow_down,
-        color: Colors.white,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: PopupMenuButton(
+        child: Container(
+          child: Row(
+            children: [
+              Expanded(
+                flex: 9, child: Text('$_currentLocalization',style: TextStyle(color: Colors.white, fontSize: 20),),
+              ),
+              Expanded(
+                flex: 1, child: Icon(Icons.keyboard_arrow_down,color: Colors.white,)
+              ),
+              // Align(alignment: Alignment.centerRight,child: ,)
+            ],
+          ),
+        ),
+        onSelected: (value) => setState(() => _currentLocalization = value),
+        color: HexColor('#40bb45'),
+        padding: EdgeInsets.only(top: 4.0),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16.0))),
+        itemBuilder: (context) {
+          return _localization
+              .map((value) => PopupMenuItem(
+              value: value,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Text('$value',style: TextStyle(color: Colors.white, fontSize: 16)),
+              )))
+              .toList();
+        },
       ),
-      isExpanded: true,
-      items: _localization.map((String valueLocalization) {
-        return DropdownMenuItem<String>(
-          value: valueLocalization,
-          child: Text(valueLocalization),
-        );
-      }).toList(),
-      onChanged: (String newLocalization) {
-        setState(() {
-          _currentLocalization = newLocalization;
-        });
-        // print(_currentLocalization);
-      },
-      value: _currentLocalization,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: HexColor('#2162f3'),
       body: CustomScrollView(
         slivers: <Widget>[
           CustomAppBar(),
@@ -138,6 +158,8 @@ class _FilterPageState extends State<FilterPage> {
                                       fontSize: 25, color: Colors.white),
                                 )
                               ]),
+
+                          SizedBox(height: 5),
                           DropdownCategories(),
                           SizedBox(height: 25),
                           Row(
@@ -150,6 +172,7 @@ class _FilterPageState extends State<FilterPage> {
                                       fontSize: 25, color: Colors.white),
                                 )
                               ]),
+                          SizedBox(height: 5),
                           DropdownLocalization(),
                           SizedBox(height: 20),
                           Theme(
@@ -223,7 +246,7 @@ class _FilterPageState extends State<FilterPage> {
                           ),
                           SizedBox(height: 40),
                           FlatButton(
-                            color: Colors.green,
+                            color: HexColor(Config.buttonColor),
                             textColor: Colors.white,
                             padding: EdgeInsets.all(16.0),
                             splashColor: Colors.greenAccent,

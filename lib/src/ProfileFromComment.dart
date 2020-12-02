@@ -6,6 +6,7 @@ import 'package:fachowcy_app/src/AddComment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -35,7 +36,7 @@ class ProfileFromComment extends StatefulWidget {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          color: Colors.blue,
+          color: HexColor(Config.mainColor),
           child: CustomScrollView(
             slivers: <Widget>[
               CustomAppBar(),
@@ -292,7 +293,7 @@ class UserNameSection extends StatelessWidget {
         ),
         SizedBox(height: 8),
         FlatButton(
-          color: Colors.green,
+          color: HexColor(Config.buttonColor),
           textColor: Colors.white,
           padding: EdgeInsets.all(12.0),
           splashColor: Colors.greenAccent,
@@ -312,7 +313,7 @@ class UserNameSection extends StatelessWidget {
         ),
         SizedBox(height: 8),
         FlatButton(
-          color: Colors.green,
+          color: HexColor(Config.buttonColor),
           textColor: Colors.white,
           padding: EdgeInsets.all(12.0),
           splashColor: Colors.greenAccent,

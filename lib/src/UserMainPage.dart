@@ -3,6 +3,7 @@ import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/ServiceCard.dart';
 import 'package:fachowcy_app/src/NotificationPage.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'HomePage.dart';
 import 'FilterPage.dart';
@@ -46,9 +47,9 @@ class _UserMainPageState extends State<UserMainPage> {
             )
           ),
           child: BottomNavigationBar(
-            unselectedItemColor: Colors.white,
-            selectedItemColor: Colors.grey[300],
-            backgroundColor: Colors.blueAccent[400],
+            unselectedItemColor: HexColor('#8a8a8a'),
+            selectedItemColor:  HexColor('#40bb45'),
+            backgroundColor: HexColor('#e3e3e3'),
             type: BottomNavigationBarType.fixed,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(

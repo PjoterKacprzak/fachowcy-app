@@ -8,6 +8,7 @@ import 'package:fachowcy_app/src/ChangeUserProfilePhoto.dart';
 import 'package:fachowcy_app/src/customWidgets/AdCardSmall.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ChangePortfolio.dart';
@@ -25,7 +26,7 @@ class UserProfile extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          color: Colors.blue,
+          color: HexColor(Config.mainColor),
           child: CustomScrollView(
             slivers: <Widget>[
               CustomAppBar(),
@@ -278,7 +279,7 @@ class PasswordEdit extends StatelessWidget {
           child: Column(
             children: <Widget>[
               FlatButton(
-                color: Colors.green,
+                color: HexColor(Config.buttonColor),
                 textColor: Colors.white,
                 padding: EdgeInsets.all(12.0),
                 splashColor: Colors.greenAccent,
@@ -547,7 +548,7 @@ class Portfolio extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton(
-        color: Colors.green,
+        color: HexColor(Config.buttonColor),
         textColor: Colors.white,
         padding: EdgeInsets.all(12.0),
         splashColor: Colors.greenAccent,

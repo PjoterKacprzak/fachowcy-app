@@ -1,8 +1,10 @@
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/AdCardLarge.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../EditServiceCard.dart';
 
@@ -30,7 +32,7 @@ class AdCardSmall extends StatelessWidget {
         SizedBox(
           width:  MediaQuery.of(context).orientation == Orientation.portrait ? MediaQuery.of(context).size.width / 2.3 : MediaQuery.of(context).size.width / 3.3, //TODO: jakby coś się sypało na innych kształtach to tu
           child: Card(
-            color: Colors.blue, //TODO: Zmienić kolor i dopasować do tła reszty
+            color: HexColor('#2162f3'), //TODO: Zmienić kolor i dopasować do tła reszty
             elevation: 4.0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),

@@ -2,6 +2,7 @@ import 'package:fachowcy_app/src/LoginPage.dart';
 import 'package:fachowcy_app/src/UserMainPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../UserProfile.dart';
@@ -12,7 +13,7 @@ class CustomAppBar extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: Colors.blue,
+      backgroundColor: HexColor('#2162f3'),
       floating: true,
       pinned: false,
       snap: false,

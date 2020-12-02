@@ -30,7 +30,7 @@ dependencies:
   smooth_star_rating: ^1.1.1
   flutter_signin_button: ^1.1.0
   flutter_facebook_login: ^3.0.0
-
+  hexcolor: ^1.0.6
 
   flutter:
     sdk: flutter

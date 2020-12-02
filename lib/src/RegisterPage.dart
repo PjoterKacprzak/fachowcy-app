@@ -6,6 +6,7 @@ import 'package:fachowcy_app/Data/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -78,7 +79,7 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.blue,
+        backgroundColor: HexColor(Config.mainColor),
         body: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -304,7 +305,7 @@ class RegisterPage extends StatelessWidget {
                   Builder(
                     builder: (context) => Center(
                       child: FlatButton(
-                        color: Colors.green,
+                        color: HexColor(Config.buttonColor),
                         textColor: Colors.white,
                         padding: EdgeInsets.all(16.0),
                         splashColor: Colors.greenAccent,
@@ -355,7 +356,7 @@ class RegisterPage extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   FlatButton(
-                    color: Colors.green,
+                    color: HexColor(Config.buttonColor),
                     textColor: Colors.white,
                     padding: EdgeInsets.all(16.0),
                     splashColor: Colors.greenAccent,
@@ -383,7 +384,7 @@ class RegisterPage extends StatelessWidget {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.green,
+        backgroundColor: HexColor(Config.buttonColor),
         content: const Text('Użytkownik zarejestrowany!',
             style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
@@ -398,7 +399,7 @@ class RegisterPage extends StatelessWidget {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.redAccent,
         content: new Text(message, style: const TextStyle(fontSize: 16)),
         action: SnackBarAction(
             label: 'Zamknij',

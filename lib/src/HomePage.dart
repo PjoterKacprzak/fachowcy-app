@@ -8,6 +8,7 @@ import 'UserMainPage.dart';
 import 'UserProfile.dart';
 import 'customWidgets/AdCardSmall.dart';
 import 'customWidgets/Loader.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class HomePage extends StatelessWidget {
 
@@ -17,13 +18,14 @@ class HomePage extends StatelessWidget {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Colors.blueGrey[100],
+          backgroundColor: HexColor('#e2e2e2'),
           body: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
               return [
                 SliverAppBar(
-                  backgroundColor: Colors.lightBlueAccent[200],
+                  backgroundColor: HexColor('#2162f3'),
+                  //HexColor('#de9d0c')
                   floating: false,
                   pinned: false,
                   snap: false,
@@ -56,6 +58,13 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                   bottom: TabBar(
+                    indicatorColor: HexColor('#40bb45'),
+                    labelColor: HexColor('#40bb45'),
+                    unselectedLabelColor: Colors.white,
+                    indicator: UnderlineTabIndicator(
+                        borderSide: BorderSide(width: 4.0,color: HexColor('#40bb45')),
+                    ),
+
                     tabs: <Widget>[
                       Tab(
                         text: "PŁATNE",

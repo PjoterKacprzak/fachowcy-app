@@ -5,6 +5,7 @@ import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:async/async.dart';
@@ -27,7 +28,7 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: HexColor(Config.mainColor),
       body: SafeArea(
         child: Container(
           margin: MediaQuery.of(context).orientation == Orientation.portrait
@@ -58,7 +59,7 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                         Builder(
                           builder: (context) => Center(
                             child: FlatButton(
-                              color: Colors.green,
+                              color: HexColor(Config.buttonColor),
                               textColor: Colors.white,
                               padding: EdgeInsets.all(16.0),
                               splashColor: Colors.greenAccent,
@@ -88,7 +89,7 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                         Builder(
                           builder: (context) => Center(
                             child: FlatButton(
-                              color: Colors.green,
+                              color: HexColor(Config.buttonColor),
                               textColor: Colors.white,
                               padding: EdgeInsets.all(16.0),
                               splashColor: Colors.greenAccent,
@@ -119,7 +120,7 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                         Builder(
                           builder: (context) => Center(
                             child: FlatButton(
-                              color: Colors.green,
+                              color: HexColor(Config.buttonColor),
                               textColor: Colors.white,
                               padding: EdgeInsets.all(16.0),
                               splashColor: Colors.greenAccent,
@@ -149,7 +150,7 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
                         Builder(
                           builder: (context) => Center(
                             child: FlatButton(
-                              color: Colors.green,
+                              color: HexColor(Config.buttonColor),
                               textColor: Colors.white,
                               padding: EdgeInsets.all(16.0),
                               splashColor: Colors.greenAccent,
@@ -241,7 +242,7 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.green,
+        backgroundColor: HexColor(Config.buttonColor),
         content: new Text(text, style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
             label: 'Zamknij',
@@ -255,7 +256,7 @@ class _ChangePortfolioState extends State<ChangePortfolio> {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.redAccent,
         content: new Text(message, style: const TextStyle(fontSize: 16)),
         action: SnackBarAction(
             label: 'Zamknij',

@@ -5,6 +5,7 @@ import 'package:fachowcy_app/src/HomePage.dart';
 import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,7 +48,7 @@ class _AddCommentState extends State<AddComment> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blue,
+        backgroundColor: HexColor(Config.mainColor),
         body: Container(
           margin: MediaQuery.of(context).orientation == Orientation.portrait
               ? const EdgeInsets.only(left: 40, right: 40)
@@ -110,7 +111,7 @@ class _AddCommentState extends State<AddComment> {
                       Builder(
                         builder: (context) => Center(
                           child: FlatButton(
-                            color: Colors.green,
+                            color: HexColor(Config.buttonColor),
                             textColor: Colors.white,
                             padding: EdgeInsets.all(16.0),
                             splashColor: Colors.greenAccent,
@@ -138,7 +139,7 @@ class _AddCommentState extends State<AddComment> {
                       ),
                       SizedBox(height: 8),
                       FlatButton(
-                        color: Colors.green,
+                        color: HexColor(Config.buttonColor),
                         textColor: Colors.white,
                         padding: EdgeInsets.all(16.0),
                         splashColor: Colors.greenAccent,
@@ -219,7 +220,7 @@ class _AddCommentState extends State<AddComment> {
                               Builder(
                                 builder: (context) => Center(
                                   child: FlatButton(
-                                    color: Colors.green,
+                                    color: HexColor(Config.buttonColor),
                                     textColor: Colors.white,
                                     padding: EdgeInsets.all(16.0),
                                     splashColor: Colors.greenAccent,
@@ -250,7 +251,7 @@ class _AddCommentState extends State<AddComment> {
                               ),
                               SizedBox(height: 8),
                               FlatButton(
-                                color: Colors.green,
+                                color: HexColor(Config.buttonColor),
                                 textColor: Colors.white,
                                 padding: EdgeInsets.all(16.0),
                                 splashColor: Colors.greenAccent,
@@ -303,7 +304,7 @@ class _AddCommentState extends State<AddComment> {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.green,
+        backgroundColor: HexColor(Config.buttonColor),
         content: new Text(text, style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
             label: 'Zamknij',
@@ -317,7 +318,7 @@ class _AddCommentState extends State<AddComment> {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.redAccent,
         content: new Text(message, style: const TextStyle(fontSize: 16)),
         action: SnackBarAction(
             label: 'Zamknij',

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_builder.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return isLoading ? Loader() : Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: HexColor(Config.mainColor),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.only(left: 40, right: 40),
@@ -125,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
               Builder(
                 builder: (context) => Center(
                   child: FlatButton(
-                    color: Colors.green,
+                    color: HexColor(Config.buttonColor),
                     textColor: Colors.white,
                     padding: EdgeInsets.all(16.0),
                     splashColor: Colors.greenAccent,
@@ -154,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 8),
               FlatButton(
-                color: Colors.green,
+                color: HexColor(Config.buttonColor),
                 textColor: Colors.white,
                 padding: EdgeInsets.all(16.0),
                 splashColor: Colors.greenAccent,
@@ -207,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.redAccent,
         content: new Text(message , style: const TextStyle(fontSize: 16)),
         action: SnackBarAction(
             label: 'Zamknij', onPressed: scaffold.hideCurrentSnackBar, textColor: Colors.white),

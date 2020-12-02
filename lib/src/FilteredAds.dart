@@ -1,5 +1,7 @@
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/ServiceCard.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import 'customWidgets/AdCardSmall.dart';
 import 'customWidgets/CustomAppBar.dart';
@@ -17,7 +19,7 @@ class FilteredAds extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: HexColor(Config.mainColor),
       body: CustomScrollView(
         slivers: <Widget>[
           CustomAppBar(),

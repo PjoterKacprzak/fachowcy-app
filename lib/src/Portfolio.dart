@@ -1,6 +1,8 @@
+import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/src/ProfileFromComment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class Portfolio extends StatelessWidget {
   String portfolioString;
@@ -15,7 +17,7 @@ class Portfolio extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.blue,
+        color: HexColor(Config.mainColor),
         child: Container(
           margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
           child: SingleChildScrollView(
@@ -54,7 +56,7 @@ class Portfolio extends StatelessWidget {
                       ),
                 SizedBox(height: 16),
                 FlatButton(
-                  color: Colors.green,
+                  color: HexColor(Config.buttonColor),
                   textColor: Colors.white,
                   padding: EdgeInsets.all(16.0),
                   splashColor: Colors.greenAccent,
