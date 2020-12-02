@@ -186,7 +186,7 @@ class SimilarAds extends StatelessWidget {
           SizedBox(height: 16),
           Text(
               "Podobne ogłoszenia",
-              style: new TextStyle(color: Colors.white, fontSize: 16)
+              style: new TextStyle(color: HexColor(Config.mainColor), fontSize: 16)
           ),
           FutureBuilder(
             future: getSimilarAds(category, location),
