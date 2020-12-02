@@ -13,6 +13,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import 'ProfileFromAd.dart';
 import 'ProfileFromComment.dart';
+import 'UserMainPage.dart';
 
 class AddComment extends StatefulWidget {
   String email;
@@ -149,7 +150,7 @@ class _AddCommentState extends State<AddComment> {
                         onPressed: () {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => HomePage()));
+                              MaterialPageRoute(builder: (context) => UserMainPage()));
                         },
                         child: Text(
                           "Wróć",
@@ -261,7 +262,7 @@ class _AddCommentState extends State<AddComment> {
                                 onPressed: () {
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => HomePage()));
+                                      MaterialPageRoute(builder: (context) => UserMainPage()));
                                 },
                                 child: Text(
                                   "Wróć",

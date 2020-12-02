@@ -49,7 +49,7 @@ class _UserMainPageState extends State<UserMainPage> {
           child: BottomNavigationBar(
             unselectedItemColor: HexColor('#8a8a8a'),
             selectedItemColor:  HexColor('#40bb45'),
-            backgroundColor: HexColor('#e3e3e3'),
+            backgroundColor: HexColor(Config.backgroundColor),
             type: BottomNavigationBarType.fixed,
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
