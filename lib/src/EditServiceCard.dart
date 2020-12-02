@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:fachowcy_app/Config/Config.dart';
 import 'package:fachowcy_app/Data/Photos.dart';
 import 'package:fachowcy_app/Data/ServiceCard.dart';
+import 'package:fachowcy_app/src/HomePage.dart';
 import 'package:fachowcy_app/src/UserProfile.dart';
 import 'package:fachowcy_app/src/customWidgets/CustomAppBar.dart';
 import 'package:fachowcy_app/src/customWidgets/Loader.dart';
@@ -35,6 +36,7 @@ class _EditServiceCardState extends State<EditServiceCard> {
   @override
   void initState() {
     _tempServiceCard = _asyncGetData();
+
     super.initState();
 
     print("Data  $_tempServiceCard");
@@ -71,8 +73,8 @@ class _EditServiceCardState extends State<EditServiceCard> {
     'Warszawa',
     'Wroclaw',
   ];
-  String _currentLocalization = "Lodz";
-  String _currentCategory = 'Malowanie';
+  String _currentLocalization = 'Wybierz';
+  String _currentCategory = 'Wybierz';
   int _type = 0;
   String _title;
   String _description;
@@ -94,7 +96,7 @@ class _EditServiceCardState extends State<EditServiceCard> {
               return Center(child: Text('Error: ${snapshot.error}'));
             else
               return Scaffold(
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: HexColor(Config.mainColor),
                 body: CustomScrollView(
                   slivers: <Widget>[
                     CustomAppBar(),
@@ -505,7 +507,7 @@ class _EditServiceCardState extends State<EditServiceCard> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UserProfile()));
+                                                      HomePage()));
                                         } else {
                                           setState(() => isLoading = false);
                                           // _showToastWrong(context,
@@ -665,7 +667,7 @@ class _EditServiceCardState extends State<EditServiceCard> {
             ),
           ),
           onSelected: (value) => setState(() => _currentCategory = value),
-          color: HexColor('#40bb45'),
+          color:HexColor('#40bb45'),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0))),
           itemBuilder: (context) {

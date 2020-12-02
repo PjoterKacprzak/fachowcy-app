@@ -53,7 +53,6 @@ class _AutoLoginState extends State<AutoLogin> {
         // decoration: BoxDecoration(
         //     image: DecorationImage(
         //         image: AssetImage("assets/logo.png"),fit: BoxFit.fill)),
-        child: Loader()
       )
         );
 
