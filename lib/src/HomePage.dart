@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: HexColor('#e2e2e2'),
+          backgroundColor: HexColor(Config.backgroundColor),
           body: NestedScrollView(
             headerSliverBuilder:
                 (BuildContext context, bool innerBoxIsScrolled) {
@@ -189,6 +189,7 @@ class ServiceCardListExchange extends StatelessWidget {
             if (numberOfAds == 0) {
               return Column(
                 children: <Widget>[
+                  SizedBox(height: 40),
                   Text(
                     "Brak ogłoszeń",
                     style: TextStyle(color: Colors.white, fontSize: 24),

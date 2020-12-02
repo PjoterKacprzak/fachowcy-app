@@ -19,7 +19,7 @@ class FilteredAds extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      backgroundColor: HexColor(Config.mainColor),
+      backgroundColor: HexColor(Config.backgroundColor),
       body: CustomScrollView(
         slivers: <Widget>[
           CustomAppBar(),

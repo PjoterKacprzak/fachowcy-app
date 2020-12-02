@@ -5,6 +5,7 @@ import 'package:fachowcy_app/src/NotificationPage.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
+import 'FavoriteAds.dart';
 import 'HomePage.dart';
 import 'FilterPage.dart';
 import 'PostNewAd.dart';
@@ -37,7 +38,7 @@ class _UserMainPageState extends State<UserMainPage> {
     return MaterialApp(
       home: Scaffold(
         // body: Center(child: _widgetOptions.elementAt(_selectedIndex),),
-        body: [HomePage(), FilterPage(), PostNewAd(), NotificationPage()]
+        body: [HomePage(), FilterPage(), PostNewAd(), NotificationPage(), FavoriteAds()]
             .elementAt(_selectedIndex),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
@@ -66,7 +67,11 @@ class _UserMainPageState extends State<UserMainPage> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.notifications),
-                label: 'Powiadomienia',
+                label: 'Notyfikacje',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite),
+                label: 'Ulubione',
               ),
             ],
             currentIndex: _selectedIndex,
