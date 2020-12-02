@@ -567,7 +567,6 @@ class _PostNewAdState extends State<PostNewAd> {
                                       _showToastWrong(context,
                                           'Nie udało się dodać ogłoszenia!');
                                     }
-                                    ;
                                   },
                                   child: Text(
                                     "Dodaj",
@@ -700,7 +699,7 @@ class _PostNewAdState extends State<PostNewAd> {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.green,
+        backgroundColor: HexColor(Config.buttonColor),
         content: const Text('Dodano ogłoszenie!',
             style: const TextStyle(fontSize: 20)),
         action: SnackBarAction(
@@ -715,7 +714,7 @@ class _PostNewAdState extends State<PostNewAd> {
     final scaffold = Scaffold.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.redAccent,
         content: new Text(message, style: const TextStyle(fontSize: 16)),
         action: SnackBarAction(
             label: 'Zamknij',
